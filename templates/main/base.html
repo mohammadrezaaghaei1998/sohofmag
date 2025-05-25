@@ -1,0 +1,168 @@
+
+{% load static %}
+<!doctype html>
+
+ <html lang="en"> 
+    <head>
+        <meta charset="utf-8">
+
+        {% block head %}
+            <title>{% if meta %}{{ meta.title }}{% else %}Sohof | Business Hub Magazine{% endif %}</title>
+            
+            <meta name="description" content="{% if meta and meta.description %}{{ meta.description }}{% else %}Sohof Magazine provides in-depth insights into global business, import/export opportunities, and the latest trends in international trade. Discover new companies and business partnerships worldwide.{% endif %}">
+            
+            <meta name="keywords" content="{% if meta and meta.keywords %}{{ meta.keywords }}{% else %}business, import/export, global companies, international trade, business partnerships, trade news, international business{% endif %}">
+            
+            {% if meta and meta.robots %}
+            <meta name="robots" content="{{ meta.robots }}">
+            {% endif %}
+
+            <meta property="og:title" content="{% if meta and meta.og_title %}{{ meta.og_title }}{% else %}Sohof | Business Hub Magazine{% endif %}">
+            <meta property="og:description" content="{% if meta and meta.og_description %}{{ meta.og_description }}{% else %}Sohof Magazine provides in-depth insights into global business, import/export opportunities, and the latest trends in international trade. Discover new companies and business partnerships worldwide.{% endif %}">
+            <meta property="og:image" content="{% if meta and meta.og_image %}{{ meta.og_image.url }}{% else %}{% static 'images/default-og-image.jpg' %}{% endif %}">
+            <meta property="og:url" content="{% if meta and meta.og_url %}{{ meta.og_url }}{% else %}https://www.sohof.com{% endif %}">
+            <meta property="og:type" content="website">
+            
+            <meta name="twitter:title" content="{% if meta and meta.twitter_title %}{{ meta.twitter_title }}{% else %}Sohof | Business Hub Magazine{% endif %}">
+            <meta name="twitter:description" content="{% if meta and meta.twitter_description %}{{ meta.twitter_description }}{% else %}Sohof Magazine provides in-depth insights into global business, import/export opportunities, and the latest trends in international trade. Discover new companies and business partnerships worldwide.{% endif %}">
+            <meta name="twitter:image" content="{% if meta and meta.twitter_image %}{{ meta.twitter_image.url }}{% else %}{% static 'images/default-twitter-image.jpg' %}{% endif %}">
+            <meta name="twitter:card" content="{% if meta and meta.twitter_card %}{{ meta.twitter_card }}{% else %}summary_large_image{% endif %}">
+
+            <meta name="twitter:site" content="{% if meta and meta.twitter_site %}{{ meta.twitter_site }}{% else %}@sohof_site{% endif %}">
+            
+            <link rel="canonical" href="{% if meta and meta.canonical_url %}{{ meta.canonical_url }}{% else %}https://www.sohof.com{% endif %}">
+        {% endblock %}
+    
+        
+
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" type="image/png" href="{% static 'assets/images/logo.png' %}">
+
+
+        
+        <!--Bootstrap -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
+        <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+
+        <!-- <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"> -->
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+
+
+
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+
+        <!--User Dashboard -->
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
+
+
+        
+        
+
+        <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Sixtyfour&display=swap" rel="stylesheet"> -->
+
+
+
+        <!--Theme custom css -->
+        <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+        <link rel="stylesheet" href="{% static 'assets/css/header.css' %}">
+        <link rel="stylesheet" href="{% static 'assets/css/aboutus.css' %}">
+        <!-- <link rel="stylesheet" href="{% static 'assets/css/google_translate.css' %}"> -->
+
+
+    </head>
+     <!-- Start header -->
+        {% include 'main/header.html' %}
+        
+    <!-- End header -->
+
+        {% block content %}
+
+
+        {% endblock content %}
+
+    <!-- Start Footer -->
+        {% include 'main/footer.html' %}
+    <!-- End Footer -->
+
+    
+
+    <!--Start of Tawk.to Script-->
+    <!-- <script type="text/javascript">
+        var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+        (function(){
+        var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+        s1.async=true;
+        s1.src='https://embed.tawk.to/679427703a8427326074a669/1iidbk4mo';
+        s1.charset='UTF-8';
+        s1.setAttribute('crossorigin','*');
+        s0.parentNode.insertBefore(s1,s0);
+        })();
+    </script> -->
+    
+    <!--End of Tawk.to Script-->
+
+    <body data-spy="scroll" data-target=".navbar-collapse">
+        
+        <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.7.0/js/bootstrap.min.js"></script> -->
+
+
+        <!-- <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script> -->
+
+        <!-- SweetAlert2 CDN -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <!-- Select2 CSS -->
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+
+        <!-- JS includes -->
+        <!-- <script src="{% static 'assets/js/jquery.min.js' %}"></script>
+        <script src="{% static 'assets/js/popper.js' %}"></script>
+        <script src="{% static 'assets/js/bootstrap.min.js' %}"></script> -->
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+       
+
+
+
+        
+        <!-- JS includes -->
+        <script src="{% static 'assets/js/aboutus.js' %}"></script>
+        <script src="{% static 'assets/js/main.js' %}"></script>
+        <script src="{% static 'assets/js/main2.js' %}"></script>
+        <script src="{% static 'assets/js/main3.js' %}"></script>
+        <script src="{% static 'assets/js/main4.js' %}"></script>
+        <script src="{% static 'assets/js/main5.js' %}"></script>
+        <script src="{% static 'assets/js/catalogue_slider.js' %}"></script>
+        <script src="{% static 'assets/js/catalogue_detail.js' %}"></script>
+        <script src="{% static 'assets/js/modal-hero.js' %}"></script>
+        <script src="{% static 'assets/js/translate.js' %}"></script>
+
+
+
+
+
+    </body>
+</html>

@@ -1,0 +1,367 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% if meta %}
+    <title>{{ meta.title }}</title>
+    <meta name="description" content="{{ meta.description }}">
+    <meta name="keywords" content="{{ meta.keywords }}">
+    <meta name="robots" content="{{ meta.robots }}">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="{{ meta.og_title }}">
+    <meta property="og:description" content="{{ meta.og_description }}">
+    <meta property="og:image" content="{{ meta.og_image.url }}">
+    <meta property="og:url" content="{{ meta.og_url }}">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter -->
+    <meta name="twitter:title" content="{{ meta.twitter_title }}">
+    <meta name="twitter:description" content="{{ meta.twitter_description }}">
+    <meta name="twitter:image" content="{{ meta.twitter_image.url }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="{{ meta.twitter_site }}">
+
+    <!-- Canonical -->
+    <link rel="canonical" href="{{ meta.canonical_url }}">
+{% else %}
+    <p>Meta data not found for this page.</p>
+{% endif %}
+
+{% block content %}
+
+
+<style>
+
+    #album{
+        width: 1050px;
+        height: 700px;
+        margin: 3% auto;
+    }
+    @media screen and (max-width: 768px) {
+
+        #album {
+            width: 100%;  
+            height: 300px;         
+        }
+
+        .cataloge-pages-cataloge-page img  {
+            width: 100%;  
+            height: 300px;
+            background-size: cover;
+        }
+
+        .cataloge-pages-cataloge-page .overlay {
+            max-height: 300px !important;
+        }
+
+        .cataloge-pages-cataloge-page .btn-see-more {
+            font-size: 16px; 
+            padding: 8px 15px;
+        }
+    }
+    .cataloge-pages-cataloge-page {
+        position: relative;
+        width: 100%;
+        /* background-size: cover; */
+        background-position: center;
+    }
+
+    .cataloge-pages-cataloge-page .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    .cataloge-pages-cataloge-page:hover .overlay {
+        opacity: 1;
+    }
+
+
+
+
+    .cataloge-pages-cataloge-page .btn-see-more {
+        color: white;
+        font-size: 20px;
+        font-weight: bold;
+        padding: 10px 20px;
+        background-color: rgba(0, 123, 255, 0.8); 
+        text-decoration: none;
+        border-radius: 5px;
+        display: inline-block;
+        transition: background-color 0.3s ease;
+    }
+
+
+
+    .subscribe-button{
+
+        background: transparent;
+        color: rgb(255, 255, 255);
+    }
+    .subscribe-button:hover{
+
+        background: transparent;
+        color: black;
+    }
+    .subscrribe-title ,  .footer-top-title{
+        font-weight: bold;
+        color: white;
+    }
+    /* .filter-group {
+        position: -webkit-sticky;
+        position: sticky;
+        z-index: 99;
+        top: 20px;
+    } */
+
+
+</style>
+
+
+
+<section style="background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.281), rgba(0,0,0,0.3), rgba(0,0,0,0)), url(/static/assets/images/confident2.jpg); background-repeat: no-repeat; background-position: center; background-size: cover; height: 50vh;">
+
+    <div class="container d-flex flex-column justify-content-center align-items-center text-center" style="height: 100%;">
+            <h1 class="text-white"><strong>Catalogue details</strong></h1>
+            <nav aria-label="breadcrumb" class="d-flex justify-content-center mt-3">
+                <ol class="breadcrumb bg-transparent p-0 m-0">
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'index' %}" class="text-white-50">Home</a>
+                    </li>
+                    <li class="breadcrumb-item active text-white" aria-current="page">Catalogue details</li>
+                </ol>
+            </nav>
+    </div>
+</section>
+
+
+
+<div class="col-lg-12">
+    <div class="row align-items-start">
+        <div class="col-md-4 col-lg-3 mt-5 filter-group" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+            <header class="card-header">
+                <h6 class="title">Catalogue Info</h6>
+            </header>
+            <div class="filter-content">
+                <div class="card-body">
+                    <p class="d-flex align-items-start">
+                        <i class="fa fa-book ml-2 p-1 mt-1" style="color: red;"></i>
+                        <strong class="ml-2">{{ catalogue.title }}</strong>
+                    </p>
+
+                    <p class="d-flex align-items-start">
+                        <i class="fa fa-folder-open ml-2 p-1" style="color: red;"></i>
+                        <strong class="ml-2">{{ catalogue.description }}</strong>
+                    </p>
+                    
+                    
+                    <p>
+                        <i class="fa fa-eye ml-2 p-1" style="color: red;"></i> 
+                        <strong>Catalog Views:</strong> 
+                        <span id="catalogViews">{{ catalogue.view_count }}</span>
+                    </p>
+
+
+                    <p><i class="fa fa-calendar ml-2 p-1" style="color: red;"></i> <strong>Publish Date:</strong> {{ catalogue.publish_date }}</p>
+                    <p><i class="fa fa-user ml-2 p-1" style="color: red;"></i> <strong>Creator:</strong> {{ catalogue.creator }}</p>
+                    <p><i class="fa fa-language ml-2 p-1" style="color: red;"></i> <strong>Language:</strong> {{ catalogue.language }}</p>
+                    <p>
+                        <i class="fa fa-download ml-2 p-1" style="color: red;"></i>
+                        <strong>Download Count:</strong>
+                        <span id="download-count">{{ catalogue.download_count }}</span>
+                    </p>                    <p><i class="fa fa-file-text ml-2 p-1" style="color: red;"></i> <strong>Pages:</strong> <span id="catalogPages">{{ catalogue.pages }}</span></p>
+                    <p><i class="fa fa-building ml-2 p-1" style="color: red;"></i> <strong>Companies:</strong> <span id="catalogCompanies">{{ catalogue.companies }}</span></p>
+
+                    
+                    <a href="{% url 'catalogue_download' catalogue.id %}" 
+                        class="btn btn-md btn-custom animate__animated animate__bounceIn animate__delay-.5s mt-3" id="download-btn"><i class="fa fa-download"></i> Download as PDF
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8 col-lg-9 d-flex justify-content-s align-items-center">
+            <div id="album">
+                {% for page in pages %}
+                <div class="cataloge-pages-cataloge-page">
+                    <img src="{{ page.page_image.url }}" alt="Page Image">
+                    <div class="overlay">
+                        <a href="{% url 'page_detail' page.id %}" class="btn btn-md btn-custom animate__animated animate__bounceIn animate__delay-.5s">View Page Details</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+
+
+
+<footer class="bg-dark text-white pt-5">
+    <div class="container" style="max-width: 1350px;">
+        <div class="row">
+            <!-- About Section -->
+            <div class="col-md-3">
+                <a class="footerbrand" href="{% url 'index' %}"> 
+                    <img src="{% static 'assets/images/logo.png' %}" width="90" alt="Logo">
+                </a>
+                <p class="mt-2">We promote businesses through our catalog and strategic advertising, connecting them with global markets to enhance visibility and growth.</p>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="col-md-3 mt-2">
+                <h2 class="mb-4 footer-top-title" style="font-size: 16px;">Quick Links</h2>
+                <ul class="list-unstyled">
+                    <li><a href="{% url 'index' %}" class="text-white text-decoration-none"><i class="fa fa-home"></i> Home</a></li>
+                    <li><a href="{% url 'aboutus' %}" class="text-white text-decoration-none"><i class="fa fa-info-circle"></i> About Us</a></li>
+                    <li><a href="{% url 'catalogue_list' %}" class="text-white text-decoration-none"><i class="fa fa-book"></i> Catalogues</a></li>
+                    <li><a href="{% url 'company_signup' %}" class="text-white text-decoration-none"><i class="fa fa-users"></i> Become a supplier</a></li>
+                </ul>
+            </div>
+
+            <!-- Services -->
+            <div class="col-md-3 mt-2">
+                <h2 class="mb-4 footer-top-title" style="font-size: 16px;">Our Services</h2>
+                <ul class="list-unstyled">
+                    <li><i class="fa fa-bullhorn"></i> Smart and Targeted Advertising</li>
+                    <li><i class="fa fa-globe"></i> Connection to Global Markets</li>
+                    <li><i class="fa fa-briefcase"></i> Specialized Commercial Support</li>
+                    <li><i class="fa fa-truck"></i> International Transportation</li>
+                    <li><i class="fa fa-credit-card"></i> Secure International Financial Transactions</li>
+                </ul>
+            </div>
+
+            <!-- Social Media and Subscribe -->
+            <div class="col-md-3 mt-2 text-center">
+                <h2 class="mb-4 footer-top-title" style="font-size: 16px;">Follow Us</h2>
+                <div class="mb-3">
+                    {% for link in socialmedia %}
+                        {% if 'facebook' in link.social_media_url %}
+                            <a href="{{ link.social_media_url }}" class="text-white mx-2" ><i class="fa fa-facebook fa-2x sm-links"></i></a>
+                        {% elif 'instagram' in link.social_media_url %}
+                            <a href="{{ link.social_media_url }}" class="text-white mx-2"><i class="fa fa-instagram fa-2x sm-links"></i></a>
+                        {% elif 'linkedin' in link.social_media_url %}
+                            <a href="{{ link.social_media_url }}" class="text-white mx-2"><i class="fa fa-linkedin fa-2x sm-links"></i></a>
+                        {% elif 'youtube' in link.social_media_url %}
+                            <a href="{{ link.social_media_url }}" class="text-white mx-2"><i class="fa fa-youtube fa-2x sm-links"></i></a>
+                        {% endif %}
+                    {% empty %}
+                        <p>No social media links available</p>
+                    {% endfor %}
+                </div>
+                <!-- <h5 class="mt-4 subscrribe-title">Subscribe to Our Newsletter</h5>
+                <form class="d-flex mt-2">
+                    <div class="input-group" style="border:none; border-bottom: 2px solid white;">
+                        <input type="email" class="form-control" placeholder="Enter your email" style="background: transparent; border: none;">
+                        <button type="submit" class="btn subscribe-button">Subscribe</button>
+                    </div>
+                </form> -->
+            </div>
+        </div>
+        <hr class="bg-white">
+        <div class="row text-center pb-4">
+            <div class="col">
+                <p class="mb-0">&copy; 2025 Sohof. All Rights Reserved.</p>
+                <!-- <p class="mb-0"><a href="#" class="text-white text-decoration-none">Privacy Policy</a> | <a href="#" class="text-white text-decoration-none">Terms of Service</a></p> -->
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+<style>
+    .list-unstyled li .text-decoration-none:hover{
+      color: rgb(255, 0, 0) !important;
+    }
+    .sm-links {
+        transition: color 0.3s ease; 
+    }
+
+    .sm-links:hover {
+        color: red;
+    }
+    .subscribe-button{
+
+        background: transparent;
+        color: rgb(255, 255, 255);
+    }
+    .subscribe-button:hover{
+
+        background: transparent;
+        color: black;
+    }
+    .subscrribe-title ,  .footer-top-title{
+        font-weight: bold;
+        color: white;
+    }
+
+</style>
+
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+<script src="{% static 'assets/js/turn.js' %}"></script>
+
+
+
+
+<script>
+    $('#album').turn({
+        gradients: true,
+        acceleration: true
+    });
+</script>
+
+
+    <script>
+        document.getElementById("download-btn").addEventListener("click", function(event) {
+            event.preventDefault();  
+        
+            let url = "{% url 'catalogue_download' catalogue.id %}";
+        
+            fetch(url)  
+            .then(response => {
+                if (!response.ok) throw new Error("Network response was not ok");
+                return response.blob(); 
+            })
+            .then(blob => {
+                let link = document.createElement("a");
+                link.href = URL.createObjectURL(blob);
+                link.download = "{{ catalogue.creator }}-catalogue.pdf";
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+        
+                let countElement = document.getElementById("download-count");
+                let currentCount = parseInt(countElement.innerText);
+                countElement.innerText = currentCount + 1;
+            })
+            .catch(error => console.error("Error downloading file:", error));
+        });
+    </script>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let catalogueId = "{{ catalogue.id }}";
+            let url = `/catalogue/${catalogueId}/increase-view/`;
+        
+            fetch(url, { method: "GET" })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("catalogViews").innerText = data.view_count;
+            })
+            .catch(error => console.error("Error updating view count:", error));
+        });
+    </script>
+
+{% endblock content %}

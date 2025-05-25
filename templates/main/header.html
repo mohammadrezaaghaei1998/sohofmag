@@ -1,0 +1,417 @@
+
+{% load static %}
+
+
+   
+<section>
+    <div class="container" style="max-width: 1520px !important;">
+        <nav class="navbar navbar-expand-lg fixed-top" style="z-index: 1000; background-color: rgba(70, 70, 70, 0.658); backdrop-filter: blur(10px);">
+
+               <div class="col-2 col-lg-1 d-flex justify-content-center">
+                <a class="navbrand" href="{% url 'index' %}"> 
+                    <img src="{% static 'assets/images/logo.png' %}" width="110" alt="Logo">
+                </a>
+               </div>
+                <button class="navbar-toggler p-2" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon mr-2"></span>Menu
+                </button>
+            
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav m-auto">
+                        <li class="nav-item d-flex align-items-center">
+                            <div class="full-page-menu-container">
+                                <a class="menu-btn dropdown-toggle nav-link" style="color: rgba(255, 255, 255, 0.7); display: flex; align-items: center; font-size: 11px; text-transform: uppercase; letter-spacing: 2px;">All categories</a>
+                                <div class="menu" style="margin-top: -4px;">
+                                    <div class="container-cont mt-4">
+                                        <div class="row">
+                                            <div class="col-md-5 col-lg-4">
+                                                <div class="list-group-header" style=" overflow-y: auto; max-height: 300px;">
+                                                    {% for category in categories %}
+                                                        <a href="javascript:void(0);" class="list-group-item list-group-item-action category-header"
+                                                        data-target="category{{ category.id }}">
+                                                            {{ category.name }}
+                                                        </a>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        
+                                            <div class="col-md-7 col-lg-8">
+                                                <div class="row text-center">
+                                                    {% for category in categories %}
+                                                        <div id="category{{ category.id }}" class="content-column-header" style="display: none;">
+                                                            <div class="subcategory-container w-100">
+                                                                <div class="row">
+                                                                    {% for subcategory in category.subcategories.all %}
+                                                                        <div class="col-12 col-md-6 col-lg-4 mb-4" style=" white-space: wrap;">
+                                                                            <a href="{% url 'subcategory_products' subcategory.id subcategory.name|slugify %}" class="test-subcat d-flex flex-column align-items-center justify-content-center text-decoration-none h-100">
+                                                                                <i class="fa {{ subcategory.icon }} fa-2x mb-2 pt-4"></i>
+                                                                                <p class="subcat-p mb-0">{{ subcategory.name }}</p>
+                                                                            </a>
+                                                                        </div>
+                                                                    {% endfor %}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                                    
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="nav-item d-flex align-items-center {% if request.resolver_match.url_name == 'index' %}active{% endif %}">
+                            <a href="{% url 'index' %}" class="nav-link">Home</a>
+                        </li>
+                        <li class="nav-item d-flex align-items-center {% if request.resolver_match.url_name == 'products' %}active{% endif %}">
+                            <a href="{% url 'products' %}" class="nav-link">Products</a>
+                        </li>
+                     
+                        <li class="nav-item d-flex align-items-center {% if request.path == '/catalogues-list/' %}active{% endif %}">
+                            <a href="{% url 'catalogue_list' %}" class="nav-link">Catalogues</a>
+                        </li>
+                        
+                        <li class="nav-item d-flex align-items-center {% if request.resolver_match.url_name == 'aboutus' %}active{% endif %}">
+                            <a href="{% url 'aboutus' %}" class="nav-link">About Us</a>
+                        </li>
+                        <li class="nav-item d-flex align-items-center {% if request.resolver_match.url_name == 'company_signup' %}active{% endif %}">
+                            <a href="{% url 'company_signup' %}" class="nav-link">Become a supplier</a>
+                        </li>
+                        <li class="nav-item d-flex align-items-center {% if request.resolver_match.url_name == 'contactus' %}active{% endif %}">
+                            <a href="{% url 'contactus' %}" class="nav-link">Contact us</a>
+                        </li>
+                    </ul>
+                    <div class="row align-items-center d-flex justify-content-center">
+                        <div class="col-1 col-lg-2 d-flex justify-content-center">
+                            <div class="sign-in-icons">
+                                {% if request.user.is_authenticated %}
+                                    {% if request.user.user_type == "buyer" %}
+                                        <a href="{% url 'user_dashboard' %}" class="fa fa-user" title="User Dashboard"></a>
+                                    {% endif %}
+                                {% else %}
+                                    <a href="{% url 'log_reg' %}" class="fa fa-user" title="User Sign-In"></a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    
+                        <div class="col-1 col-lg-2 d-flex justify-content-center">
+                            <div class="sign-in-icons">
+                                {% if request.user.is_authenticated %}
+                                    {% if request.user.user_type == "seller" %}
+                                        <a href="{% url 'seller_dashboard' %}" class="fa fa-building" title="Company Dashboard"></a>
+                                    {% endif %}
+                                {% else %}
+                                    <a href="{% url 'company_login' %}" class="fa fa-building" title="Company Sign-In"></a>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-1 col-lg-2 d-flex justify-content-end mb-1 ml-4">
+                            <button type="button" class="btn search-btn"  data-toggle="modal" data-target="#searchModal" style="outline: none; box-shadow: none;">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                
+                    </div>
+                </div>
+            </div>
+        </nav>
+       
+    
+    
+    
+    
+            
+        <div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content" style="background-color: #343a40;">
+                
+                    <div class="modal-header" style="border: none;">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true" style="color: white;">&times;</span>
+                        </button>
+                    </div>
+                    
+                    <div class="modal-body">
+                        <form method="get" action="{% url 'search' %}">
+                            <div class="input-group" style="border-bottom: 2px solid red; background-color: none;">
+                                <input type="text" 
+                                    class="form-control search-from-control" 
+                                    name="q" 
+                                    placeholder="Search Products..." 
+                                    style="border: none; outline: none; box-shadow: none; background-color: transparent;">
+                            </div>
+                            <div class="text-center mt-3">
+                                <button type="submit" class="btn btn-md btn-custom animate__animated animate__bounceIn animate__delay-.5s slider__button">Search</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+     
+      
+    
+</section>
+
+<style>
+    .navbar-nav > .nav-item > .nav-link.active {
+  color: #ff0000 !important;
+}
+
+    .search-from-control{
+        color: rgba(255, 255, 255, 0.7) !important;
+    }
+    .sign-in-icons a {
+        font-size: 20px;  
+        color: rgba(255, 255, 255, 0.7);     
+        transition: all 0.3s ease; 
+    }
+
+    .sign-in-icons a:hover {
+        color: #ff0000;  
+    }
+
+    .search-btn{
+        font-size: 20px;  
+        color: rgba(255, 255, 255, 0.7);     
+        transition: all 0.3s ease; 
+    }
+    .search-btn:hover{
+        color: #ff0000;  
+        background-color: transparent;
+    }
+
+    .subcategory-container {
+        display: flex;
+        flex-wrap: wrap;
+        max-height: 300px;   
+        overflow-y: auto;    
+    }
+
+
+
+    .subcategory-item .fa {
+        margin-bottom: 10px;
+    }
+
+    .test-subcat {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color:  rgba(255, 255, 255, 0.7);
+        margin: 5px;
+        padding: 10px;
+        text-align: center;
+        border-radius: 8px;
+        transition: background-color 0.3s ease;
+        text-decoration: none; 
+        /* min-width: 110px; */
+    }
+
+    .test-subcat:hover {
+        background-color: #5f6264;
+        color: white;
+    }
+
+
+    .subcategory .fa {
+        display: block;
+        margin-bottom: 8px;
+    }
+
+    @media (min-width: 992px) { 
+    .list-group-header {
+        max-height: 300px;
+        overflow-y: auto;
+    }
+}
+
+/* .navbar-nav .nav-item .nav-link{
+    color: white;
+    display: flex;
+    align-items: center;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+} */
+
+
+
+
+
+    .navbar-nav > .nav-item{
+        margin: 0 2px;
+        white-space: nowrap;
+    }
+
+    .navbar-nav > .nav-item > .nav-link {
+      font-size: 11px;
+      padding-top: 1.5rem;
+      padding-bottom: 1.5rem;
+      /* padding-left: 20px; */
+      padding-right: 10px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.7);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      position: relative;
+      opacity: 1 !important; }
+       .navbar-nav > .nav-item > .nav-link:before {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        content: '';
+        display: block;
+        width: 0;
+        height: 2px;
+        background: #ff0000;
+        -webkit-transition: 0.3s;
+        -o-transition: 0.3s;
+        transition: 0.3s; }
+        @media (prefers-reduced-motion: reduce) {
+          t .navbar-nav > .nav-item > .nav-link:before {
+            -webkit-transition: none;
+            -o-transition: none;
+            transition: none; } }
+      .navbar-nav > .nav-item > .nav-link:hover {
+        color: #ff0000; }
+        .navbar-nav > .nav-item > .nav-link:hover:before {
+          width: 100%; }
+      @media (max-width: 991.98px) {
+        .navbar-nav > .nav-item > .nav-link {
+          padding-left: 0;
+          padding-right: 0;
+          padding-top: .7rem;
+          padding-bottom: .7rem;
+          color: rgba(255, 255, 255, 0.7); }
+          .navbar-nav > .nav-item > .nav-link:hover {
+            color: #fff; } }
+      @media (max-width: 767.98px) {
+         .navbar-nav > .nav-item > .nav-link {
+          border-bottom: 1px solid rgba(255, 255, 255, 0.2); } }
+     .navbar-nav > .nav-item .dropdown-menu {
+      border: none;
+      background: #fff;
+      -webkit-box-shadow: 0px 10px 34px -20px rgba(0, 0, 0, 0.41);
+      -moz-box-shadow: 0px 10px 34px -20px rgba(0, 0, 0, 0.41);
+      box-shadow: 0px 10px 34px -20px rgba(0, 0, 0, 0.41);
+      border-radius: 4px; }
+       .navbar-nav > .nav-item .dropdown-menu .dropdown-item {
+        font-size: 12px;
+        color: #000; }
+         .navbar-nav > .nav-item .dropdown-menu .dropdown-item:hover, .navbar-nav > .nav-item .dropdown-menu .dropdown-item:focus {
+          background: #ff0000;
+          color: #fff; }
+      @media (max-width: 991.98px) {
+         .navbar-nav > .nav-item .dropdown-menu {
+          display: block !important;
+          background: #000; }
+          .navbar-nav > .nav-item .dropdown-menu .dropdown-item {
+            color: rgba(255, 255, 255, 0.8); } }
+     .navbar-nav > .nav-item.cta > a {
+      color: #fff;
+      background: #ff0000;
+      border-radius: 0px; }
+      @media (max-width: 767.98px) {
+         .navbar-nav > .nav-item.cta > a {
+          padding-left: 15px;
+          padding-right: 15px; } }
+      @media (max-width: 991.98px) {
+         .navbar-nav > .nav-item.cta > a {
+          color: #fff;
+          background: #ff0000;
+          border-radius: 4px; } }
+     .navbar-nav > .nav-item.active > a {
+      color: #ff0000; }
+      @media (max-width: 991.98px) {
+         .navbar-nav > .nav-item.active > a {
+          color: #fff; } }
+    .navbar-toggler {
+      color: rgba(255, 255, 255, 0.39) !important;
+      cursor: pointer;
+      padding-right: 0;
+      font-size: 16px;
+      letter-spacing: .1em;
+     }
+     .navbar-toggler:focus {
+        outline: none !important; }
+        .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='white' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E") !important;
+}
+        @media (max-width: 991.98px) {
+            .navbar-collapse {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: #343a40; 
+                color: white;
+                z-index: 999; 
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                padding: 10px;
+                /* border-radius: 0 0 12px 12px;  */
+                transition: all 0.3s ease-in-out;
+            }
+        }
+
+
+        .category-header {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+</style>
+
+
+
+
+
+
+
+ <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let categoryLinks = document.querySelectorAll(".category-header");
+
+        categoryLinks.forEach(link => {
+            link.addEventListener("mouseenter", function () {
+                let targetId = this.getAttribute("data-target");
+
+                document.querySelectorAll(".content-column-header").forEach(el => {
+                    el.style.display = "none";
+                });
+
+                let targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    targetElement.style.display = "block";
+                }
+            });
+        });
+
+        let subcategoryLinks = document.querySelectorAll(".subcategory");
+
+        subcategoryLinks.forEach(link => {
+            link.addEventListener("click", function (e) {
+                e.preventDefault();
+
+                let url = this.getAttribute("href");
+                window.location.href = url;  
+            });
+        });
+    });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,719 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% if meta %}
+    <title>{{ meta.title }}</title>
+    <meta name="description" content="{{ meta.description }}">
+    <meta name="keywords" content="{{ meta.keywords }}">
+    <meta name="robots" content="{{ meta.robots }}">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="{{ meta.og_title }}">
+    <meta property="og:description" content="{{ meta.og_description }}">
+    <meta property="og:image" content="{{ meta.og_image.url }}">
+    <meta property="og:url" content="{{ meta.og_url }}">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter -->
+    <meta name="twitter:title" content="{{ meta.twitter_title }}">
+    <meta name="twitter:description" content="{{ meta.twitter_description }}">
+    <meta name="twitter:image" content="{{ meta.twitter_image.url }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="{{ meta.twitter_site }}">
+
+    <!-- Canonical -->
+    <link rel="canonical" href="{{ meta.canonical_url }}">
+{% else %}
+    <p>Meta data not found for this page.</p>
+{% endif %}
+
+{% block content %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section style="background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.281), rgba(0,0,0,0.3), rgba(0,0,0,0)), url(/static/assets/images/confident2.jpg); background-repeat: no-repeat; background-position: center; background-size: cover; height: 50vh;">
+
+    <div class="container d-flex flex-column justify-content-center align-items-center text-center" style="height: 100%;">
+            <h1 class="text-white"><strong>Catalogue details</strong></h1>
+            <nav aria-label="breadcrumb" class="d-flex justify-content-center mt-3">
+                <ol class="breadcrumb bg-transparent p-0 m-0">
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'index' %}" class="text-white-50">Home</a>
+                    </li>
+                    <li class="breadcrumb-item active text-white" aria-current="page">Catalogue details</li>
+                </ol>
+            </nav>
+    </div>
+</section>
+
+
+
+<div class="col-lg-12">
+    <div class="row align-items-start justify-content-center">
+        <div class="col-md-12 col-lg-3 mt-5 mb-5 filter-group sticky-lg-sticky" style="z-index: 1 !important;"> 
+
+            <header class="card-header">
+                <h6 class="title">Catalogue Info</h6>
+            </header>
+            <div class="row pt-5 pb-5" style="font-size: 15px;">
+                <div class="col-12 col-md-6 col-lg-12 mb-3">
+                    <p class="d-flex align-items-start">
+                        <i class="fa fa-book ml-2 p-1 mt-1" style="color: red;"></i>
+                        <strong class="ml-2">{{ catalogue.title }}</strong>
+                    </p>
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-12 mb-3">
+                    <p class="d-flex align-items-start">
+                        <i class="fa fa-folder-open ml-2 p-1 mr-1" style="color: red;"></i>
+                        {{ catalogue.description }}
+                    </p>
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-12 mb-3">
+                    <p>
+                        <i class="fa fa-eye ml-2 p-1" style="color: red;"></i>
+                        <strong>Catalog Views:</strong>
+                        <span id="catalogViews">{{ catalogue.view_count }}</span>
+                    </p>
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-12 mb-3">
+                    <p class="text-nowrap" style="font-size: 15px;">
+                        <i class="fa fa-calendar ml-2 p-1" style="color: red;"></i>
+                        <strong>Publish Date:</strong> {{ catalogue.publish_date }}
+                    </p>
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-12 mb-3">
+                    <p>
+                        <i class="fa fa-user ml-2 p-1" style="color: red;"></i>
+                        <strong>Creator:</strong> {{ catalogue.creator }}
+                    </p>
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-12 mb-3">
+                    <p>
+                        <i class="fa fa-language ml-2 p-1" style="color: red;"></i>
+                        <strong>Language:</strong> {{ catalogue.language }}
+                    </p>
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-12 mb-3">
+                    <p>
+                        <i class="fa fa-download ml-2 p-1" style="color: red;"></i>
+                        <strong>Download Count:</strong>
+                        <span id="download-count">{{ catalogue.download_count }}</span>
+                    </p>
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-12 mb-3">
+                    <p>
+                        <i class="fa fa-file-text ml-2 p-1" style="color: red;"></i>
+                        <strong>Pages:</strong>
+                        <span id="catalogPages">{{ catalogue.pages }}</span>
+                    </p>
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-12 mb-3">
+                    <p>
+                        <i class="fa fa-building ml-2 p-1" style="color: red;"></i>
+                        <strong>Companies:</strong>
+                        <span id="catalogCompanies">{{ catalogue.companies }}</span>
+                    </p>
+                </div>
+
+                <div class="col-12 mt-3">
+                    <a href="#" class="btn btn-md btn-custom w-100 mb-2" id="download-btn">
+                        <i class="fa fa-download"></i> Download as PDF
+                    </a>
+                    <a href="{{ catalogue.pdf_file.url }}" target="_blank" class="btn btn-md btn-custom w-100">
+                        <i class="fa fa-eye"></i> See as PDF
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12 col-lg-9 mt-4 d-flex justify-content-end align-items-center">
+            <div id="album">
+                {% for page in catalogue.pagesss.all %} 
+                <div class="cataloge-pages-cataloge-page">
+                    <img src="{{ page.image.url }}" alt="Catalogue Page Image">
+                    <div class="overlay">
+                        <a href="{% url 'catalogue_page_detail' page.id %}" class="btn btn-md btn-custom animate__animated animate__bounceIn animate__delay-.5s">View Page Details</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        
+
+        <div class="container-count text d-flex justify-content-end py-4">
+            <div class="col-12 col-lg-9">
+               <div class="row">
+                    <div class="col-md-12 col-lg-12">
+                         <h3 class="product-title mt-5">Ratings & Reviews</h3>
+                    </div>
+                    <hr>
+                    <div class="rating-review mb-4">
+                        <div class="row align-items-center">
+                            <div class="col-auto text-center" style="font-size: 50px; font-weight: bold;">
+                                {{ average_rating|floatformat:1 }}
+                            </div>
+                            <div class="col">
+                                <div class="d-flex align-items-center">
+                                    <div class="stars text-warning">
+                                        {% for i in star_range %}
+                                            {% if i <= average_rating %}
+                                                <span class="fa fa-star checked"></span>
+                                            {% else %}
+                                                <span class="fa fa-star"></span>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <div class="review-base text-muted">Based on {{ comments.count }} reviews</div>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <div class="col-md-12">
+                        {% for comment in comments %}
+                            <div class="card review-card mb-4 p-3 comment-item {% if forloop.counter > 3 %}d-none extra-comment{% endif %}">
+                                <div class="card-body review-body" style="box-shadow: none;">
+                                    <div class="d-flex flex-start align-items-center">
+                                        <img class="rounded-circle shadow-1-strong me-3"
+                                src="{% if comment.user.buyer_profile.image %}{{ comment.user.buyer_profile.image.url }}{% else %}{% static 'assets/images/default_avatar.png' %}{% endif %}"
+                                alt="avatar" width="60" height="60" />
+                                        <div class="ml-3 review-user">
+                                            <h6 class="fw-bold text-danger mb-1">{{ comment.user.username }}</h6>
+                                            <p class="text-muted small mb-0">{{ comment.created_at|date:"M d, Y" }}</p>
+                                        </div>
+                                    </div>
+                    
+                                    <div class="mt-2">
+                                        <span class="text-warning">
+                                            {% for i in "12345"|make_list %}
+                                                {% if forloop.counter <= comment.rating %}
+                                                    ★
+                                                {% else %}
+                                                    <span class="text-muted">★</span>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </span>
+                                    </div>
+                                    
+                                    
+                    
+                                    <p class="mt-3 mb-1">{{ comment.comment }}</p>
+                                </div>
+                            </div>
+                        {% empty %}
+                            
+                            <div class="col-lg-12 alert alert-warning text-center" role="alert">
+                                    <p class="pt-2"><strong>No comments yet.</strong></p> 
+                            </div>
+                        {% endfor %}
+                
+                        {% if comments|length > 3 %}
+                        <div class="text-center mb-4">
+                            <button id="toggle-comments" class="btn btn-md btn-custom animate__animated animate__bounceIn animate__delay-.5s">Show More</button>
+                        </div>
+                        {% endif %}
+                
+                        {% if user.is_authenticated and user.user_type == "buyer" %}
+                            <div class="card mt-4 p-4 leave-comment">
+                                
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <div class="col-12">
+                                        <div class="row">
+                                            <div class="col-12 col-lg-3">
+                                                <div class="col-12 mr-2 d-flex align-items-center">
+                                                    <h5 class="mb-3 text-muted">Leave a Comment</h5>
+                                                </div>
+                                                <div class="col-12 d-flex justify-content-start">
+                                                    <p class="p_class">
+                                                        {% for radio in form.rating %}
+                                                            {{ radio.tag }}
+                                                            <label for="{{ radio.id_for_label }}">&#9733;</label>
+                                                        {% endfor %}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-9">
+                                                <div class="col-12 col-lg-12 form-group mb-3">
+                                                    {{ form.comment }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                    
+                                <div class="col-12 d-flex justify-content-end">
+                                        <button type="submit" class="btn btn-md btn-custom animate__animated animate__bounceIn animate__delay-.5s">Submit</button>
+                                </div>
+                                </form>
+                            </div>
+                        {% elif not user.is_authenticated %}
+                        <p class="mt-4 login-prompt text-center">
+                            <a href="{% url 'log_reg' %}?next={{ request.path }}" class="btn btn-md btn-custom animate__animated animate__bounceIn animate__delay-.5s">
+                                <strong>Log in to leave a comment</strong>
+                            </a>
+                        </p>
+                        
+                        
+                        {% elif user.user_type != "buyer" %}
+                           <div class="col-12 text-center">
+                             <h4 class="mt-4 text-muted"><span>Oops, This feature is not available for your account type.</span></h4>
+                           </div>
+                        {% endif %}
+                    </div>
+               </div>
+            </div>
+        </div>
+
+        
+    </div>
+</div>
+
+<hr>
+
+
+
+
+
+
+
+<footer class="bg-dark text-white pt-5">
+    <div class="container" style="max-width: 1350px;">
+        <div class="row">
+            <!-- About Section -->
+            <div class="col-md-3">
+                <a class="footerbrand" href="{% url 'index' %}"> 
+                    <img src="{% static 'assets/images/logo.png' %}" width="90" alt="Logo">
+                </a>
+                <p class="mt-2">We promote businesses through our catalog and strategic advertising, connecting them with global markets to enhance visibility and growth.</p>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="col-md-3 mt-2">
+                <h2 class="mb-4 footer-top-title" style="font-size: 16px;">Quick Links</h2>
+                <ul class="list-unstyled">
+                    <li><a href="{% url 'index' %}" class="text-white text-decoration-none"><i class="fa fa-home"></i> Home</a></li>
+                    <li><a href="{% url 'aboutus' %}" class="text-white text-decoration-none"><i class="fa fa-info-circle"></i> About Us</a></li>
+                    <li><a href="{% url 'catalogue_list' %}" class="text-white text-decoration-none"><i class="fa fa-book"></i> Catalogues</a></li>
+                    <li><a href="{% url 'company_signup' %}" class="text-white text-decoration-none"><i class="fa fa-users"></i> Become a supplier</a></li>
+                </ul>
+            </div>
+
+            <!-- Services -->
+            <div class="col-md-3 mt-2">
+                <h2 class="mb-4 footer-top-title" style="font-size: 16px;">Our Services</h2>
+                <ul class="list-unstyled">
+                    <li><i class="fa fa-bullhorn"></i> Smart and Targeted Advertising</li>
+                    <li><i class="fa fa-globe"></i> Connection to Global Markets</li>
+                    <li><i class="fa fa-briefcase"></i> Specialized Commercial Support</li>
+                    <li><i class="fa fa-truck"></i> International Transportation</li>
+                    <li><i class="fa fa-credit-card"></i> Secure International Financial Transactions</li>
+                </ul>
+            </div>
+
+            <!-- Social Media and Subscribe -->
+            <div class="col-md-3 mt-2 text-center">
+                <h2 class="mb-4 footer-top-title" style="font-size: 16px;">Follow Us</h2>
+                <div class="mb-3">
+                    {% for link in socialmedia %}
+                        {% if 'facebook' in link.social_media_url %}
+                            <a href="{{ link.social_media_url }}" class="text-white mx-2" ><i class="fa fa-facebook fa-2x sm-links"></i></a>
+                        {% elif 'instagram' in link.social_media_url %}
+                            <a href="{{ link.social_media_url }}" class="text-white mx-2"><i class="fa fa-instagram fa-2x sm-links"></i></a>
+                        {% elif 'linkedin' in link.social_media_url %}
+                            <a href="{{ link.social_media_url }}" class="text-white mx-2"><i class="fa fa-linkedin fa-2x sm-links"></i></a>
+                        {% elif 'youtube' in link.social_media_url %}
+                            <a href="{{ link.social_media_url }}" class="text-white mx-2"><i class="fa fa-youtube fa-2x sm-links"></i></a>
+                        {% endif %}
+                    {% empty %}
+                        <p>No social media links available</p>
+                    {% endfor %}
+                </div>
+                <!-- <h5 class="mt-4 subscrribe-title">Subscribe to Our Newsletter</h5>
+                <form class="d-flex mt-2">
+                    <div class="input-group" style="border:none; border-bottom: 2px solid white;">
+                        <input type="email" class="form-control" placeholder="Enter your email" style="background: transparent; border: none;">
+                        <button type="submit" class="btn subscribe-button">Subscribe</button>
+                    </div>
+                </form> -->
+            </div>
+        </div>
+        <hr class="bg-white">
+        <div class="row text-center pb-4">
+            <div class="col">
+                <p class="mb-0">&copy; 2025 Sohof. All Rights Reserved.</p>
+                <!-- <p class="mb-0"><a href="#" class="text-white text-decoration-none">Privacy Policy</a> | <a href="#" class="text-white text-decoration-none">Terms of Service</a></p> -->
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+<style>
+    @media (min-width: 992px) {
+    .sticky-lg-sticky {
+        position: sticky;
+        top: 100px;
+        z-index: 1000;
+        height: fit-content;
+        align-self: start;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    }
+    input[type="radio"] {
+      display: none;
+    }
+    
+    label {
+      color: grey;
+      font-size: 25px;
+      text-shadow: 1px 1px 1px #c9c9c9;
+      cursor: pointer;
+    }
+    
+    .p_class {
+      direction: rtl;
+      unicode-bidi: bidi-override;
+      text-align: center;
+      margin-bottom: 1em;
+    }
+    
+    label:hover,
+    label:hover ~ label {
+      color: orange;
+    }
+    
+    input[type="radio"]:checked ~ label {
+      color: orange;
+    }
+    #album{
+        width: 1050px;
+        height: 700px;
+        margin: 3% auto;
+    }
+    
+    .cataloge-pages-cataloge-page {
+        position: relative;
+        width: 100%;
+        /* background-size: cover; */
+        background-position: center;
+    }
+
+    .cataloge-pages-cataloge-page .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    .cataloge-pages-cataloge-page:hover .overlay {
+        opacity: 1;
+    }
+
+
+    .cataloge-pages-cataloge-page img  {
+           max-height: 700px;
+           width: 100%;
+    }
+
+
+    @media screen and (max-width: 768px) {
+
+        #album {
+            width: 100%;  
+            height: 300px;         
+        }
+
+        .cataloge-pages-cataloge-page img  {
+            width: 100%;  
+            height: 300px;
+            background-size: cover;
+        }
+
+        .cataloge-pages-cataloge-page .overlay {
+            height: 300px !important;
+        }
+
+        .cataloge-pages-cataloge-page .btn-see-more {
+            font-size: 16px; 
+            padding: 8px 15px;
+        }
+    }
+
+    @media screen and (max-width: 991px) {
+        #album {
+            width: 100%;  
+            height: 500px;         
+        }
+
+        .cataloge-pages-cataloge-page img  {
+            width: 100%;  
+            height: 500px;
+            background-size: cover;
+        }
+
+        .cataloge-pages-cataloge-page .overlay {
+            height: 500px !important;
+        }
+
+        .cataloge-pages-cataloge-page .btn-see-more {
+            font-size: 16px; 
+            padding: 8px 15px;
+        }
+    }
+    @media screen and (max-width: 1200px) {
+        #album {
+            width: 100%;  
+            height: 500px;         
+        }
+
+        .cataloge-pages-cataloge-page img  {
+            width: 100%;  
+            height: 500px;
+            background-size: cover;
+        }
+
+        .cataloge-pages-cataloge-page .overlay {
+            height: 500px !important;
+        }
+
+        .cataloge-pages-cataloge-page .btn-see-more {
+            font-size: 16px; 
+            padding: 8px 15px;
+        }
+    }
+
+    @media screen and (max-width: 568px) {
+        #album {
+            width: 100%;  
+            height:300px;         
+        }
+
+        .cataloge-pages-cataloge-page img  {
+            width: 100%;  
+            height: 300px;
+            background-size: cover;
+        }
+
+        .cataloge-pages-cataloge-page .overlay {
+            height: 300px !important;
+        }
+
+       
+    }
+
+
+     @media screen and (max-width: 412px) {
+        #album {
+            width: 100%;  
+            height:240px;         
+        }
+
+        .cataloge-pages-cataloge-page img  {
+            width: 100%;  
+            height: 240px;
+            background-size: cover;
+        }
+
+        .cataloge-pages-cataloge-page .overlay {
+            height: 240px !important;
+        }
+       
+       
+        }
+
+
+    .cataloge-pages-cataloge-page .btn-see-more {
+        color: white;
+        font-size: 20px;
+        font-weight: bold;
+        padding: 10px 20px;
+        background-color: rgba(0, 123, 255, 0.8); 
+        text-decoration: none;
+        border-radius: 5px;
+        display: inline-block;
+        transition: background-color 0.3s ease;
+    }
+
+
+
+    .subscribe-button{
+
+        background: transparent;
+        color: rgb(255, 255, 255);
+    }
+    .subscribe-button:hover{
+
+        background: transparent;
+        color: black;
+    }
+    .subscrribe-title ,  .footer-top-title{
+        font-weight: bold;
+        color: white;
+    }
+    /* .filter-group {
+        position: -webkit-sticky;
+        position: sticky;
+        z-index: 99;
+        top: 20px;
+    } */
+
+      .list-unstyled li .text-decoration-none:hover{
+      color: rgb(255, 0, 0) !important;
+  }
+    .sm-links {
+    transition: color 0.3s ease; 
+  }
+
+  .sm-links:hover {
+    color: red;
+  }
+  .subscribe-button{
+
+      background: transparent;
+      color: rgb(255, 255, 255);
+  }
+  .subscribe-button:hover{
+
+      background: transparent;
+      color: black;
+  }
+  .subscrribe-title ,  .footer-top-title{
+      font-weight: bold;
+      color: white;
+  }
+
+</style>
+
+
+
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+<script src="{% static 'assets/js/turn.js' %}"></script>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const toggleBtn = document.getElementById("toggle-comments");
+        const extraComments = document.querySelectorAll(".extra-comment");
+        let isExpanded = false;
+    
+        toggleBtn.addEventListener("click", function() {
+            isExpanded = !isExpanded;
+            extraComments.forEach(comment => {
+                comment.classList.toggle("d-none", !isExpanded);
+            });
+            toggleBtn.textContent = isExpanded ? "Show Less" : "Show More";
+        });
+    });
+</script>
+    
+
+<script>
+    $('#album').turn({
+        gradients: true,
+        acceleration: true
+    });
+</script>
+
+
+   
+<script>
+    document.getElementById("download-btn").addEventListener("click", function(event) {
+        event.preventDefault();
+    
+        let catalogueId = "{{ catalogue.id }}";
+        let downloadUrl = "{% url 'catalogue_download' catalogue.id %}";
+        let incrementUrl = "{% url 'increment_download_count' catalogue.id %}";
+        let fileName = "{{ catalogue.creator }}-catalogue.pdf";
+    
+        
+        fetch(downloadUrl)
+            .then(response => {
+                if (!response.ok) throw new Error("Download failed");
+                return response.blob();
+            })
+            .then(blob => {
+                const link = document.createElement("a");
+                link.href = URL.createObjectURL(blob);
+                link.download = fileName;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            })
+            .catch(err => console.error("Download error:", err));
+    
+        
+        fetch(incrementUrl)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById("download-count").innerText = data.new_count;
+                }
+            })
+            .catch(err => console.error("Counter update error:", err));
+    });
+    </script>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let catalogueId = "{{ catalogue.id }}";
+            let url = `/catalogue/${catalogueId}/increase-view/`;
+        
+            fetch(url, { method: "GET" })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("catalogViews").innerText = data.view_count;
+            })
+            .catch(error => console.error("Error updating view count:", error));
+        });
+    </script>
+
+
+{% if messages %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        {% for message in messages %}
+            Swal.fire({
+                icon: '{% if message.tags == "success" %}success{% elif message.tags == "error" %}error{% else %}info{% endif %}',
+                title: '{{ message.tags|title }}',
+                text: '{{ message }}',
+                confirmButtonColor: '#ff1d1d'
+            });
+        {% endfor %}
+    });
+</script>
+{% endif %}
+
+
+{% endblock content %}

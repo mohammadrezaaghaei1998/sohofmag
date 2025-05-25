@@ -1,0 +1,1080 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% if meta %}
+    <title>{{ meta.title }}</title>
+    <meta name="description" content="{{ meta.description }}">
+    <meta name="keywords" content="{{ meta.keywords }}">
+    <meta name="robots" content="{{ meta.robots }}">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="{{ meta.og_title }}">
+    <meta property="og:description" content="{{ meta.og_description }}">
+    <meta property="og:image" content="{{ meta.og_image.url }}">
+    <meta property="og:url" content="{{ meta.og_url }}">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter -->
+    <meta name="twitter:title" content="{{ meta.twitter_title }}">
+    <meta name="twitter:description" content="{{ meta.twitter_description }}">
+    <meta name="twitter:image" content="{{ meta.twitter_image.url }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="{{ meta.twitter_site }}">
+
+    <!-- Canonical -->
+    <link rel="canonical" href="{{ meta.canonical_url }}">
+{% else %}
+    <p>Meta data not found for this page.</p>
+{% endif %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <br /><br />
+    <ul class="list-unstyled multi-steps mb-5 border-bottom-style-business-info pb-5">
+        <li id="step-1" class="is-active">Business Information</li>
+        <li id="step-2" class="is-inactive">Personal Information</li>
+        <li id="step-3" class="is-inactive">Upload Documents</li>
+        <li id="step-4" class="is-inactive">Terms & Conditions Agreement</li>
+        <li id="step-5" class="is-inactive">Create your account</li>
+    </ul>
+    <!-- {% if messages %}
+    <ul>
+        {% for message in messages %}
+            <li class="alert alert-{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %} -->
+    <div id="step-form">
+        <form method="POST" action="{% url 'company_signup' %}" id="registration-form" enctype="multipart/form-data">
+            {% csrf_token %}
+            <!-- Step form content will be dynamically inserted here -->
+            <div class="container  animate__animated animate__fadeInUp">
+                <div id="form-1" class="form-step business-information-form">
+                    <h3 class="text-center mb-5">Business Information</h3>
+                    <div class="row">
+                        <!-- Company Name -->
+                        <div class="col-lg-6 form-group mb-5">
+                            <label for="company-name"><span class="required-star">*</span>Company Name:</label>
+                            <input
+                                type="text"
+                                id="company-name"
+                                name="company_name"
+                                class="form-control border-bottom-style-business-info"
+                                placeholder="Enter your company name"
+                                value="{{ request.POST.company_name|default:'' }}"
+                                required>
+                        </div>
+
+                        <!-- Website URL -->
+                        <div class="col-lg-6 form-group mb-5">
+                            <label for="website-url"><span class="required-star">*</span>Company Website URL:</label>
+                            <input
+                                type="url"
+                                id="website-url"
+                                name="website_url"
+                                class="form-control border-bottom-style-business-info"
+                                placeholder="Enter your company's website URL"
+                                value="{{ request.POST.website_url|default:'' }}"
+                                required>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <!-- Fields of Work -->
+                        <div class="col-lg-6 form-group mb-5">
+                            <label for="fields-of-work"><span class="required-star">*</span>Fields of Work:</label>
+                            <select id="fields-of-work" name="fields_of_work" class="form-control border-bottom-style-business-info" required>
+                            <option value="">Select a category</option>
+                            <option value="technology" {% if request.POST.fields_of_work == 'technology' %}selected{% endif %}>Technology</option>
+                            <option value="consulting" {% if request.POST.fields_of_work == 'consulting' %}selected{% endif %}>Consulting</option>
+                            <option value="manufacturing" {% if request.POST.fields_of_work == 'manufacturing' %}selected{% endif %}>Manufacturing</option>
+                            <option value="healthcare" {% if request.POST.fields_of_work == 'healthcare' %}selected{% endif %}>Healthcare</option>
+                            <option value="education" {% if request.POST.fields_of_work == 'education' %}selected{% endif %}>Education</option>
+                            <option value="finance" {% if request.POST.fields_of_work == 'finance' %}selected{% endif %}>Finance</option>
+                            <option value="agriculture" {% if request.POST.fields_of_work == 'agriculture' %}selected{% endif %}>Agriculture</option>
+                            <option value="automotive" {% if request.POST.fields_of_work == 'automotive' %}selected{% endif %}>Automotive</option>
+                            <option value="construction" {% if request.POST.fields_of_work == 'construction' %}selected{% endif %}>Construction</option>
+                            <option value="real-estate" {% if request.POST.fields_of_work == 'real-estate' %}selected{% endif %}>Real Estate</option>
+                            <option value="retail" {% if request.POST.fields_of_work == 'retail' %}selected{% endif %}>Retail</option>
+                            <option value="hospitality" {% if request.POST.fields_of_work == 'hospitality' %}selected{% endif %}>Hospitality</option>
+                            <option value="entertainment" {% if request.POST.fields_of_work == 'entertainment' %}selected{% endif %}>Entertainment</option>
+                            <option value="logistics" {% if request.POST.fields_of_work == 'logistics' %}selected{% endif %}>Logistics</option>
+                            <option value="transportation" {% if request.POST.fields_of_work == 'transportation' %}selected{% endif %}>Transportation</option>
+                            <option value="energy" {% if request.POST.fields_of_work == 'energy' %}selected{% endif %}>Energy</option>
+                            <option value="environmental-services" {% if request.POST.fields_of_work == 'environmental-services' %}selected{% endif %}>Environmental Services</option>
+                            <option value="telecommunications" {% if request.POST.fields_of_work == 'telecommunications' %}selected{% endif %}>Telecommunications</option>
+                            <option value="food-and-beverage" {% if request.POST.fields_of_work == 'food-and-beverage' %}selected{% endif %}>Food and Beverage</option>
+                            <option value="pharmaceuticals" {% if request.POST.fields_of_work == 'pharmaceuticals' %}selected{% endif %}>Pharmaceuticals</option>
+                            <option value="media" {% if request.POST.fields_of_work == 'media' %}selected{% endif %}>Media</option>
+                            <option value="arts-and-culture" {% if request.POST.fields_of_work == 'arts-and-culture' %}selected{% endif %}>Arts and Culture</option>
+                            <option value="sports" {% if request.POST.fields_of_work == 'sports' %}selected{% endif %}>Sports</option>
+                            <option value="legal-services" {% if request.POST.fields_of_work == 'legal-services' %}selected{% endif %}>Legal Services</option>
+                            <option value="nonprofit" {% if request.POST.fields_of_work == 'nonprofit' %}selected{% endif %}>Nonprofit</option>
+                            <option value="government" {% if request.POST.fields_of_work == 'government' %}selected{% endif %}>Government</option>
+                            <option value="mining" {% if request.POST.fields_of_work == 'mining' %}selected{% endif %}>Mining</option>
+                            <option value="aerospace" {% if request.POST.fields_of_work == 'aerospace' %}selected{% endif %}>Aerospace</option>
+                            <option value="defense" {% if request.POST.fields_of_work == 'defense' %}selected{% endif %}>Defense</option>
+                            <option value="fashion" {% if request.POST.fields_of_work == 'fashion' %}selected{% endif %}>Fashion</option>
+                            <option value="beauty-and-cosmetics" {% if request.POST.fields_of_work == 'beauty-and-cosmetics' %}selected{% endif %}>Beauty and Cosmetics</option>
+                            <option value="cleaning-services" {% if request.POST.fields_of_work == 'cleaning-services' %}selected{% endif %}>Cleaning Services</option>
+                            <option value="technology-services" {% if request.POST.fields_of_work == 'technology-services' %}selected{% endif %}>Technology Services</option>
+                            <option value="cybersecurity" {% if request.POST.fields_of_work == 'cybersecurity' %}selected{% endif %}>Cybersecurity</option>
+                            <option value="blockchain-and-cryptocurrency" {% if request.POST.fields_of_work == 'blockchain-and-cryptocurrency' %}selected{% endif %}>Blockchain and Cryptocurrency</option>
+                            <option value="e-commerce" {% if request.POST.fields_of_work == 'e-commerce' %}selected{% endif %}>E-Commerce</option>
+                            <option value="venture-capital" {% if request.POST.fields_of_work == 'venture-capital' %}selected{% endif %}>Venture Capital</option>
+                            <option value="insurance" {% if request.POST.fields_of_work == 'insurance' %}selected{% endif %}>Insurance</option>
+                            <option value="event-management" {% if request.POST.fields_of_work == 'event-management' %}selected{% endif %}>Event Management</option>
+                            <option value="travel-and-tourism" {% if request.POST.fields_of_work == 'travel-and-tourism' %}selected{% endif %}>Travel and Tourism</option>
+                            <option value="petroleum" {% if request.POST.fields_of_work == 'petroleum' %}selected{% endif %}>Petroleum</option>
+                            <option value="biotechnology" {% if request.POST.fields_of_work == 'biotechnology' %}selected{% endif %}>Biotechnology</option>
+                            <option value="research-and-development" {% if request.POST.fields_of_work == 'research-and-development' %}selected{% endif %}>Research and Development</option>
+                            <option value="engineering" {% if request.POST.fields_of_work == 'engineering' %}selected{% endif %}>Engineering</option>
+                            <option value="human-resources" {% if request.POST.fields_of_work == 'human-resources' %}selected{% endif %}>Human Resources</option>
+                            <option value="business-services" {% if request.POST.fields_of_work == 'business-services' %}selected{% endif %}>Business Services</option>
+                            <option value="printing-and-publishing" {% if request.POST.fields_of_work == 'printing-and-publishing' %}selected{% endif %}>Printing and Publishing</option>
+                            <option value="handicrafts" {% if request.POST.fields_of_work == 'handicrafts' %}selected{% endif %}>Handicrafts</option>
+                            <option value="marine-industry" {% if request.POST.fields_of_work == 'marine-industry' %}selected{% endif %}>Marine Industry</option>
+                            <option value="architecture" {% if request.POST.fields_of_work == 'architecture' %}selected{% endif %}>Architecture</option>
+                            <option value="interior-design" {% if request.POST.fields_of_work == 'interior-design' %}selected{% endif %}>Interior Design</option>
+                            <option value="artificial-intelligence" {% if request.POST.fields_of_work == 'artificial-intelligence' %}selected{% endif %}>Artificial Intelligence</option>
+                            <option value="robotics" {% if request.POST.fields_of_work == 'robotics' %}selected{% endif %}>Robotics</option>
+                            <option value="gaming" {% if request.POST.fields_of_work == 'gaming' %}selected{% endif %}>Gaming</option>
+                            <option value="fitness-and-wellness" {% if request.POST.fields_of_work == 'fitness-and-wellness' %}selected{% endif %}>Fitness and Wellness</option>
+                            <option value="personal-care" {% if request.POST.fields_of_work == 'personal-care' %}selected{% endif %}>Personal Care</option>
+                            <option value="luxury-goods" {% if request.POST.fields_of_work == 'luxury-goods' %}selected{% endif %}>Luxury Goods</option>
+                            <option value="forestry" {% if request.POST.fields_of_work == 'forestry' %}selected{% endif %}>Forestry</option>
+                            <option value="security-services" {% if request.POST.fields_of_work == 'security-services' %}selected{% endif %}>Security Services</option>
+                            <option value="aviation" {% if request.POST.fields_of_work == 'aviation' %}selected{% endif %}>Aviation</option>
+                            <option value="childcare" {% if request.POST.fields_of_work == 'childcare' %}selected{% endif %}>Childcare</option>
+                            <option value="translation-services" {% if request.POST.fields_of_work == 'translation-services' %}selected{% endif %}>Translation Services</option>
+                            <option value="antiques-and-collectibles" {% if request.POST.fields_of_work == 'antiques-and-collectibles' %}selected{% endif %}>Antiques and Collectibles</option>
+                            <option value="recycling" {% if request.POST.fields_of_work == 'recycling' %}selected{% endif %}>Recycling</option>
+                            <option value="marine-tourism" {% if request.POST.fields_of_work == 'marine-tourism' %}selected{% endif %}>Marine Tourism</option>
+                        </select>
+                            
+                        </div>
+                        <!-- Company Description -->
+                        <div class="col-lg-6 form-group mb-5">
+                            <label for="company-description"><span class="required-star">*</span>What does your company do?</label>
+                            <textarea id="company-description" name="company_description" class="form-control border-bottom-style-business-info" rows="4" placeholder="Provide a brief description of your company" required>{{ request.POST.company_description|default_if_none:'' }}</textarea>
+                        </div>
+                    </div>
+        
+                    <div class="row">
+                        <!-- Company Location -->
+                        <div class="col-lg-6 form-group mb-5">
+                            <label for="company-location"><span class="required-star">*</span>Company Location:</label>
+                            <input type="text" id="company-location" name="company_location" class="form-control border-bottom-style-business-info" placeholder="Enter company location" value="{{ request.POST.company_location }}" required>
+                        </div>
+                        <!-- Year Established -->
+                        <div class="col-lg-6 form-group mb-5">
+                            <label for="year-established"><span class="required-star">*</span>Year Established:</label>
+                            <input type="number" id="year-established" name="year_established" class="form-control border-bottom-style-business-info" placeholder="Enter the year your company was established"  value="{{ request.POST.year_established }}" required>
+                        </div>
+                    </div>
+                
+                    <div class="row">
+                        <!-- Company Size -->
+                        <div class="col-lg-6 form-group mb-5">
+                            <label for="company-size"><span class="required-star"></span>Company Size (number of employees):</label>
+                            <input type="number" id="company-size" name="company_size" class="form-control border-bottom-style-business-info" placeholder="Enter the number of employees in your company" value="{{ request.POST.company_size }}">
+                        </div>
+                
+                        <!-- Contact Email -->
+                        <div class="col-lg-6 form-group mb-5">
+                            <label for="contact-email"><span class="required-star">*</span>Business Email:</label>
+                            <input type="email" id="contact_email" name="contact_email" class="form-control border-bottom-style-business-info" placeholder="Enter your contact email" required  value="{{ request.POST.contact_email }}">
+                        </div>
+                    </div>
+                
+                    <!-- Logo Upload -->
+                    <div class="col-lg-6 form-group">
+                        <div class="row">
+                            <label for="company-logo"><span class="required-star"></span>Upload Company Logo:</label>
+                            <input type="file" id="company-logo" name="company_logo" class="col-lg-6 form-control-file" accept="image/*">
+                        </div>
+                    </div>
+        
+                    
+                </div>
+            </div>
+
+
+
+            <div class="container">
+                <div id="form-2" class="business-information-form form-step">
+                    <h3 class="text-center mb-5">Personal Information</h3>
+                    <div class="row">
+                        <!-- Full Name -->
+                        <div class="col-lg-6 form-group mb-5">
+                            <label for="full-name"><span class="required-star">*</span>Your Full Name:</label>
+                            <input type="text" id="full-name" name="full_name" class="form-control border-bottom-style-business-info" placeholder="Enter your full name" required value="{{ request.POST.full_name }}">
+                        </div>
+                
+                        <!-- Date of Birth -->
+                        <div class="col-lg-6 form-group mb-5">
+                            <label for="date-of-birth"><span class="required-star">*</span>Date of Birth:</label>
+                            <input type="date" id="date-of-birth" name="date_of_birth" class="form-control border-bottom-style-business-info" required  value="{{ request.POST.date_of_birth }}">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <!-- Gender -->
+                        <div class="col-lg-6 form-group mb-5">
+                            <label for="gender"><span class="required-star">*</span>Gender:</label>
+                            <select id="gender" name="gender" class="form-control border-bottom-style-business-info" required>
+                                <option value="male" {% if request.POST.gender == "male" %}selected{% endif %}>Male</option>
+                                <option value="female" {% if request.POST.gender == "female" %}selected{% endif %}>Female</option>
+                                <option value="other" {% if request.POST.gender == "other" %}selected{% endif %}>Other</option>
+                            </select>
+                        </div>
+
+                        <!-- Phone Number -->
+                        <div class="col-lg-6 form-group mb-5">
+                            <label for="phone-number"><span class="required-star">*</span>Phone Number:</label>
+                            <input type="tel" id="phone-number" name="phone_number"
+                                class="form-control border-bottom-style-business-info"
+                                placeholder="Enter your phone number" required
+                                value="{{ request.POST.phone_number }}">
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <!-- Email Address -->
+                        <div class="col-lg-6 form-group mb-5">
+                            <label for=" email_address"><span class="required-star">*</span>Personal Email Address:</label>
+                            <input type="email" id="email_address" name="email_address" class="form-control border-bottom-style-business-info" placeholder="Enter your email address" required  value="{{ request.POST.email_address }}">
+                        </div>
+                
+                        <!-- Address -->
+                        <div class="col-lg-6 form-group mb-5">
+                            <label for="address"><span class="required-star">*</span>Address:</label>
+                            <input type="text" id="company_address" name="company_address" class="form-control border-bottom-style-business-info" placeholder="Enter your address" required value="{{ request.POST.company_address }}">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                            <!-- Country -->
+                            <div class="col-lg-6 form-group mb-5">
+                                <label for="country"><span class="required-star">*</span>Country:</label>
+                                <input type="text" id="country" name="country" class="form-control border-bottom-style-business-info" placeholder="Enter your country" required value="{{ request.POST.country }}">
+                            </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+            <div class="container">
+                <div id="form-3" class="form-step business-information-form">
+                    <h3 class="text-center mb-5">Upload Documents</h3>
+                    <div class="row">
+                        <!-- Company License -->
+                        <div class="col-lg-6 form-group mb-5">
+                            <label for="company_license"><span class="required-star">*</span>Upload Company License:</label>
+                            <input type="file" id="company_license" name="company_license" class="form-control-file" accept=".pdf,.jpg,.png,.jpeg" required>
+                        </div>
+                    
+                        <!-- ID Card -->
+                        <div class="col-lg-6 form-group mb-5">
+                            <label for="id_card"><span class="required-star"></span>Upload ID Card:</label>
+                            <input type="file" id="id_card" name="id_card" class="form-control-file" accept=".pdf,.jpg,.png,.jpeg">
+                        </div>
+                    </div>
+                    <hr>
+                    
+                    <div class="row">
+                        <!-- Passport -->
+                        <div class="col-lg-6 form-group mb-5">
+                            <label for="passport"><span class="required-star"></span>Upload Passport:</label>
+                            <input type="file" id="passport" name="passport" class="form-control-file" accept=".pdf,.jpg,.png,.jpeg">
+                        </div>
+                    
+                        <!-- Certificates (Optional) -->
+                        <div class="col-lg-6 form-group mb-5">
+                            <label for="certificates">Upload Certificates (If Any):</label>
+                            <input type="file" id="certificates" name="certificates" class="form-control-file" accept=".pdf,.jpg,.png,.jpeg">
+                        </div>
+                    </div>
+                    <hr>
+                    
+                    <div class="row">
+                        <!-- Tax Registration Certificate (Optional) -->
+                        <div class="col-lg-6 form-group mb-5">
+                            <label for="tax_registration">Upload Tax Registration Certificate:</label>
+                            <input type="file" id="tax_registration" name="tax_registration" class="form-control-file" accept=".pdf,.jpg,.png,.jpeg">
+                        </div>
+                    
+                        <!-- Utility Bill (Optional) -->
+                        <div class="col-lg-6 form-group mb-5">
+                            <label for="utility_bill"><span class="required-star"></span>Upload Utility Bill (Proof of Address):</label>
+                            <input type="file" id="utility_bill" name="utility_bill" class="form-control-file" accept=".pdf,.jpg,.png,.jpeg">
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <!-- Bank Statement (Optional) -->
+                        <div class="col-lg-6 form-group mb-5">
+                            <label for="bank_statement">Upload Bank Statement:</label>
+                            <input type="file" id="bank_statement" name="bank_statement" class="form-control-file" accept=".pdf,.jpg,.png,.jpeg">
+                        </div>
+                    </div>
+                    
+
+                        
+                </div>
+            </div>
+
+        
+            <div  id="form-4" class="container form-step business-information-form">
+                <h3  class="text-center mb-5">Contract and Agreements</h3>
+                    <!-- Scrollable Terms -->
+                    <div class="terms">
+                        <div class="col-lg-12">
+                            <h5>1. Registration Requirements</h5>
+                            <p>Users must provide accurate and up-to-date personal information, including their name, email, and contact number.</p>
+                            <p>Only individuals over the legal age (e.g., 18 years old) are allowed to register.</p>
+                            <p>The use of offensive, illegal, or fake usernames is strictly prohibited.</p>
+                            <p>Each person or entity is allowed to create only one user account.</p>
+                        </div>
+                        <div class="col-lg-12">
+                            <h5>2. Responsibility for Login Information</h5>
+                            <p>Users are responsible for keeping their login credentials (username and password) secure.</p>
+                            <p>The website is not liable for unauthorized account access due to user negligence.</p>
+                            <p>Any suspicious activity or unauthorized access must be reported immediately.</p>
+                        </div>
+                        <div class="col-lg-12">
+                            <h5>3. Permissible Behavior and Activities</h5>
+                            <p>Users may not post illegal, offensive, or obscene content.</p>
+                            <p>Violating intellectual property rights or any applicable laws is strictly prohibited.</p>
+                            <p>Sending spam, malware, or unauthorized advertising content is not allowed.</p>
+                        </div>
+                        <div class="col-lg-12">
+                        <h5>4. Fair Use of Services</h5>
+                        <p>Users must use the website’s services legally and in compliance with its regulations.</p>
+                        <p>The website reserves the right to limit or block access to users who violate the rules.</p>
+                        <p>Any abuse of website resources, such as attempting to disrupt or infiltrate systems, may result in legal action.</p>
+                        </div>
+                        <div class="col-lg-12">
+                            <h5>5. Content Rights and Ownership</h5>
+                            <p>Users must ensure that their content complies with all applicable laws and does not infringe on others' rights.</p>
+                            <p>The website reserves the right to remove inappropriate content.</p>
+                            <p>By submitting content, users grant the website permission to use it as needed.</p>
+                            <p>The website may suspend or delete user accounts at its discretion.</p>
+                        </div>
+                        <div class="col-lg-12">
+                            <h5>6. Privacy and Registration Verification</h5>
+                            <p>Users are required to read and accept the website’s updated privacy policy.</p>
+                            <p>The website is committed to protecting users' personal information and will not disclose it to third parties without legal authorization.</p>
+                            <p>To complete registration, users may need to verify their identity via email or SMS.</p>
+                            <p>Additional information may be requested for security purposes.</p>
+                        </div>
+                    </div>
+        
+                    <!-- Checkbox to Accept -->
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="accepted_terms" name="accepted_terms" style="background-color: red;" required>
+                        <label class="form-check-label" for="accepted_terms">I have read and accept the terms and conditions.</label>
+                    </div>
+        
+                
+            </div>
+
+            <div  id="form-5" class="container form-step business-information-form">
+                <h3  class="text-center mb-5">Create your account</h3>
+                <div class="container text-center h-100" >
+                    <div class="card-body p-4 p-lg-5 text-black">
+                        <!-- Register Form (Initially hidden) -->
+                        <div class="form-outline mb-4">
+                            <input name="username" type="text" id="form2ExampleUsername" class="form-control form-control-lg" placeholder="Username" / required>
+                        </div>
+                    
+                        <div class="form-outline mb-4" style="position: relative;">
+                            <input name="password1" type="password" id="form2ExamplePassword" class="form-control form-control-lg" placeholder="Password" / required>
+                            <span class="input-group-text toggle-password" onclick="togglePasswordVisibility('form2ExamplePassword', this)" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;  background-color: transparent; border: none;">
+                                <i class="fa fa-eye"></i>
+                            </span>
+                        </div>
+                    
+                        <div class="form-outline mb-4" style="position: relative;">
+                            <input name="password2" type="password" id="form2ExamplePasswordConfirm" class="form-control form-control-lg" placeholder="Confirm Password" / required>
+                            <span class="input-group-text toggle-password" onclick="togglePasswordVisibility('form2ExamplePasswordConfirm', this)" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; background-color: transparent; border: none;">
+                                <i class="fa fa-eye"></i>
+                            </span>
+                        </div>
+                    </div>
+                    
+                   
+                    
+                </div>
+            </div>
+            
+            <div class="col-lg-12 text-center mt-5 mb-5">
+                <button type="button" class="btn btn-md btn-custom animate__animated animate__bounceIn animate__delay-.5s" id="prev-btn-registration-form">Previous</button>
+                <button class="btn btn-md btn-custom animate__animated animate__bounceIn animate__delay-.5s" id="next-btn-registration-form">Next</button>
+            </div>
+        </form>
+        
+
+        
+    
+    </div>
+</div>
+
+<style>
+    
+    .multi-steps {
+        display: table;
+        table-layout: fixed;
+        width: 100%;
+        margin: 0 auto;
+    }
+    .multi-steps > li {
+        counter-increment: stepNum;
+        text-align: center;
+        display: table-cell;
+        position: relative;
+        font-weight: bold;
+        color: #808080; 
+        cursor: pointer;
+    }
+    .multi-steps > li:before {
+        content: counter(stepNum);
+        display: block;
+        margin: 0 auto 4px;
+        background-color: #fff;
+        width: 36px;
+        height: 36px;
+        line-height: 32px;
+        text-align: center;
+        font-weight: bold;
+        border-width: 2px;
+        border-style: solid;
+        border-color: #808080;
+        border-radius: 50%;
+    }
+    .multi-steps > li.is-active {
+        color: #ff0000; 
+    }
+    .multi-steps > li.is-active:before {
+        content: counter(stepNum);
+        background-color: #ff0000;  
+        border-color: #ff0000; 
+        color: #fff;  
+    }
+    .multi-steps > li.is-done:before {
+        content: "✔"; 
+        background-color: #ff0000;  
+        border-color: #ff0000;
+        color: #fff;  
+        font-size: 20px;
+        line-height: 32px; 
+    }
+    .multi-steps > li.is-inactive:before {
+        background-color: #fff;  
+        border-color: #808080;
+    }
+    .multi-steps > li:after {
+        content: "";
+        height: 2px;
+        width: 100%;
+        background-color: #808080; 
+        position: absolute;
+        top: 16px;
+        left: 50%;
+        z-index: -1;
+    }
+    .multi-steps > li.is-active:after {
+        background-color: #ff0000; 
+    }
+    .multi-steps > li:last-child:after {
+        display: none;
+    }
+    .form-step {
+        display: none;
+    }
+    .form-step.active {
+        display: block;
+    }
+
+
+
+
+    .business-information-form{
+        border-radius: 30px;
+        padding: 20px;
+        box-shadow: 8px 8px 15px rgba(97, 97, 97, 0.151), -8px -8px 15px rgba(105, 105, 105, 0.082);
+    }
+
+    .border-bottom-style-business-info{
+        border: none;
+        background-color: transparent;
+        border-bottom: 2px solid black;
+    }
+
+    .border-bottom-style-business-info{
+        font-size: 12px;
+       
+    }
+    .terms{
+        overflow-y: scroll;
+        max-height: 300px;
+    }
+
+    .required-star{
+        margin-right: 3px;
+        font-size: 20px;
+        font-weight: bold;
+        color: red;
+    }
+    
+      .select2-container--default .select2-selection--single {
+        height: 45px;
+        background-color: transparent;
+        border: none;
+        border-bottom: 2px solid #000000;
+        border-radius: 0 !important;
+        font-size: 12px;
+    }
+
+</style>
+
+
+
+<!-- 
+<script>
+    let currentStep = 1;
+    const totalSteps = 5;
+
+    const nextBtn = document.getElementById('next-btn-registration-form');
+    const prevBtn = document.getElementById('prev-btn-registration-form');
+    const steps = document.querySelectorAll('.multi-steps > li');
+    const forms = document.querySelectorAll('.form-step');
+
+    nextBtn.addEventListener('click', function () {
+        const validationResult = validateForm(currentStep);
+
+        if (validationResult.isValid) {
+            if (currentStep < totalSteps) {
+                completeCurrentStep();
+                currentStep++;
+                updateProgress();
+            } else {
+                const finalValidation = validateAllForms();
+                if (finalValidation.isValid) {
+                    submitForm();
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Please fill out all required fields',
+                        html: `<ul style="text-align: left;">${finalValidation.errors.map(err => `<li>${err}</li>`).join('')}</ul>`
+                    });
+                }
+            }
+        } else {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Missing Required Fields',
+                text: 'Please fill out all required fields before proceeding.'
+            });
+        }
+    });
+
+    prevBtn.addEventListener('click', function () {
+        if (currentStep > 1) {
+            revertCurrentStep();
+            currentStep--;
+            updateProgress();
+        }
+    });
+
+    function validateForm(step) {
+        const form = forms[step - 1];
+        const inputs = form.querySelectorAll('input, textarea, select');
+        let isValid = true;
+
+        for (let input of inputs) {
+            if (input.hasAttribute('required')) {
+                const trimmedValue = input.value.trim();
+
+                if (!input.checkValidity()) {
+                    input.classList.add('error');
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Invalid Field',
+                        text: `${getFieldLabel(form, input)} is invalid or missing.`,
+                        confirmButtonColor: '#ff1d1d'
+                    });
+
+                    return { isValid: false };
+                }
+
+                if (!trimmedValue) {
+                    input.classList.add('error');
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Required Field',
+                        text: `${getFieldLabel(form, input)} is required.`,
+                        confirmButtonColor: '#ff1d1d'
+                    });
+
+                    return { isValid: false };
+                }
+
+                input.classList.remove('error');
+            }
+        }
+
+        return { isValid: true };
+    }
+
+    function validateAllForms() {
+        let errors = [];
+
+        forms.forEach((form, index) => {
+            const inputs = form.querySelectorAll('input, textarea, select');
+
+            inputs.forEach(input => {
+                if (input.hasAttribute('required') && !input.value.trim()) {
+                    input.classList.add('error');
+                    const label = getFieldLabel(form, input);
+                    errors.push(`${label} is required.`);
+                }
+            });
+        });
+
+        return {
+            isValid: errors.length === 0,
+            errors: errors
+        };
+    }
+
+    function getFieldLabel(form, input) {
+        const label = form.querySelector(`label[for="${input.id}"]`);
+        return label ? label.innerText.replace('*', '').trim() : input.name;
+    }
+
+    function completeCurrentStep() {
+        const currentStepElement = document.getElementById(`step-${currentStep}`);
+        currentStepElement.classList.add('is-done');
+        currentStepElement.classList.remove('is-active');
+    }
+
+    function revertCurrentStep() {
+        const currentStepElement = document.getElementById(`step-${currentStep}`);
+        currentStepElement.classList.remove('is-done');
+        currentStepElement.classList.add('is-active');
+    }
+
+    function updateProgress() {
+        steps.forEach((step, index) => {
+            if (index < currentStep - 1) {
+                step.classList.add('is-done');
+                step.classList.remove('is-active', 'is-inactive');
+            } else if (index === currentStep - 1) {
+                step.classList.add('is-active');
+                step.classList.remove('is-done', 'is-inactive');
+            } else {
+                step.classList.add('is-inactive');
+                step.classList.remove('is-active', 'is-done');
+            }
+        });
+
+        forms.forEach((form, index) => {
+            form.style.display = index + 1 === currentStep ? 'block' : 'none';
+            form.classList.toggle('active', index + 1 === currentStep);
+        });
+
+        nextBtn.textContent = currentStep === totalSteps ? 'Register Your Account' : 'Next';
+    }
+
+    function submitForm() {
+        const form = document.getElementById('registration-form');
+        form.submit(); 
+    }
+
+    updateProgress(); 
+</script> -->
+
+
+
+<script>
+    let currentStep = 1;
+    const totalSteps = 5;
+
+    const nextBtn = document.getElementById('next-btn-registration-form');
+    const prevBtn = document.getElementById('prev-btn-registration-form');
+    const steps = document.querySelectorAll('.multi-steps > li');
+    const forms = document.querySelectorAll('.form-step');
+
+    function validateFileSize(input) {
+        const MAX_SIZE = 20 * 1024 * 1024; 
+        const file = input.files[0];
+        
+        if (file && file.size > MAX_SIZE) {
+            Swal.fire({
+                icon: 'error',
+                title: 'File Size Exceeded',
+                text: `The file size is too large. Maximum allowed size is 20MB. Your file is ${Math.round(file.size / 1024 / 1024)}MB.`,
+                confirmButtonColor: '#ff1d1d'
+            });
+            input.classList.add('error');
+            return false;
+        }
+        input.classList.remove('error');
+        return true;
+    }
+
+    document.querySelectorAll('input[type="file"]').forEach(input => {
+        input.addEventListener('change', function () {
+            validateFileSize(input);
+        });
+    });
+
+    // nextBtn.addEventListener('click', function () {
+    //     const validationResult = validateForm(currentStep);
+
+    //     if (validationResult.isValid) {
+    //         if (currentStep < totalSteps) {
+    //             completeCurrentStep();
+    //             currentStep++;
+    //             updateProgress();
+    //         } else {
+    //             const finalValidation = validateAllForms();
+    //             if (finalValidation.isValid) {
+    //                 submitForm();
+    //             } else {
+    //                 Swal.fire({
+    //                     icon: 'error',
+    //                     title: 'Please fill out all required fields',
+    //                     html: `<ul style="text-align: left;">${finalValidation.errors.map(err => `<li>${err}</li>`).join('')}</ul>`
+    //                 });
+    //             }
+    //         }
+    //     } else {
+    //         Swal.fire({
+    //             icon: 'warning',
+    //             title: 'Missing Required Fields',
+    //             text: 'Please fill out all required fields before proceeding.'
+    //         });
+    //     }
+    // });
+
+    // nextBtn.addEventListener('click', function (e) {
+    //     e.preventDefault(); 
+
+    //     const validationResult = validateForm(currentStep);
+
+    //     if (validationResult.isValid) {
+    //         if (currentStep < totalSteps) {
+    //             completeCurrentStep();
+    //             currentStep++;
+    //             updateProgress();
+    //         } else {
+    //             const finalValidation = validateAllForms();
+    //             if (finalValidation.isValid) {
+    //                 submitForm();
+    //             } else {
+    //                 Swal.fire({
+    //                     icon: 'error',
+    //                     title: 'Please fill out all required fields',
+    //                     html: `<ul style="text-align: left;">${finalValidation.errors.map(err => `<li>${err}</li>`).join('')}</ul>`
+    //                 });
+    //             }
+    //         }
+    //     } else {
+    //         Swal.fire({
+    //             icon: 'warning',
+    //             title: 'Missing Required Fields',
+    //             text: 'Please fill out all required fields before proceeding.'
+    //         });
+    //     }
+    // });
+
+    nextBtn.addEventListener('click', function (e) {
+    e.preventDefault();
+
+    const validationResult = validateForm(currentStep);
+
+    if (validationResult.isValid) {
+        if (currentStep < totalSteps) {
+            completeCurrentStep();
+            currentStep++;
+            updateProgress();
+        } else {
+            const finalValidation = validateAllForms();
+            if (finalValidation.isValid) {
+                submitForm();
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Please fill out all required fields',
+                    html: `<ul style="text-align: left;">${finalValidation.errors.map(err => `<li>${err}</li>`).join('')}</ul>`
+                });
+            }
+        }
+    } else {
+        Swal.fire({
+            icon: 'error',
+            title: 'Form Error',
+            text: validationResult.errorMessage,
+            confirmButtonColor: '#ff1d1d'
+        });
+    }
+});
+
+
+
+
+    prevBtn.addEventListener('click', function () {
+        if (currentStep > 1) {
+            revertCurrentStep();
+            currentStep--;
+            updateProgress();
+        }
+    });
+
+    // function validateForm(step) {
+    //     const form = forms[step - 1];
+    //     const inputs = form.querySelectorAll('input, textarea, select');
+    //     let isValid = true;
+
+    //     for (let input of inputs) {
+    //         if (input.hasAttribute('required')) {
+    //             const trimmedValue = input.value.trim();
+
+    //             if (!input.checkValidity()) {
+    //                 input.classList.add('error');
+
+    //                 Swal.fire({
+    //                     icon: 'error',
+    //                     title: 'Invalid Field',
+    //                     text: `${getFieldLabel(form, input)} is invalid or missing.`,
+    //                     confirmButtonColor: '#ff1d1d'
+    //                 });
+
+    //                 return { isValid: false };
+    //             }
+
+    //             if (!trimmedValue) {
+    //                 input.classList.add('error');
+
+    //                 Swal.fire({
+    //                     icon: 'error',
+    //                     title: 'Required Field',
+    //                     text: `${getFieldLabel(form, input)} is required.`,
+    //                     confirmButtonColor: '#ff1d1d'
+    //                 });
+
+    //                 return { isValid: false };
+    //             }
+
+    //             input.classList.remove('error');
+    //         }
+    //     }
+
+    //     return { isValid: true };
+    // }
+
+    function validateForm(step) {
+    const form = forms[step - 1];
+    const inputs = form.querySelectorAll('input, textarea, select');
+
+    for (let input of inputs) {
+        if (input.hasAttribute('required')) {
+            const trimmedValue = input.value.trim();
+            const label = getFieldLabel(form, input);
+
+            if (!trimmedValue) {
+                input.classList.add('error');
+                input.focus();  // Optional: focus on the invalid input
+                return {
+                    isValid: false,
+                    errorMessage: `${label} is required.`
+                };
+            }
+
+            if (!input.checkValidity()) {
+                input.classList.add('error');
+                input.focus();  // Optional: focus on the invalid input
+                return {
+                    isValid: false,
+                    errorMessage: `${label} is invalid or incorrectly filled.`
+                };
+            }
+
+            input.classList.remove('error');
+        }
+    }
+
+    return { isValid: true };
+}
+
+
+
+    function validateAllForms() {
+        let errors = [];
+
+        forms.forEach((form, index) => {
+            const inputs = form.querySelectorAll('input, textarea, select');
+
+            inputs.forEach(input => {
+                if (input.hasAttribute('required') && !input.value.trim()) {
+                    input.classList.add('error');
+                    const label = getFieldLabel(form, input);
+                    errors.push(`${label} is required.`);
+                }
+            });
+        });
+
+        return {
+            isValid: errors.length === 0,
+            errors: errors
+        };
+    }
+
+    // function getFieldLabel(form, input) {
+    //     const label = form.querySelector(`label[for="${input.id}"]`);
+    //     return label ? label.innerText.replace('*', '').trim() : input.name;
+    // }
+
+   function getFieldLabel(form, input) {
+    const id = input.id;
+
+    if (id) {
+        const label = form.querySelector(`label[for="${id}"]`);
+        if (label) {
+            return label.textContent
+                .replace(/\*/g, '')     // remove required stars
+                .replace(':', '')       // remove colons
+                .trim();                // trim spaces
+        }
+    }
+
+    // fallback: find closest label in the same form group
+    const formGroup = input.closest('.form-group');
+    if (formGroup) {
+        const label = formGroup.querySelector('label');
+        if (label) {
+            return label.textContent
+                .replace(/\*/g, '')
+                .replace(':', '')
+                .trim();
+        }
+    }
+
+    // ultimate fallback: format the input name nicely
+    return input.name.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+}
+
+
+
+    function completeCurrentStep() {
+        const currentStepElement = document.getElementById(`step-${currentStep}`);
+        currentStepElement.classList.add('is-done');
+        currentStepElement.classList.remove('is-active');
+    }
+
+    function revertCurrentStep() {
+        const currentStepElement = document.getElementById(`step-${currentStep}`);
+        currentStepElement.classList.remove('is-done');
+        currentStepElement.classList.add('is-active');
+    }
+
+    function updateProgress() {
+        steps.forEach((step, index) => {
+            if (index < currentStep - 1) {
+                step.classList.add('is-done');
+                step.classList.remove('is-active', 'is-inactive');
+            } else if (index === currentStep - 1) {
+                step.classList.add('is-active');
+                step.classList.remove('is-done', 'is-inactive');
+            } else {
+                step.classList.add('is-inactive');
+                step.classList.remove('is-active', 'is-done');
+            }
+        });
+
+        forms.forEach((form, index) => {
+            form.style.display = index + 1 === currentStep ? 'block' : 'none';
+            form.classList.toggle('active', index + 1 === currentStep);
+        });
+
+        nextBtn.textContent = currentStep === totalSteps ? 'Register Your Account' : 'Next';
+    }
+
+    function submitForm() {
+        const form = document.getElementById('registration-form');
+        form.submit(); 
+    }
+
+    updateProgress(); 
+</script>
+
+
+{% if messages %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        {% for message in messages %}
+            Swal.fire({
+                icon: '{% if message.tags == "success" %}success{% elif message.tags == "error" %}error{% else %}info{% endif %}',
+                title: '{{ message.tags|title }}',
+                text: '{{ message }}',
+                confirmButtonColor: '#ff1d1d'
+            });
+        {% endfor %}
+    });
+</script>
+{% endif %}
+
+
+
+
+
+
+
+
+ <script>
+    function togglePasswordVisibility(inputId, icon) {
+        var inputField = document.getElementById(inputId);
+        var iconElement = icon.querySelector("i");
+
+        if (inputField.type === "password") {
+            inputField.type = "text"; 
+            iconElement.classList.remove("fa-eye");
+            iconElement.classList.add("fa-eye-slash"); 
+        } else {
+            inputField.type = "password";
+            iconElement.classList.remove("fa-eye-slash");
+            iconElement.classList.add("fa-eye"); 
+        }
+    }
+</script>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> -->
+
+    <script>
+        $(document).ready(function() {
+            $('#fields-of-work').select2({
+                placeholder: "Select a category",
+                allowClear: true  
+            });
+        });
+    </script>
+{% endblock content %}
+
+
+
+
+
+
+
+
+

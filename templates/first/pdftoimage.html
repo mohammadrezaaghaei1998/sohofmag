@@ -1,0 +1,182 @@
+
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% if meta %}
+    <title>{{ meta.title }}</title>
+    <meta name="description" content="{{ meta.description }}">
+    <meta name="keywords" content="{{ meta.keywords }}">
+    <meta name="robots" content="{{ meta.robots }}">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="{{ meta.og_title }}">
+    <meta property="og:description" content="{{ meta.og_description }}">
+    <meta property="og:image" content="{{ meta.og_image.url }}">
+    <meta property="og:url" content="{{ meta.og_url }}">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter -->
+    <meta name="twitter:title" content="{{ meta.twitter_title }}">
+    <meta name="twitter:description" content="{{ meta.twitter_description }}">
+    <meta name="twitter:image" content="{{ meta.twitter_image.url }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="{{ meta.twitter_site }}">
+
+    <!-- Canonical -->
+    <link rel="canonical" href="{{ meta.canonical_url }}">
+{% else %}
+    <p>Meta data not found for this page.</p>
+{% endif %}
+
+
+{% block content %}
+
+
+<style>
+
+    #album{
+        width: 1050px;
+        height: 700px;
+        margin: 3% auto;
+    }
+    @media screen and (max-width: 768px) {
+
+        #album {
+            width: 100%;  
+            height: 300px;         
+        }
+
+        .cataloge-pages-cataloge-page img  {
+            width: 100%;  
+            height: 300px;
+            background-size: cover;
+        }
+
+        .cataloge-pages-cataloge-page .overlay {
+            max-height: 300px !important;
+        }
+
+        .cataloge-pages-cataloge-page .btn-see-more {
+            font-size: 16px; 
+            padding: 8px 15px;
+        }
+    }
+    .cataloge-pages-cataloge-page {
+        position: relative;
+        width: 100%;
+        /* background-size: cover; */
+        background-position: center;
+    }
+
+    .cataloge-pages-cataloge-page .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    .cataloge-pages-cataloge-page:hover .overlay {
+        opacity: 1;
+    }
+
+
+
+
+    .cataloge-pages-cataloge-page .btn-see-more {
+        color: white;
+        font-size: 20px;
+        font-weight: bold;
+        padding: 10px 20px;
+        background-color: rgba(0, 123, 255, 0.8); 
+        text-decoration: none;
+        border-radius: 5px;
+        display: inline-block;
+        transition: background-color 0.3s ease;
+    }
+
+
+
+    .subscribe-button{
+
+        background: transparent;
+        color: rgb(255, 255, 255);
+    }
+    .subscribe-button:hover{
+
+        background: transparent;
+        color: black;
+    }
+    .subscrribe-title ,  .footer-top-title{
+        font-weight: bold;
+        color: white;
+    }
+    /* .filter-group {
+        position: -webkit-sticky;
+        position: sticky;
+        z-index: 99;
+        top: 20px;
+    } */
+
+
+</style>
+
+
+<div class="col-md-8 col-lg-9 d-flex justify-content-s align-items-center">
+    <div id="album">
+        {% for image_path in image_paths %}
+            <div class="cataloge-pages-cataloge-page">
+                <img src="/media/{{ image_path }}" alt="PDF page" style="width: 100%; max-width: 600px;">
+                <div class="overlay">
+                    <a href="" class="btn btn-md btn-custom animate__animated animate__bounceIn animate__delay-.5s">View Page Details</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+
+{% for page in catalogue_pages %}
+  <div class="cataloge-pages-cataloge-page">
+      <img src="/media/{{ page.page_image }}" alt="PDF page {{ page.page_number }}" style="width: 100%; max-width: 600px;">
+      <div class="overlay">
+          <p>Sellers:</p>
+          <ul>
+              {% for seller in page.sellers.all %}
+                  <li>{{ seller.name }}</li>
+              {% endfor %}
+          </ul>
+          <a href="{% url 'view_page' page.id %}" class="btn btn-md btn-custom">View Page Details</a>
+      </div>
+  </div>
+{% endfor %}
+
+
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+<script src="{% static 'assets/js/turn.js' %}"></script>
+
+
+
+
+<script>
+    $('#album').turn({
+        gradients: true,
+        acceleration: true
+    });
+</script>
+
+
+
+<!-- <h2>Uploaded PDF Pages as Images</h2>
+{% for image_path in image_paths %}
+<img src="/media/pdf_page_0.png" alt="PDF page" style="width: 100%; max-width: 600px;">
+{% endfor %} -->
+{% endblock content %}

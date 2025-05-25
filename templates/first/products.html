@@ -1,0 +1,718 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+
+{% if meta %}
+    <title>{{ meta.title }}</title>
+    <meta name="description" content="{{ meta.description }}">
+    <meta name="keywords" content="{{ meta.keywords }}">
+    <meta name="robots" content="{{ meta.robots }}">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="{{ meta.og_title }}">
+    <meta property="og:description" content="{{ meta.og_description }}">
+    <meta property="og:image" content="{{ meta.og_image.url }}">
+    <meta property="og:url" content="{{ meta.og_url }}">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter -->
+    <meta name="twitter:title" content="{{ meta.twitter_title }}">
+    <meta name="twitter:description" content="{{ meta.twitter_description }}">
+    <meta name="twitter:image" content="{{ meta.twitter_image.url }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="{{ meta.twitter_site }}">
+
+    <!-- Canonical -->
+    <link rel="canonical" href="{{ meta.canonical_url }}">
+{% else %}
+    <p>Meta data not found for this page.</p>
+{% endif %}
+
+
+{% block content %}
+<section style="background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.281), rgba(0,0,0,0.3), rgba(0,0,0,0)), url(/static/assets/images/confident2.jpg); background-repeat: no-repeat; background-position: center; background-size: cover; height: 50vh;">
+    <div class="container d-flex flex-column justify-content-center align-items-center text-center" style="height: 100%;">
+        <div class="row justify-content-center text-center my-4">
+            <div class="col-auto d-flex align-items-center gap-2">     
+                <h1 class="text-white fw-bold m-0 category-title"><strong>Products</strong></h1>
+            </div> 
+        </div>
+        <nav aria-label="breadcrumb" class="d-flex justify-content-center mt-3">
+            <ol class="breadcrumb bg-transparent p-0 m-0">
+                <li class="breadcrumb-item">
+                    <a href="{% url 'index' %}" class="text-white-50">Home</a>
+                </li>
+                <li class="breadcrumb-item active text-white" aria-current="page">All products</li>
+            </ol>
+        </nav>
+    </div>
+</section>
+
+<section>
+<!-- <div class="container"> -->
+	<div class="row mt-5">
+		<aside class="col-md-12 col-lg-3 mt-4 mb-5">
+            <form method="GET" action="">
+                <div class="card" style="box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.11), -8px -8px 15px rgba(0, 0, 0, 0.055); border-radius: 20px;">
+                    <article class="filter-group">
+                        <header class="card-header" style="border-top-right-radius: 20px; border-top-left-radius: 20px;">
+                            <a href="#" data-toggle="collapse" data-target="#collapse_4" aria-expanded="true">
+                                <i class="icon-control fa fa-chevron-down"></i>
+                                <h6 class="title">Filter by Category</h6>
+                            </a>
+                        </header>
+
+                        
+                        <div class="filter-content collapse show" id="collapse_4">
+                            <div class="card-body mr-3 mt-2">
+                                <label class="custom-control custom-radio">
+                                    <select id="category" name="category" class="form-control" style="border-radius: 20px;">
+                                        <option value="">Select Category</option>
+                                        {% for cat in categories %}
+                                            <option value="{{ cat.id }}" {% if category and cat.id == category.id %}selected{% endif %}>{{ cat.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    
+                                </label>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="filter-group">
+                        <header class="card-header">
+                            <a href="#" data-toggle="collapse" data-target="#collapse_5" aria-expanded="true">
+                                <i class="icon-control fa fa-chevron-down"></i>
+                                <h6 class="title">Filter by Subcategory</h6>
+                            </a>
+                        </header>
+                        <div class="filter-content collapse show" id="collapse_5">
+                            <div class="card-body mr-3 mt-2">
+                                <label class="custom-control custom-radio">
+                                    <select id="subcategory" name="subcategory" class="form-control" {% if not category %}disabled{% endif %} style="border-radius: 20px;">
+                                        <option value="">Select Subcategory</option>
+                                        {% for subcat in subcategories %}
+                                            <option value="{{ subcat.id }}" {% if subcategory and subcat.id == subcategory.id %}selected{% endif %}>{{ subcat.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </label>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="filter-group">
+                        <header class="card-header">
+                            <a href="#" data-toggle="collapse" data-target="#collapse_1" aria-expanded="true">
+                                <i class="icon-control fa fa-chevron-down"></i>
+                                <h6 class="title">Search by Origin</h6>
+                            </a>
+                        </header>
+                        <div class="filter-content collapse show" id="collapse_1">
+                            <div class="card-body mr-3 mt-2">
+                                <label class="custom-control custom-checkbox">
+                                    <input type="text" name="origin" class="form-control " placeholder="Search by origin" value="{{ request.GET.origin }}"  style="border-radius: 20px;">
+                                </label>
+                            </div>
+                        </div>
+                    </article>
+        
+                    <article class="filter-group">
+                        <header class="card-header">
+                            <a href="#" data-toggle="collapse" data-target="#collapse_2" aria-expanded="true">
+                                <i class="icon-control fa fa-chevron-down"></i>
+                                <h6 class="title">Availability</h6>
+                            </a>
+                        </header>
+                        <div class="filter-content collapse show" id="collapse_2">
+                            <div class="card-body">
+                                <label class="custom-control custom-radio">
+                                    <input type="radio" name="availability" value="" {% if not request.GET.availability %}checked{% endif %} class="custom-control-input">
+                                    <div class="custom-control-label">None</div>
+                                </label>
+                                <label class="custom-control custom-radio">
+                                    <input type="radio" name="availability" value="in_stock" {% if request.GET.availability == 'in_stock' %}checked{% endif %} class="custom-control-input">
+                                    <div class="custom-control-label">In Stock</div>
+                                </label>
+        
+                                <label class="custom-control custom-radio">
+                                    <input type="radio" name="availability" value="out_of_stock" {% if request.GET.availability == 'out_of_stock' %}checked{% endif %} class="custom-control-input">
+                                    <div class="custom-control-label">Out of Stock</div>
+                                </label>
+                            </div>
+                        </div>
+                    </article>
+        
+                    <article class="filter-group">
+                        <header class="card-header">
+                            <a href="#" data-toggle="collapse" data-target="#collapse_3" aria-expanded="true">
+                                <i class="icon-control fa fa-chevron-down"></i>
+                                <h6 class="title">Sort By</h6>
+                            </a>
+                        </header>
+                        <div class="filter-content collapse show" id="collapse_3">
+                            <div class="card-body">
+                                <label class="custom-control custom-radio">
+                                    <input type="radio" name="sort_by" value="" {% if not request.GET.sort_by %}checked{% endif %} class="custom-control-input">
+                                    <div class="custom-control-label">None</div>
+                                </label>
+                                <label class="custom-control custom-radio">
+                                    <input type="radio" name="sort_by" value="newest" {% if request.GET.sort_by == 'newest' %}checked{% endif %} class="custom-control-input">
+                                    <div class="custom-control-label">Newest</div>
+                                </label>
+        
+                                <label class="custom-control custom-radio">
+                                    <input type="radio" name="sort_by" value="most_popular" {% if request.GET.sort_by == 'most_popular' %}checked{% endif %} class="custom-control-input">
+                                    <div class="custom-control-label">Most Popular</div>
+                                </label>
+                            </div>
+                        </div>
+                    </article>
+                    <hr>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-md btn-custom animate__animated animate__bounceIn animate__delay-.5s mb-4 mt-2">Apply Filters</button>
+                    </div>
+                </div>
+            </form>
+
+            <hr class="mt-5">
+     
+
+
+            <div class="col-md-12 col-lg-12 mt-2">
+                <h1 class="mb-3" style="font-size: 28px;"><strong>Latest Products</strong></h1>
+                <div class="row">
+                    {% for product in latest_products %}
+                        <div class="col-6 col-md-3 col-lg-12 mb-2">
+                                <div class="col-12 col-md-12 col-lg-8">
+                                        {% if product.images.all %}
+                                            <img src="{{ product.images.first.image.url }}" alt="{{ product.name }}" class="card-img-top" style="height: 100px; object-fit: cover;">
+                                        {% else %}
+                                            <img src="{% static 'assets/images/default.jpg' %}" alt="{{ product.name }}" class="card-img-top">
+                                        {% endif %}
+                                </div>
+                                <div class="col-12 col-md-12 col-lg-12 mb-2">
+                                    <h5><strong>{{ product.name }}</strong></h5>
+                                    <p class="mb-1" style="font-size: 12px;"><strong>Description:</strong> {{ product.description|truncatewords:4 }}</p>
+                                    <p class="mb-1" style="font-size: 12px;">
+                                        <strong>Status:</strong>
+                                        {% if product.availability == 'in_stock' %}
+                                            <span class="badge bg-success">Available</span>
+                                        {% else %}
+                                            <span class="badge bg-danger">Not Available</span>
+                                        {% endif %}
+                                    </p>
+                                    <p class="mb-1" style="font-size: 12px;"><strong>Origin:</strong> {{ product.origin }}</p>
+                                    <a href="{% url 'product_detail' product.id product.name|slugify %}"  style="font-size: 14px; font-weight: bold; color: red;">View details</a>
+
+                                </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div> 
+
+
+
+
+                    
+        </aside>
+		<main class="col-md-12 col-lg-9">
+          
+        
+            <form method="get" action="{% url 'search' %}">
+                <div class="col-lg-12 mt-5 search-result-search-searchBar">
+                    <input id="search-result-search-searchQueryInput" type="text" name="q" placeholder="Search Products..." />
+                    <button id="search-result-search-searchQuerySubmit" type="submit" name="searchQuerySubmit">
+                        <svg style="width:24px;height:24px" viewBox="0 0 24 24"><path fill="#666666" d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z" />
+                        </svg>
+                    </button>
+                </div>
+            </form>
+        
+           
+
+            <header class="border-bottom mb-4 mt-5 pb-3">
+                <div class="row d-flex justify-content-between align-items-center">
+                    <div class="col-6 col-md-6 form-inline">
+                        <span class="mr-md-auto mt-2 ml-2">{{ total_products }} Items found</span>
+                    </div> 
+                    <div class="col-6 col-md-6 text-right d-none d-md-block">
+                        <button id="grid-view-btn" class="btn btn-md btn-custom">Grid View</button>
+                        <button id="list-view-btn" class="btn btn-md btn-custom">List View</button>
+                    </div>
+
+                </div>
+            </header>
+
+
+        
+            <div id="product-grid-view" class=" product-row">
+                {% for product in products.object_list %}
+                <div class="column-product d-flex" style="margin-bottom: 20px;">
+                <!-- <div class="column-product col-md-12 col-lg-12 d-flex" style="margin-bottom: 20px;"></div> -->
+                    <figure class="card card-product-grid d-flex flex-column w-100" style="height: 100%;">
+                        <div id="carouselProduct{{ product.id }}" class="carousel slide" data-ride="carousel">
+                           <div class="carousel-inner">
+                                {% if product.images.all %}
+                                    {% for image in product.images.all %}
+                                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                            <img src="{{ image.image.url }}" class="d-block w-100" 
+                                                alt="{% if image.image_title %}{{ image.image_title }}{% else %}{{ product.name }}{% endif %}" 
+                                                style="height: 250px; object-fit: cover;">
+                                        </div>
+                                    {% endfor %}
+                                {% else %}
+                                    <div class="carousel-item active">
+                                        <img src="{% static 'images/placeholder.jpg' %}" class="d-block w-100" 
+                                            alt="{{ product.name }}" 
+                                            style="height: 250px; object-fit: cover;">
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                           {% if product.images.count > 1 %}
+                                <a class="carousel-control-prev" href="#carouselProduct{{ product.id }}" role="button" data-slide="prev" style="background-color: red; height: 40px; width: 40px; position: absolute; top: 50%; left: 0; margin: 2px; transform: translateY(-50%); border-radius: 50%;">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                <a class="carousel-control-next" href="#carouselProduct{{ product.id }}" role="button" data-slide="next" style="background-color: red; height: 40px; width: 40px; position: absolute; top: 50%; right: 0; margin: 2px; transform: translateY(-50%); border-radius: 50%;">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            {% endif %}
+                        </div>
+        
+                        <figcaption class="info-wrap d-flex flex-column justify-content-between flex-grow-1 p-3">
+                            <div class="fix-height">
+                                <a href="{% url 'product_detail' product.id product.name|slugify %}" class="title"><h1 style="font-size: 22px; font-weight: bold;">{{ product.name }}</h1></a>
+                                <div class="row mb-2 align-items-center">
+                                    <h3 class="card-text mb-0" style="font-size: 18px; font-weight: bold;">Description:</h3>
+                                    <p class="mb-0 ml-1">{{ product.description|truncatewords:15 }}</p>
+                                </div>
+                                <div class="row  mb-2 align-items-center">
+                                    <h3 class="card-text mb-0" style="font-size: 18px; font-weight: bold;">Origin:</h3>
+                                    <p class="mb-0 ml-1">{{ product.origin }}</p>
+                                </div>
+                                <div class="row  mb-2 align-items-center">
+                                    <h3 class="card-text mb-0" style="font-size: 18px; font-weight: bold;">Availability:</h3>
+                                    <p class="mb-0 ml-1"> 
+                                        {% if product.availability == 'in_stock' %}
+                                            <span class="badge bg-success">Available</span>
+                                        {% else %}
+                                            <span class="badge bg-danger">Not Available</span>
+                                        {% endif %}
+                                    </p>
+                                </div>
+                                
+                                
+                            </div>
+                            <div class="text-right mt-0 ">
+                                <a href="{% url 'product_detail' product.id product.name|slugify %}" class="btn btn-md btn-custom w-100">View details</a>
+                            </div>
+                        </figcaption>
+                    </figure>
+                </div>
+                {% empty %}
+                <div class="col-lg-12 alert alert-warning text-center" role="alert">
+                    <strong>No products available in this subcategory.</strong> 
+                </div>
+                {% endfor %}
+            </div>
+        
+       
+
+           <!-- List View -->
+            <div id="product-list-view" class=" product-row" style="display:none;">
+                {% for product in products.object_list %}
+                <div class="col-md-12" style="margin-bottom: 20px;">
+                    <div class="card mb-3">
+                        <div class="row no-gutters">
+                            <div class="col-md-4">
+                                <div id="carouselProductList{{ product.id }}" class="carousel slide" data-ride="carousel">
+                                    <div class="carousel-inner">
+                                        {% for image in product.images.all %}
+                                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                                <img src="{{ image.image.url }}" class="d-block w-100" alt="{{ image.image_title }}" style="height: 250px; object-fit: cover;">
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                    {% if product.images.count > 1 %}
+                                        <a class="carousel-control-prev" href="#carouselProductList{{ product.id }}" role="button" data-slide="prev" style="background-color: red; height: 40px; width: 40px; position: absolute; top: 50%; left: 0;  margin: 2px; transform: translateY(-50%); border-radius: 50%;">
+                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                            <span class="sr-only">Previous</span>
+                                        </a>
+                                        <a class="carousel-control-next" href="#carouselProductList{{ product.id }}" role="button" data-slide="next" style="background-color: red; height: 40px; width: 40px; position: absolute; top: 50%; right: 0; margin: 2px; transform: translateY(-50%); border-radius: 50%;">
+                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                            <span class="sr-only">Next</span>
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h1 class="card-title text-dark" style="font-size: 28px;"><strong>{{ product.name }}</strong></h1>
+                                    <div class="row align-items-center">
+                                        <h3 class="card-text mb-0" style="font-size: 18px; font-weight: bold;">Description:</h3>
+                                        <p class="mb-0 ml-1">{{ product.description|truncatewords:15 }}</p>
+                                    </div>
+                                    <div class="row align-items-center">
+                                        <h3 class="card-text mb-0" style="font-size: 18px; font-weight: bold;">Origin:</h3>
+                                        <p class="mb-0 ml-2">{{ product.get_availability_display }}</p>
+                                    </div>
+                                    <div class="row align-items-center">
+                                        <h3 class="card-text mb-0" style="font-size: 18px; font-weight: bold;">Availability:</h3>
+                                        <p class="mb-0 ml-2">
+                                            {% if product.availability == 'in_stock' %}
+                                                <span class="badge bg-success">Available</span>
+                                            {% else %}
+                                                <span class="badge bg-danger">Not Available</span>
+                                            {% endif %}
+                                        </p>
+                                    </div>
+
+
+                                   
+                                   <hr>
+                                   
+                                    <div class="col-12 text-right">
+                                        <a href="{% url 'product_detail' product.id product.name|slugify %}" class="btn btn-md btn-custom">View details</a>
+                                    </div>
+                                    
+                                </div>
+                                
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-lg-12 alert alert-warning text-center" role="alert">
+                    <strong>No products available in this subcategory.</strong> 
+                </div>
+                {% endfor %}
+            </div>
+        
+           <!-- Pagination -->
+            {% if products.paginator.count > 0 %}
+                <div class="container d-flex justify-content-end">
+                    <nav class="mt-4" aria-label="Page navigation sample">
+                        <ul class="pagination">
+                            {% if products.has_previous %}
+                                <li class="page-item"><a class="page-link" href="?page=1">First</a></li>
+                                <li class="page-item"><a class="page-link" href="?page={{ products.previous_page_number }}">Previous</a></li>
+                            {% endif %}
+
+                            {% for num in products.paginator.page_range %}
+                                <li class="page-item {% if products.number == num %}active{% endif %}">
+                                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                </li>
+                            {% endfor %}
+
+                            {% if products.has_next %}
+                                <li class="page-item"><a class="page-link" href="?page={{ products.next_page_number }}">Next</a></li>
+                                <li class="page-item"><a class="page-link" href="?page={{ products.paginator.num_pages }}">Last</a></li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+            {% endif %}
+        </main>
+        
+      
+        
+	</div>
+<!-- </div> -->
+</section>
+
+
+
+
+<footer class="bg-dark text-white pt-5">
+    <div class="container" style="max-width: 1350px;">
+        <div class="row">
+            <!-- About Section -->
+            <div class="col-md-3">
+                <a class="footerbrand" href="{% url 'index' %}"> 
+                    <img src="{% static 'assets/images/logo.png' %}" width="90" alt="Logo">
+                </a>
+                <p class="mt-2">We promote businesses through our catalog and strategic advertising, connecting them with global markets to enhance visibility and growth.</p>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="col-md-3 mt-2">
+                <h2 class="mb-4 footer-top-title" style="font-size: 16px;">Quick Links</h2>
+                <ul class="list-unstyled">
+                    <li><a href="{% url 'index' %}" class="text-white text-decoration-none"><i class="fa fa-home"></i> Home</a></li>
+                    <li><a href="{% url 'aboutus' %}" class="text-white text-decoration-none"><i class="fa fa-info-circle"></i> About Us</a></li>
+                    <li><a href="{% url 'catalogue_list' %}" class="text-white text-decoration-none"><i class="fa fa-book"></i> Catalogues</a></li>
+                    <li><a href="{% url 'company_signup' %}" class="text-white text-decoration-none"><i class="fa fa-users"></i> Become a supplier</a></li>
+                </ul>
+            </div>
+
+            <!-- Services -->
+            <div class="col-md-3 mt-2">
+                <h2 class="mb-4 footer-top-title" style="font-size: 16px;">Our Services</h2>
+                <ul class="list-unstyled">
+                    <li><i class="fa fa-bullhorn"></i> Smart and Targeted Advertising</li>
+                    <li><i class="fa fa-globe"></i> Connection to Global Markets</li>
+                    <li><i class="fa fa-briefcase"></i> Specialized Commercial Support</li>
+                    <li><i class="fa fa-truck"></i> International Transportation</li>
+                    <li><i class="fa fa-credit-card"></i> Secure International Financial Transactions</li>
+                </ul>
+            </div>
+
+            <!-- Social Media and Subscribe -->
+            <div class="col-md-3 mt-2 text-center">
+                <h2 class="mb-4 footer-top-title" style="font-size: 16px;">Follow Us</h2>
+                <div class="mb-3">
+                    {% for link in socialmedia %}
+                        {% if 'facebook' in link.social_media_url %}
+                            <a href="{{ link.social_media_url }}" class="text-white mx-2" ><i class="fa fa-facebook fa-2x sm-links"></i></a>
+                        {% elif 'instagram' in link.social_media_url %}
+                            <a href="{{ link.social_media_url }}" class="text-white mx-2"><i class="fa fa-instagram fa-2x sm-links"></i></a>
+                        {% elif 'linkedin' in link.social_media_url %}
+                            <a href="{{ link.social_media_url }}" class="text-white mx-2"><i class="fa fa-linkedin fa-2x sm-links"></i></a>
+                        {% elif 'youtube' in link.social_media_url %}
+                            <a href="{{ link.social_media_url }}" class="text-white mx-2"><i class="fa fa-youtube fa-2x sm-links"></i></a>
+                        {% endif %}
+                    {% empty %}
+                        <p>No social media links available</p>
+                    {% endfor %}
+                </div>
+                <!-- <h5 class="mt-4 subscrribe-title">Subscribe to Our Newsletter</h5>
+                <form class="d-flex mt-2">
+                    <div class="input-group" style="border:none; border-bottom: 2px solid white;">
+                        <input type="email" class="form-control" placeholder="Enter your email" style="background: transparent; border: none;">
+                        <button type="submit" class="btn subscribe-button">Subscribe</button>
+                    </div>
+                </form> -->
+            </div>
+        </div>
+        <hr class="bg-white">
+        <div class="row text-center pb-4">
+            <div class="col">
+                <p class="mb-0">&copy; 2025 Sohof. All Rights Reserved.</p>
+                <!-- <p class="mb-0"><a href="#" class="text-white text-decoration-none">Privacy Policy</a> | <a href="#" class="text-white text-decoration-none">Terms of Service</a></p> -->
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+
+
+
+<style>
+    .pagination .active .page-link {
+        background-color: red !important;
+        color: white !important;
+        border-color: red !important;
+    }
+     .list-unstyled li .text-decoration-none:hover{
+        color: rgb(255, 0, 0) !important;
+    }
+    .sm-links {
+        transition: color 0.3s ease; 
+    }
+
+    .sm-links:hover {
+        color: red;
+    }
+    .subscribe-button{
+
+        background: transparent;
+        color: rgb(255, 255, 255);
+    }
+    .subscribe-button:hover{
+
+        background: transparent;
+        color: black;
+    }
+    .subscrribe-title ,  .footer-top-title{
+        font-weight: bold;
+        color: white;
+    }
+
+    .category-name-index{
+        font-size: 12px;
+    }
+	.subscribe-button{
+
+		background: transparent;
+		color: rgb(255, 255, 255);
+	}
+	.subscribe-button:hover{
+
+		background: transparent;
+		color: black;
+	}
+	.subscrribe-title ,  .footer-top-title{
+		font-weight: bold;
+		color: white;
+	}
+
+
+    .search-result-search {
+        width: 100%;
+        max-width: 31.25rem;
+        margin: 6rem auto;
+    }
+
+    .search-result-search-searchBar {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    
+    }
+
+    #search-result-search-searchQueryInput {
+        width: 100%;
+        height: 2.8rem;
+        background: #f5f5f5;
+        outline: none;
+        border: none;
+        border-radius: 1rem;
+        padding: 0 3.5rem 0 1.5rem;
+        font-size: 1rem;
+    }
+
+    #search-result-search-searchQuerySubmit {
+        width: 3.5rem;
+        height: 2.8rem;
+        margin-left: -3.5rem;
+        background: none;
+        border: none;
+        outline: none;
+    }
+
+    #searchQuerySubmit:hover {
+     cursor: pointer;
+    }
+    .product-row {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    @media (min-width: 992px) and (max-width: 1481px) {
+        .product-row {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 991px) {
+        .product-row {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 767px) {
+        .product-row {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .product-row .column-product {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    const selectedSubcategoryId = "{{ subcategory.id|default:'' }}";
+</script>
+
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+		const categorySelect = document.getElementById('category');
+		const subcategorySelect = document.getElementById('subcategory');
+	
+		function loadSubcategories(categoryId, selectedSubId = null) {
+			fetch(`/get_subcategories/${categoryId}/`)
+				.then(response => response.json())
+				.then(data => {
+					subcategorySelect.innerHTML = '<option value="">Select Subcategory</option>';
+					data.subcategories.forEach(sub => {
+						const option = document.createElement('option');
+						option.value = sub.id;
+						option.textContent = sub.name;
+						if (sub.id.toString() === selectedSubId) {
+							option.selected = true;
+						}
+						subcategorySelect.appendChild(option);
+					});
+					subcategorySelect.disabled = false;
+				})
+				.catch(error => {
+					console.error('Error loading subcategories:', error);
+				});
+		}
+	
+		categorySelect.addEventListener('change', function () {
+			const catId = categorySelect.value;
+			if (catId === '') {
+				subcategorySelect.innerHTML = '<option value="">Select Category First</option>';
+				subcategorySelect.disabled = true;
+			} else {
+				loadSubcategories(catId);
+			}
+		});
+	});
+	</script>
+
+
+
+  <!-- <script>
+    document.getElementById('grid-view-btn').addEventListener('click', function() {
+        document.getElementById('product-grid-view').style.display = 'block';
+        document.getElementById('product-list-view').style.display = 'none';
+        
+       
+        this.classList.remove('btn-outline-primary', 'btn-outline-secondary');
+        this.classList.add('btn-custom'); 
+
+        document.getElementById('list-view-btn').classList.remove('btn-outline-primary', 'btn-outline-secondary');
+        document.getElementById('list-view-btn').classList.add('btn-custom');
+    });
+
+    document.getElementById('list-view-btn').addEventListener('click', function() {
+        document.getElementById('product-grid-view').style.display = 'none';
+        document.getElementById('product-list-view').style.display = 'block';
+
+       
+        this.classList.remove('btn-outline-primary', 'btn-outline-secondary');
+        this.classList.add('btn-custom'); 
+
+        document.getElementById('grid-view-btn').classList.remove('btn-outline-primary', 'btn-outline-secondary');
+        document.getElementById('grid-view-btn').classList.add('btn-custom');
+    });
+
+</script> -->
+<script>
+    document.getElementById('grid-view-btn').addEventListener('click', function() {
+        document.getElementById('product-grid-view').style.display = 'grid'; // 
+        document.getElementById('product-list-view').style.display = 'none';
+    });
+
+    document.getElementById('list-view-btn').addEventListener('click', function() {
+        document.getElementById('product-grid-view').style.display = 'none';
+        document.getElementById('product-list-view').style.display = 'block';
+    });
+</script>
+{% endblock content %}

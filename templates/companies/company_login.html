@@ -1,0 +1,166 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% if meta %}
+    <title>{{ meta.title }}</title>
+    <meta name="description" content="{{ meta.description }}">
+    <meta name="keywords" content="{{ meta.keywords }}">
+    <meta name="robots" content="{{ meta.robots }}">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="{{ meta.og_title }}">
+    <meta property="og:description" content="{{ meta.og_description }}">
+    <meta property="og:image" content="{{ meta.og_image.url }}">
+    <meta property="og:url" content="{{ meta.og_url }}">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter -->
+    <meta name="twitter:title" content="{{ meta.twitter_title }}">
+    <meta name="twitter:description" content="{{ meta.twitter_description }}">
+    <meta name="twitter:image" content="{{ meta.twitter_image.url }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="{{ meta.twitter_site }}">
+
+    <!-- Canonical -->
+    <link rel="canonical" href="{{ meta.canonical_url }}">
+{% else %}
+    <p>Meta data not found for this page.</p>
+{% endif %}
+
+
+{% block content %}
+
+
+
+    
+    
+    <section class="company-login-page-section">
+        
+    
+            
+            <!-- <div class="col-lg-12">
+                <div class="background">
+                    <div class="shape"></div>
+                    <div class="shape"></div>
+                </div>
+            </div> -->
+            
+            <div class="col-lg-12 p-5 animate__animated animate__fadeIn" style="margin-top: 100px;">
+                <div class="row justify-content-center align-items-center">
+                    <div class="col-lg-6" style="display: flex; justify-content: center;">
+                        <video width="800" autoplay loop muted style="object-fit: cover; height: 500px;">
+                            <source src="{% static 'assets/images/bt.mp4' %}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                    <div class="col-lg-6">
+                        <form class="company-login-form" method="POST">
+                            {% csrf_token %}
+                            <h3>Login Here</h3>
+            
+            
+                            <div class="company-login-username">
+                                <label for="username">Username</label>
+                                <input type="text" placeholder="Enter Your Username" id="username" name="username">
+                            </div>
+            
+                            <div class="company-login-password" style="position: relative;">
+                                <label for="password">Password</label>
+                                <input type="password" placeholder="Enter Your Password" id="password" name="password">
+                                <span class="input-group-text toggle-password" onclick="togglePasswordVisibility('password', this)" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; background-color: transparent; border: none;">
+                                    <i class="fa fa-eye"></i>
+                                </span>
+                            </div>
+
+                            <div class="form-outline mt-5 mb-4" id="captcha-container">
+                                {{ form.captcha }}
+                                <a href="#" id="refresh-captcha" style="margin-left: 10px;" title="Refresh Captcha">
+                                    <i class="fa fa-refresh"></i>
+                                </a>
+                                <div id="spinner" style="display:none; margin-left: 10px; margin-top: -5px;">
+                                    <i class="fa fa-spinner fa-spin"></i> 
+                                </div>
+                            </div>
+
+                            <button type="submit" class="company-login-button">Log In</button>
+            
+                            <a class="text-white" href="{% url 'company_signup' %}">
+                                <button type="button" class="company-login-button-create-business-account">
+                                    Create Business Account
+                                </button>
+                            </a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+         
+            
+        </section>
+        <style>
+            #captcha-container input {
+                border: 1px solid #000000;
+                border-radius: 4px;
+                padding: 8px;
+                width: 200px;
+                font-size: 14px;
+            }
+        </style>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                $('#refresh-captcha').on('click', function (e) {
+                    e.preventDefault();
+          
+                    $('#spinner').show();
+                    
+                    setTimeout(function () {
+                        $.get("{% url 'captcha-refresh' %}", function (data) {
+                            $('#spinner').hide();
+                            
+                            $('#id_captcha_0').val(data.key);
+                            $('#captcha-container img').attr('src', data.image_url);
+                        });
+                    }, 2000); 
+                });
+            });
+          </script>
+    
+        
+    
+        <script>
+            function togglePasswordVisibility(inputId, icon) {
+                var inputField = document.getElementById(inputId);
+                var iconElement = icon.querySelector("i");
+        
+                if (inputField.type === "password") {
+                    inputField.type = "text"; 
+                    iconElement.classList.remove("fa-eye");
+                    iconElement.classList.add("fa-eye-slash"); 
+                } else {
+                    inputField.type = "password"; 
+                    iconElement.classList.remove("fa-eye-slash");
+                    iconElement.classList.add("fa-eye"); 
+                }
+            }
+        </script>
+        
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    
+        {% if messages %}
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                {% for message in messages %}
+                    Swal.fire({
+                        icon: '{% if message.tags == "success" %}success{% elif message.tags == "error" %}error{% else %}info{% endif %}',
+                        title: '{{ message.tags|title }}',
+                        text: '{{ message }}',
+                        confirmButtonColor: '#ff1d1d'
+                    });
+                {% endfor %}
+            });
+        </script>
+        {% endif %}
+{% endblock content %}
+
+
+

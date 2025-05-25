@@ -1,0 +1,18 @@
+/* Hide the Google Translate toolbar */
+.goog-te-banner-frame {
+    display: none !important;
+}
+
+
+/* Keep the Google Translate dropdown working */
+.goog-te-gadget {
+    font-size: 18px !important;
+}
+
+/* Hide Google branding and icon */
+.goog-te-gadget img {
+    display: none !important;
+}
+
+
+

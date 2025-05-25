@@ -1,0 +1,713 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% if meta %}
+    <title>{{ meta.title }}</title>
+    <meta name="description" content="{{ meta.description }}">
+    <meta name="keywords" content="{{ meta.keywords }}">
+    <meta name="robots" content="{{ meta.robots }}">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="{{ meta.og_title }}">
+    <meta property="og:description" content="{{ meta.og_description }}">
+    <meta property="og:image" content="{{ meta.og_image.url }}">
+    <meta property="og:url" content="{{ meta.og_url }}">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter -->
+    <meta name="twitter:title" content="{{ meta.twitter_title }}">
+    <meta name="twitter:description" content="{{ meta.twitter_description }}">
+    <meta name="twitter:image" content="{{ meta.twitter_image.url }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="{{ meta.twitter_site }}">
+
+    <!-- Canonical -->
+    <link rel="canonical" href="{{ meta.canonical_url }}">
+{% else %}
+    <p>Meta data not found for this page.</p>
+{% endif %}
+
+{% block content %}
+
+<section style="background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.281), rgba(0,0,0,0.3), rgba(0,0,0,0)), url(/static/assets/images/confident2.jpg); background-repeat: no-repeat; background-position: center; background-size: cover; height: 50vh;">
+    <div class="container d-flex flex-column justify-content-center align-items-center text-center" style="height: 100%;">
+            <h1 class="text-white"><strong>Contact us</strong></h1>
+            <nav aria-label="breadcrumb" class="d-flex justify-content-center mt-3">
+                <ol class="breadcrumb bg-transparent p-0 m-0">
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'index' %}" class="text-white-50">Home</a>
+                    </li>
+                    <li class="breadcrumb-item active text-white" aria-current="page">Contact us</li>
+                </ol>
+            </nav>
+    </div>
+</section>
+
+<section>
+    <div class="container">
+        <div class="col-12 content">
+            <h1 class="text-center mt-5" style="color: red;">
+                <strong>{{ contact_us_header.title }}</strong>
+            </h1>
+            <p style="font-weight: 800 !important;">
+                {{ contact_us_header.description }}
+            </p>
+        </div>
+        
+    </div>
+    <div class="container">
+        <div class="row text-center justify-content-between text-center flex-wrap p-4">
+         
+      </div>
+      
+</section>
+
+
+  
+
+  
+  <div class="container my-5">
+        <h1 class="animate__animated animate__fadeInDown" style="font-size:26px; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">Get In Touch</h1>
+        <div class="row justify-content-center">
+       
+            <div class="col-lg-6 mt-4 p-2">
+                <div class="row">
+                    <div class="col-md-12 contact-cards mb-4">
+                        <div class="row">
+                            <i class="fa fa-phone fa-2x mb-2 mr-4"></i>
+                            <div>
+                                <h5 class="fw-bold">Call Us</h5>
+                                <p class="mb-0">{{ contact_info.phone_number }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 contact-cards mb-4">
+                        <div class="row">
+                            <i class="fa fa-envelope fa-2x mb-2 mr-4"></i>
+                            <div>
+                                <h5 class="fw-bold">Email</h5>
+                                <p class="mb-0">{{ contact_info.email }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 contact-cards mb-4">
+                        <div class="row">
+                            <i class="fa fa-map-marker fa-2x mb-2 mr-4"></i>
+                            <div>
+                                <h5 class="fw-bold">Address</h5>
+                                <p class="mb-0">{{ contact_info.address }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+
+
+        
+            <div class="col-lg-6">
+                <div class="contact-us">
+                    <div class="card-body p-4">
+                    
+                    <form id="contact-form" action="{% url 'contact_us' %}" method="POST">
+                        {% csrf_token %}
+                        <div class="form-row">
+                            <div class="form-group col-md-6 contact-us-input">
+                                <label for="name">Full Name</label>
+                                <input type="text" class="form-control" id="name" name="name" required placeholder="Enter your full name">
+                            </div>
+                            
+                            <div class="form-group col-md-6 contact-us-input">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" required placeholder="Enter your email">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group contact-us-input">
+                            <label for="subject">Subject</label>
+                            <input type="text" class="form-control" id="subject" name="subject" required placeholder="Enter the subject">
+                        </div>
+                        
+                        <div class="form-group contact-us-input">
+                            <label for="message">Message</label>
+                            <textarea class="form-control" id="message" name="message" rows="5" required placeholder="Write your message"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-custom btn-block" id="submit-btn">
+                                <span id="button-text">Send Message</span>
+                            </button>
+                        </div>
+                    </form>
+                
+             
+                <div id="loader" style="display: none; text-align: center; padding: 20px;">
+                    <div class="spinner"></div>
+                </div>
+                
+                <div id="form-messages"></div>
+                
+                
+                    </div>
+                </div>
+
+
+        </div>
+    </div>
+  </div>
+
+  <!-- <section class="map-section">
+   <div class="container mb-5">
+        <h1 class="animate__animated animate__fadeInDown mb-4" style="font-size:26px; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">Find us</h1>
+
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3655.1299746128266!2d58.095992175925005!3d23.63551589317602!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e8de52b4372dbed%3A0xec3599e501c57db1!2sInnwin!5e0!3m2!1sen!2som!4v1744763165319!5m2!1sen!2som" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+   </div>
+  </section> -->
+  
+  <section class="map-section">
+   <div class="container mb-5">
+        <h1 class="mb-4" style="font-size:26px;">Find us</h1>
+        {% if map_iframe %}
+            {{ map_iframe|safe }}
+        {% else %}
+            <p>Map is not available right now.</p>
+        {% endif %}
+   </div>
+</section>
+
+
+
+
+  <div class="container mb-5">
+    <h1 class="animate__animated animate__fadeInDown" style="font-size:26px; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">
+        Frequently Asked Questions
+    </h1>
+    <div class="accordion">
+        {% for faq in faqs %}
+            <div class="accordion-item">
+                <button id="accordion-button-{{ forloop.counter }}" aria-expanded="false">
+                    <span class="accordion-title">{{ faq.question }}</span>
+                    <span class="icon" aria-hidden="true"></span>
+                </button>
+                <div class="accordion-content">
+                    <p>{{ faq.answer }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+
+<section class="contactus-sm-section" style="
+    background: linear-gradient(to bottom, #343a4044 ,#343a40 ), 
+                url('/static/assets/images/confident2.jpg');
+    background-size: cover;
+    background-position: center;
+">
+    <div class="container d-flex align-items-center justify-content-center" style="height: 30vh;">
+      <div class="row w-100">
+        <div class="col-lg-12">
+            <div class="content col-md-12 mt-5 mb-2 text-center text-white">
+                <h1 class="animate__animated animate__fadeInDown text-white" style="font-size:26px;">Connect with us</h1>
+                <p>Follow us in social media for the latest updates and insights</p>
+            </div>
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 mt-2 text-center">
+            <div class="mb-3">
+                {% for link in socialmedia %}
+                    {% if 'facebook' in link.social_media_url %}
+                        <a href="{{ link.social_media_url }}" class="text-white mx-2" ><i class="fa fa-facebook fa-2x sm-links"></i></a>
+                    {% elif 'instagram' in link.social_media_url %}
+                        <a href="{{ link.social_media_url }}" class="text-white mx-2"><i class="fa fa-instagram fa-2x sm-links"></i></a>
+                    {% elif 'linkedin' in link.social_media_url %}
+                        <a href="{{ link.social_media_url }}" class="text-white mx-2"><i class="fa fa-linkedin fa-2x sm-links"></i></a>
+                    {% elif 'youtube' in link.social_media_url %}
+                        <a href="{{ link.social_media_url }}" class="text-white mx-2"><i class="fa fa-youtube fa-2x sm-links"></i></a>
+                    {% endif %}
+                {% empty %}
+                    <p>No social media links available</p>
+                {% endfor %}
+            </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <footer class="bg-dark text-white pt-5">
+    <div class="container" style="max-width: 1350px;">
+        <div class="row">
+            <div class="col-md-3">
+                <a class="footerbrand" href="{% url 'index' %}"> 
+                    <img src="{% static 'assets/images/logo.png' %}" width="90" alt="Logo">
+                </a>
+                <p class="mt-2">We promote businesses through our catalog and strategic advertising, connecting them with global markets to enhance visibility and growth.</p>
+            </div>
+
+            <div class="col-md-3 mt-2">
+                <h2 class="mb-4 footer-top-title" style="font-size: 16px;">Quick Links</h2>
+                <ul class="list-unstyled">
+                    <li><a href="{% url 'index' %}" class="text-white text-decoration-none"><i class="fa fa-home"></i> Home</a></li>
+                    <li><a href="{% url 'aboutus' %}" class="text-white text-decoration-none"><i class="fa fa-info-circle"></i> About Us</a></li>
+                    <li><a href="{% url 'catalogue_list' %}" class="text-white text-decoration-none"><i class="fa fa-book"></i> Catalogues</a></li>
+                    <li><a href="{% url 'company_signup' %}" class="text-white text-decoration-none"><i class="fa fa-users"></i> Become a supplier</a></li>
+                </ul>
+            </div>
+
+            <div class="col-md-3 mt-2">
+                <h2 class="mb-4 footer-top-title" style="font-size: 16px;">Our Services</h2>
+                <ul class="list-unstyled">
+                    <li><i class="fa fa-bullhorn"></i> Smart and Targeted Advertising</li>
+                    <li><i class="fa fa-globe"></i> Connection to Global Markets</li>
+                    <li><i class="fa fa-briefcase"></i> Specialized Commercial Support</li>
+                    <li><i class="fa fa-truck"></i> International Transportation</li>
+                    <li><i class="fa fa-credit-card"></i> Secure International Financial Transactions</li>
+                </ul>
+            </div>
+
+            <div class="col-md-3 mt-2 text-center">
+                <h2 class="mb-4 footer-top-title" style="font-size: 16px;">Follow Us</h2>
+                <div class="mb-3">
+                    {% for link in socialmedia %}
+                        {% if 'facebook' in link.social_media_url %}
+                            <a href="{{ link.social_media_url }}" class="text-white mx-2" ><i class="fa fa-facebook fa-2x sm-links"></i></a>
+                        {% elif 'instagram' in link.social_media_url %}
+                            <a href="{{ link.social_media_url }}" class="text-white mx-2"><i class="fa fa-instagram fa-2x sm-links"></i></a>
+                        {% elif 'linkedin' in link.social_media_url %}
+                            <a href="{{ link.social_media_url }}" class="text-white mx-2"><i class="fa fa-linkedin fa-2x sm-links"></i></a>
+                        {% elif 'youtube' in link.social_media_url %}
+                            <a href="{{ link.social_media_url }}" class="text-white mx-2"><i class="fa fa-youtube fa-2x sm-links"></i></a>
+                        {% endif %}
+                    {% empty %}
+                        <p>No social media links available</p>
+                    {% endfor %}
+                </div>
+                <!-- <h5 class="mt-4 subscrribe-title">Subscribe to Our Newsletter</h5>
+                <form class="d-flex mt-2">
+                    <div class="input-group" style="border:none; border-bottom: 2px solid white;">
+                        <input type="email" class="form-control" placeholder="Enter your email" style="background: transparent; border: none;">
+                        <button type="submit" class="btn subscribe-button">Subscribe</button>
+                    </div>
+                </form> -->
+            </div>
+        </div>
+        <hr class="bg-white">
+        <div class="row text-center pb-4">
+            <div class="col">
+                <p class="mb-0">&copy; 2025 Sohof. All Rights Reserved.</p>
+                <!-- <p class="mb-0"><a href="#" class="text-white text-decoration-none">Privacy Policy</a> | <a href="#" class="text-white text-decoration-none">Terms of Service</a></p> -->
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <style>
+  .gradient::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, #000000, rgba(0, 0, 0, 0)); 
+            z-index: 1;
+            border-radius: inherit;
+        }
+    .accordion .accordion-item {
+        border-bottom: 1px solid #e5e5e5;
+    }
+
+    .accordion .accordion-item button[aria-expanded='true'] {
+        border-bottom: 1px solid #ff0000;
+    }
+
+    .accordion button {
+        position: relative;
+        display: block;
+        text-align: left;
+        width: 100%;
+        padding: 1em 0;
+        color: #ff0000;
+        font-size: 1.15rem;
+        font-weight: 400;
+        border: none;
+        background: none;
+        outline: none;
+    }
+
+    .accordion button:hover,
+    .accordion button:focus {
+        cursor: pointer;
+        color: #000000;
+    }
+
+    .accordion button:hover::after,
+    .accordion button:focus::after {
+        cursor: pointer;
+        color: #ff0000;
+        border: 1px solid #ff0000;
+    }
+
+    .accordion button .accordion-title {
+        padding: 1em 1.5em 1em 0;
+    }
+
+    .accordion button .icon {
+        display: inline-block;
+        position: absolute;
+        top: 18px;
+        right: 0;
+        width: 22px;
+        height: 22px;
+        border: 1px solid;
+        border-radius: 22px;
+    }
+
+    .accordion button .icon::before {
+        display: block;
+        position: absolute;
+        content: '';
+        top: 9px;
+        left: 5px;
+        width: 10px;
+        height: 2px;
+        background: currentColor;
+    }
+    .accordion button .icon::after {
+        display: block;
+        position: absolute;
+        content: '';
+        top: 5px;
+        left: 9px;
+        width: 2px;
+        height: 10px;
+        background: currentColor;
+    }
+
+    .accordion button[aria-expanded='true'] {
+        color: #ff0000;
+    }
+    .accordion button[aria-expanded='true'] .icon::after {
+        width: 0;
+    }
+    .accordion button[aria-expanded='true'] + .accordion-content {
+        opacity: 1;
+        max-height: 9em;
+        transition: all 200ms linear;
+        will-change: opacity, max-height;
+    }
+    .accordion .accordion-content {
+        opacity: 0;
+        max-height: 0;
+        overflow: hidden;
+        transition: opacity 200ms linear, max-height 200ms linear;
+        will-change: opacity, max-height;
+    }
+    .accordion .accordion-content p {
+        font-size: 1rem;
+        font-weight: 300;
+        margin: 2em 0;
+    }
+
+
+
+    .map-section iframe {
+        width: 100%;
+        height: 100%;
+        border: 0;
+        border-radius: 20px; 
+        filter: grayscale(30%) brightness(90%);
+        transition: all 0.3s ease-in-out;
+    }
+
+    .map-section iframe:hover {
+        filter: grayscale(0%) brightness(100%);
+        transform: scale(1.01); 
+    }
+
+    .list-unstyled li .text-decoration-none:hover{
+        color: rgb(255, 0, 0) !important;
+    }
+      .sm-links {
+      transition: color 0.3s ease; 
+    }
+  
+    .sm-links:hover {
+      color: red;
+    }
+    .subscribe-button{
+  
+        background: transparent;
+        color: rgb(255, 255, 255);
+    }
+    .subscribe-button:hover{
+  
+        background: transparent;
+        color: black;
+    }
+    .subscrribe-title ,  .footer-top-title{
+        font-weight: bold;
+        color: white;
+    }
+  
+    .category-name-index{
+        font-size: 12px;
+    }
+    
+    @media (min-width: 768px) and (max-width: 980px) {
+        .catalogue-overlay-image {
+        top: 35% !important;
+        right: 10% !important;
+        /* width: 70% !important; */
+    }
+  }
+  
+  
+    .vertical-stepper {
+      position: relative;
+    }
+  
+    .vertical-stepper .row:nth-child(even) {
+      flex-direction: row-reverse;
+      
+    }
+    .vertical-stepper .row:nth-child(odd) .col-5:first-child {
+      justify-content: flex-end;
+      text-align: right;
+    }
+    .step:last-child {
+      margin-bottom: 0;
+    }
+  
+    .step {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background-color: #ccc;
+      color: #fff;
+      text-align: center;
+      /* line-height: 54px; */
+      font-size: 24px;
+      z-index: 2;
+      /* position: relative; */
+    }
+  
+    .label {
+      font-weight: 500;
+      font-size: 16px;
+      background-color: rgba(83, 83, 83, 0.185);
+      border-radius: 10px;
+      padding: 10px;
+    }
+    .progress-year{
+      font-weight: 500;
+      font-size: 16px;
+      background-color: red;
+      border-radius: 10px;
+      padding: 10px;
+  
+    }
+  
+  
+    .vertical-stepper::before {
+      content: '';
+      position: absolute;
+      top: 27px; 
+      left:50%; 
+      width: 2px;
+      height: 100%;
+      background-color: #dee2e6;
+      z-index: 0;
+    }
+  
+  
+  
+  
+    .subscribe-button{
+  
+    background: transparent;
+    color: rgb(255, 255, 255);
+    }
+    .subscribe-button:hover{
+  
+    background: transparent;
+    color: black;
+    }
+    .subscrribe-title ,  .footer-top-title{
+    font-weight: bold;
+    color: white;
+    }
+  
+    #submit-btn {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 12px 20px;
+    text-align: center;
+    }
+  
+    .spinner {
+    border: 4px solid rgba(255, 255, 255, 0.3); 
+    border-top: 4px solid #000; 
+    border-radius: 50%;
+    width: 20px;  
+    height: 20px;  
+    animation: spin 1s linear infinite;  
+    }
+  
+    @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+    }
+  
+  
+    @media screen and (min-width: 1200px) {
+            .map-container iframe  {
+              width: 530px;
+            }
+        }
+  
+  </style>
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function(){
+      $("#contact-form").on("submit", function(e){
+          e.preventDefault();  // Prevent the default form submission
+
+          var form = $(this);
+          var formData = form.serialize();  
+          
+          var button = $("#submit-btn");
+          var buttonText = $("#button-text");
+
+          buttonText.html('');  
+          button.prop("disabled", true);  
+          
+          button.append('<div class="spinner"></div>');
+          
+          $.ajax({
+              url: form.attr("action"), 
+              type: "POST", 
+              data: formData,  
+              success: function(response) {
+                  setTimeout(function() {
+                      button.find(".spinner").remove();  
+                      buttonText.html("Send Message");  
+                      button.prop("disabled", false); 
+                      
+                      if(response.status === "success") {
+                          $("#form-messages").html("<div class='alert alert-success'>" + response.message + "</div>");
+                          form[0].reset();  
+                          
+                          setTimeout(function() {
+                              $("#form-messages").html('');
+                          }, 3000); 
+                      } else {
+                          var errorHtml = "<div class='alert alert-danger'>";
+                          $.each(response.errors, function(key, value) {
+                              errorHtml += "<p>" + value + "</p>";
+                          });
+                          errorHtml += "</div>";
+                          $("#form-messages").html(errorHtml);
+                          
+                          setTimeout(function() {
+                              $("#form-messages").html('');
+                          }, 3000); 
+                      }
+                  }, 2000); 
+              },
+              error: function() {
+                  setTimeout(function() {
+                      button.find(".spinner").remove(); 
+                      buttonText.html("Send Message");  
+                      button.prop("disabled", false);  
+                      
+                      $("#form-messages").html("<div class='alert alert-danger'>There was an error processing your request. Please try again later.</div>");
+                      
+                      setTimeout(function() {
+                          $("#form-messages").html('');
+                      }, 3000);  
+                  }, 2000);  
+              }
+          });
+      });
+  });
+</script>
+
+<script>
+    const items = document.querySelectorAll('.accordion button');
+
+        function toggleAccordion() {
+        const itemToggle = this.getAttribute('aria-expanded');
+
+        for (i = 0; i < items.length; i++) {
+            items[i].setAttribute('aria-expanded', 'false');
+        }
+
+        if (itemToggle == 'false') {
+            this.setAttribute('aria-expanded', 'true');
+        }
+        }
+
+        items.forEach((item) => item.addEventListener('click', toggleAccordion));
+
+
+
+
+</script>
+  
+
+
+{% if messages %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        {% for message in messages %}
+            Swal.fire({
+                icon: '{% if message.tags == "success" %}success{% elif message.tags == "error" %}error{% else %}info{% endif %}',
+                title: '{{ message.tags|title }}',
+                text: '{{ message }}',
+                confirmButtonColor: '#ff1d1d'
+            });
+        {% endfor %}
+    });
+</script>
+{% endif %}
+{% endblock content %}
+
+
+
+
+
+<!-- <div class="map-container">
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d58482.08157349544!2d58.02235007286069!3d23.635511461251514!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e8de52b4372dbed%3A0xec3599e501c57db1!2sInnwin!5e0!3m2!1sen!2som!4v1737428002559!5m2!1sen!2som" width="350" height="430" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+  </div> -->

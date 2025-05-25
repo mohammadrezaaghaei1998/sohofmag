@@ -1,0 +1,679 @@
+
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% if meta %}
+    <title>{{ meta.title }}</title>
+    <meta name="description" content="{{ meta.description }}">
+    <meta name="keywords" content="{{ meta.keywords }}">
+    <meta name="robots" content="{{ meta.robots }}">
+
+    <meta property="og:title" content="{{ meta.og_title }}">
+    <meta property="og:description" content="{{ meta.og_description }}">
+    <meta property="og:image" content="{{ meta.og_image.url }}">
+    <meta property="og:url" content="{{ meta.og_url }}">
+    <meta property="og:type" content="website">
+
+    <meta name="twitter:title" content="{{ meta.twitter_title }}">
+    <meta name="twitter:description" content="{{ meta.twitter_description }}">
+    <meta name="twitter:image" content="{{ meta.twitter_image.url }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="{{ meta.twitter_site }}">
+
+    <link rel="canonical" href="{{ meta.canonical_url }}">
+{% else %}
+    <p>Meta data not found for this page.</p>
+{% endif %}
+
+
+{% block content %}
+<!-- #343a40 -->
+
+<section style="background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.281), rgba(0,0,0,0.3), rgba(0,0,0,0)), url(/static/assets/images/confident2.jpg); background-repeat: no-repeat; background-position: center; background-size: cover; height: 50vh;">
+  <div class="container d-flex flex-column justify-content-center align-items-center text-center" style="height: 100%;">
+          <h1 class="text-white"><strong>About us</strong></h1>
+          <nav aria-label="breadcrumb" class="d-flex justify-content-center mt-3">
+              <ol class="breadcrumb bg-transparent p-0 m-0">
+                  <li class="breadcrumb-item">
+                      <a href="{% url 'index' %}" class="text-white-50">Home</a>
+                  </li>
+                  <li class="breadcrumb-item active text-white" aria-current="page">About us</li>
+              </ol>
+          </nav>
+  </div>
+</section>
+
+
+
+<section class="aboutus-videos">
+  <div class="container-count">
+    <div class="row align-items-center">
+      <div class="col-lg-4 text-center header-title-home-page ">
+        <img src="{% static 'assets/images/logo2.png' %}" width="600" alt="">
+        <h1 class="pl-2 ml-2">Business Hub Magazine</h1>
+      </div> 
+      <div class="col-lg-8">
+        <div class="box-area-aboutus">
+            {% for video in aboutusvideos %}
+            <div class="box-aboutus active aboutus-active">
+                <video width="100%" height="auto" id="video{{ forloop.counter }}">
+                    <source src="{{ video.about_us_video.url }}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+            {% empty %}
+            <p>No videos available.</p>
+            {% endfor %}
+        </div>
+    </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider div-transparent"></div>
+
+
+
+
+<section>
+  <div class="container" style="max-width: 1250px;">
+    <div class="row ">
+        <div class="image-column col-sm-12 col-xs-12  col-md-6 col-lg-6 mt-5">
+          <div class="col-lg-12">
+            {% for title in aboutus_image_titles %}
+              <div class="top-title">
+                  <h1 class="title" style="color: red;">{{ title.title }}</h1>
+                  <p style="color: gray;">{{ title.description }}</p>
+              </div>
+            {% endfor %}
+
+          
+          </div>
+          <div class="row" data-wow-delay="0ms" data-wow-duration="1500ms">
+            {% for aboutus_image in aboutus_images %}
+                <div class="mb-2 col-6 col-lg-6">
+                    <img src="{{ aboutus_image.image.url }}" alt="About Us Image">
+                </div>
+            {% endfor %}
+        </div>
+        </div>
+
+        <div class="content-column col-sm-12 col-xs-12 col-md-6 col-lg-6 mt-5">
+          <div class="inner-column">
+              <div class="sec-title">
+                <div class="col-12">
+                  <div class="title">About Us</div>
+                  {% for aboutus_main_title in aboutus_main_titles %}
+                      <h1 style="font-size: 26px;">{{ aboutus_main_title.title }}</h1>
+                      <p>{{ aboutus_main_title.description }}</p>
+                  {% endfor %}
+                  <hr>
+              </div>
+              
+                <div class="row">
+                  <div class="col-6">
+                    {% for aboutus_founder in aboutus_founders %}
+                        <p style="color: gray;">Founded by <strong class="text-dark">{{ aboutus_founder.foundedby }}</strong>. 2025 </p>
+                    {% endfor %}
+                </div>
+                
+                  <div class="col-6">
+                    <div class="mb-3 d-flex justify-content-end">
+                      {% for link in socialmedia %}
+                        {% if 'facebook' in link.social_media_url %}
+                          <a href="{{ link.social_media_url }}" class="mx-2">
+                            <i class="fa fa-facebook" style="font-size: 18px;"></i>
+                          </a>
+                        {% elif 'instagram' in link.social_media_url %}
+                          <a href="{{ link.social_media_url }}" class="mx-2">
+                            <i class="fa fa-instagram" style="font-size: 18px;"></i>
+                          </a>
+                        {% elif 'linkedin' in link.social_media_url %}
+                          <a href="{{ link.social_media_url }}" class="mx-2">
+                            <i class="fa fa-linkedin" style="font-size: 18px;"></i>
+                          </a>
+                        {% elif 'youtube' in link.social_media_url %}
+                          <a href="{{ link.social_media_url }}" class="mx-2">
+                            <i class="fa fa-youtube" style="font-size: 18px;"></i>
+                          </a>
+                        {% endif %}
+                      {% empty %}
+                        <p>No social media links available</p>
+                      {% endfor %}
+                    </div>
+                  </div>
+                  
+                </div>
+                </div>
+              
+          </div>
+      </div>
+      <div class="col-12">
+        <div class="sec-title">
+          <h1 style="color: red; font-size: 26px;">Our Vision</h1>
+          {% for vision in aboutus_our_visions %}
+              <p>{{ vision.our_vision }}</p>
+          {% endfor %}
+          
+            <div class="row mt-5" style="margin-left: -16px !important;">
+              <div class="col-md-6 col-lg-6">
+                <div class="vision-title">
+                  <h2><strong>Quality objectives</strong></h2>
+                  {% for objective in aboutus_quality_objectives %}
+                      <p>{{ objective.quality_objectives }}</p>
+                  {% endfor %}
+                </div>
+              
+              </div>
+              <div class="col-md-6 col-lg-6">
+                <div class="vision-title">
+                  <h2><strong>Key strategies</strong></h2>
+                  {% for strategy in aboutus_key_strategies %}
+                      <p>{{ strategy.key_strategies }}</p>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          
+          
+          
+          <div class="divider div-transparent"></div>
+        </div>
+      </div>
+      <div class="active-tabs col-12 col-lg-12">
+        <h1 style="color: red; font-size: 26px;">
+          <i class="fa fa-briefcase fa-x icon mb-5" style="color: red;"></i>
+          Our Capabilities and Services
+        </h1>
+      
+        <div class="row justify-content-center mt-5" id="tab-buttons">
+          {% for section in tab_sections %}
+            <button class="btn-tabs" data-tab="{{ forloop.counter }}">
+              <i class="{{ section.tabs.first.icon_class }}"></i> {{ section.title }}
+            </button>
+          {% endfor %}
+        </div>
+      
+        <div class="tabs-container mt-5">
+          {% for section in tab_sections %}
+            <div class="tab-content" id="tab-{{ forloop.counter }}" style="display: none;">
+              {% for tab in section.tabs.all %}
+                <p>{{ tab.paragraph1 }}</p>
+                {% if tab.paragraph2 %}
+                  <p>{{ tab.paragraph2 }}</p>
+                {% endif %}
+              {% endfor %}
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+      
+      
+    <div class="divider div-transparent"></div>
+
+
+      <div class="col-12 mt-5">
+        <div class="sec-title">
+          <h1 style="color: red; font-size: 26px;">Our policy</h1>
+          {% for policy in aboutus_our_policies %}
+              <p>{{ policy.our_policy }}</p>
+              <p>{{ policy.description }}</p>
+          {% endfor %}
+
+          <div class="row mt-5" style="margin-left: -16px !important;">
+            <div class="col-md-6 col-lg-6 d-flex justify-content-start align-items-center">
+              {% for policy_box in aboutus_our_policy_boxes %}
+                  <div class="col-10 vision-title d-flex text-center p-4 text-white" style="background-color: red;">
+                      <h6>{{ policy_box.our_policy_box }}</h6>
+                  </div>
+              {% endfor %}
+            </div>
+          
+            <div class="col-md-6 col-lg-6">
+              <div class="vision-title">
+                  <ul>
+                      {% for policy_item in aboutus_our_policy_items %}
+                          <li>{{ policy_item.our_policy_items }}</li>
+                      {% endfor %}
+                  </ul>
+              </div>
+            </div>
+          
+          </div>
+          
+          
+          
+          <div class="divider div-transparent"></div>
+        </div>
+      </div>
+     
+      <!-- <div class="email">Request Quote: <span class="theme_color">Info@innwin.com</span></div> -->
+        
+
+      
+    
+    
+    
+  </div>
+</section>
+
+
+<div class="divider div-transparent"></div>
+
+
+<section>
+  <div class="container mt-5" style="max-width: 1250px;">
+    <div class="sec-title">
+      <h1 style="color: red; font-size: 26px;">Our History</h1>
+    </div>
+    <div class="vertical-stepper">
+      {% for item in history_items %}
+        <div class="row mb-5 justify-content-center">
+          <div class="col-lg-5 col-5 d-flex align-items-center">
+            <p class="progress-year text-white"><strong>{{ item.year }}</strong></p>
+          </div>
+          <div class="step d-flex justify-content-center align-items-center">
+            <div class="col-lg-1 col-1 circle d-flex justify-content-center align-items-center">
+              <i class="fa fa-book" style="color: red;"></i>  
+            </div>
+          </div>
+          <div class="col-lg-5 col-5 d-flex align-items-center">
+            <h2 class="label">{{ item.label }}</h2>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+
+
+<div class="divider div-transparent"></div>
+<section>
+  <div class="container mt-5 mb-5" style="max-width: 1250px;">
+    <h1 class="mb-5" style="color: red; font-size: 26px;">Our Team</h1>
+    <div class="row">
+        {% for member in our_team %}
+        <div class="col-lg-3 col-md-6 col-sm-6 mb-4">
+            <div class="our-team">
+                <div class="pic">
+                    <img src="{{ member.image.url }}" alt="{{ member.name }}">
+                </div>
+                <div class="team-content">
+                    <h3 class="title">{{ member.name }}</h3>
+                    <span class="post">{{ member.position }}</span>
+                </div>
+                <ul class="social">
+                    {% if member.facebook_url %}
+                    <li>
+                        <a href="{{ member.facebook_url }}" target="_blank" class="fa fa-facebook"></a>
+                    </li>
+                    {% endif %}
+                    {% if member.twitter_url %}
+                    <li>
+                        <a href="{{ member.twitter_url }}" class="fa fa-twitter"></a>
+                    </li>
+                    {% endif %}
+                    {% if member.google_plus_url %}
+                    <li>
+                        <a href="{{ member.google_plus_url }}" class="fa fa-google-plus"></a>
+                    </li>
+                    {% endif %}
+                    {% if member.linkedin_url %}
+                    <li>
+                        <a href="{{ member.linkedin_url }}" class="fa fa-linkedin"></a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+  </div>
+</section>
+
+
+
+<div class="container mt-5 mb-5" style="max-width: 1250px;">
+  <div class="sec-title">
+    <h1 style="color: red; font-size: 26px;">Our Partners</h1>
+  </div>
+  <div class="row justify-content-between">
+    {% for partner in partners %}
+    <div class="partners">
+      <div class="p-3 pr-4 pl-4">
+        <img src="{{ partner.logo.url }}" width="140" height="140" alt="Partner logo">
+      </div>
+    </div>  
+    {% endfor %}
+  </div>
+</div>
+
+
+
+
+
+
+  <footer class="bg-dark text-white pt-5">
+    <div class="container" style="max-width: 1350px;">
+        <div class="row">
+            <!-- About Section -->
+            <div class="col-md-3">
+                <a class="footerbrand" href="{% url 'index' %}"> 
+                    <img src="{% static 'assets/images/logo.png' %}" width="90" alt="Logo">
+                </a>
+                <p class="mt-2">We promote businesses through our catalog and strategic advertising, connecting them with global markets to enhance visibility and growth.</p>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="col-md-3 mt-2">
+                <h2 class="mb-4 footer-top-title" style="font-size: 16px;">Quick Links</h2>
+                <ul class="list-unstyled">
+                    <li><a href="{% url 'index' %}" class="text-white text-decoration-none"><i class="fa fa-home"></i> Home</a></li>
+                    <li><a href="{% url 'aboutus' %}" class="text-white text-decoration-none"><i class="fa fa-info-circle"></i> About Us</a></li>
+                    <li><a href="{% url 'catalogue_list' %}" class="text-white text-decoration-none"><i class="fa fa-book"></i> Catalogues</a></li>
+                    <li><a href="{% url 'company_signup' %}" class="text-white text-decoration-none"><i class="fa fa-users"></i> Become a supplier</a></li>
+                </ul>
+            </div>
+
+            <!-- Services -->
+            <div class="col-md-3 mt-2">
+                <h2 class="mb-4 footer-top-title" style="font-size: 16px;">Our Services</h2>
+                <ul class="list-unstyled">
+                    <li><i class="fa fa-bullhorn"></i> Smart and Targeted Advertising</li>
+                    <li><i class="fa fa-globe"></i> Connection to Global Markets</li>
+                    <li><i class="fa fa-briefcase"></i> Specialized Commercial Support</li>
+                    <li><i class="fa fa-truck"></i> International Transportation</li>
+                    <li><i class="fa fa-credit-card"></i> Secure International Financial Transactions</li>
+                </ul>
+            </div>
+
+            <!-- Social Media and Subscribe -->
+            <div class="col-md-3 mt-2 text-center">
+                <h2 class="mb-4 footer-top-title" style="font-size: 16px;">Follow Us</h2>
+                <div class="mb-3">
+                    {% for link in socialmedia %}
+                        {% if 'facebook' in link.social_media_url %}
+                            <a href="{{ link.social_media_url }}" class="text-white mx-2" ><i class="fa fa-facebook fa-2x sm-links"></i></a>
+                        {% elif 'instagram' in link.social_media_url %}
+                            <a href="{{ link.social_media_url }}" class="text-white mx-2"><i class="fa fa-instagram fa-2x sm-links"></i></a>
+                        {% elif 'linkedin' in link.social_media_url %}
+                            <a href="{{ link.social_media_url }}" class="text-white mx-2"><i class="fa fa-linkedin fa-2x sm-links"></i></a>
+                        {% elif 'youtube' in link.social_media_url %}
+                            <a href="{{ link.social_media_url }}" class="text-white mx-2"><i class="fa fa-youtube fa-2x sm-links"></i></a>
+                        {% endif %}
+                    {% empty %}
+                        <p>No social media links available</p>
+                    {% endfor %}
+                </div>
+                <!-- <h5 class="mt-4 subscrribe-title">Subscribe to Our Newsletter</h5>
+                <form class="d-flex mt-2">
+                    <div class="input-group" style="border:none; border-bottom: 2px solid white;">
+                        <input type="email" class="form-control" placeholder="Enter your email" style="background: transparent; border: none;">
+                        <button type="submit" class="btn subscribe-button">Subscribe</button>
+                    </div>
+                </form> -->
+            </div>
+        </div>
+        <hr class="bg-white">
+        <div class="row text-center pb-4">
+            <div class="col">
+                <p class="mb-0">&copy; 2025 Sohof. All Rights Reserved.</p>
+                <!-- <p class="mb-0"><a href="#" class="text-white text-decoration-none">Privacy Policy</a> | <a href="#" class="text-white text-decoration-none">Terms of Service</a></p> -->
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+<style>
+
+.partners img{
+  object-fit: cover;
+}
+
+
+  .list-unstyled li .text-decoration-none:hover{
+      color: rgb(255, 0, 0) !important;
+  }
+    .sm-links {
+    transition: color 0.3s ease; 
+  }
+
+  .sm-links:hover {
+    color: red;
+  }
+  .subscribe-button{
+
+      background: transparent;
+      color: rgb(255, 255, 255);
+  }
+  .subscribe-button:hover{
+
+      background: transparent;
+      color: black;
+  }
+  .subscrribe-title ,  .footer-top-title{
+      font-weight: bold;
+      color: white;
+  }
+
+  .category-name-index{
+      font-size: 12px;
+  }
+  
+  @media (min-width: 768px) and (max-width: 980px) {
+      .catalogue-overlay-image {
+      top: 35% !important;
+      right: 10% !important;
+      /* width: 70% !important; */
+  }
+}
+
+
+  .vertical-stepper {
+    position: relative;
+  }
+
+  .vertical-stepper .row:nth-child(even) {
+    flex-direction: row-reverse;
+    
+  }
+  .vertical-stepper .row:nth-child(odd) .col-5:first-child {
+    justify-content: flex-end;
+    text-align: right;
+  }
+  .step:last-child {
+    margin-bottom: 0;
+  }
+
+  .step {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background-color: #ccc;
+    color: #fff;
+    text-align: center;
+    /* line-height: 54px; */
+    font-size: 24px;
+    z-index: 2;
+    /* position: relative; */
+  }
+
+  .label {
+    font-weight: 500;
+    font-size: 16px;
+    background-color: rgba(83, 83, 83, 0.185);
+    border-radius: 10px;
+    padding: 10px;
+  }
+  .progress-year{
+    font-weight: 500;
+    font-size: 16px;
+    background-color: red;
+    border-radius: 10px;
+    padding: 10px;
+
+  }
+
+
+  .vertical-stepper::before {
+    content: '';
+    position: absolute;
+    top: 27px; 
+    left:50%; 
+    width: 2px;
+    height: 100%;
+    background-color: #dee2e6;
+    z-index: 0;
+  }
+
+
+
+
+  .subscribe-button{
+
+  background: transparent;
+  color: rgb(255, 255, 255);
+  }
+  .subscribe-button:hover{
+
+  background: transparent;
+  color: black;
+  }
+
+  #submit-btn {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 20px;
+  text-align: center;
+  }
+
+  .spinner {
+  border: 4px solid rgba(255, 255, 255, 0.3); 
+  border-top: 4px solid #000; 
+  border-radius: 50%;
+  width: 20px;  
+  height: 20px;  
+  animation: spin 1s linear infinite;  
+  }
+
+  @keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+  }
+
+
+  @media screen and (min-width: 1200px) {
+          .map-container iframe  {
+            width: 530px;
+          }
+      }
+
+</style>
+
+
+
+
+
+ 
+<script>
+  $(document).ready(function(){
+      $("#contact-form").on("submit", function(e){
+          e.preventDefault();  // Prevent the default form submission
+
+          var form = $(this);
+          var formData = form.serialize();  
+          
+          var button = $("#submit-btn");
+          var buttonText = $("#button-text");
+
+          buttonText.html('');  
+          button.prop("disabled", true);  
+          
+          button.append('<div class="spinner"></div>');
+          
+          $.ajax({
+              url: form.attr("action"), 
+              type: "POST", 
+              data: formData,  
+              success: function(response) {
+                  setTimeout(function() {
+                      button.find(".spinner").remove();  
+                      buttonText.html("Send Message");  
+                      button.prop("disabled", false); 
+                      
+                      if(response.status === "success") {
+                          $("#form-messages").html("<div class='alert alert-success'>" + response.message + "</div>");
+                          form[0].reset();  
+                          
+                          setTimeout(function() {
+                              $("#form-messages").html('');
+                          }, 3000); 
+                      } else {
+                          var errorHtml = "<div class='alert alert-danger'>";
+                          $.each(response.errors, function(key, value) {
+                              errorHtml += "<p>" + value + "</p>";
+                          });
+                          errorHtml += "</div>";
+                          $("#form-messages").html(errorHtml);
+                          
+                          setTimeout(function() {
+                              $("#form-messages").html('');
+                          }, 3000); 
+                      }
+                  }, 2000); 
+              },
+              error: function() {
+                  setTimeout(function() {
+                      button.find(".spinner").remove(); 
+                      buttonText.html("Send Message");  
+                      button.prop("disabled", false);  
+                      
+                      $("#form-messages").html("<div class='alert alert-danger'>There was an error processing your request. Please try again later.</div>");
+                      
+                      setTimeout(function() {
+                          $("#form-messages").html('');
+                      }, 3000);  
+                  }, 2000);  
+              }
+          });
+      });
+  });
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const buttons = document.querySelectorAll('.btn-tabs');
+    const tabs = document.querySelectorAll('.tab-content');
+
+    function hideAllTabs() {
+      tabs.forEach(tab => tab.style.display = 'none');
+    }
+
+    function removeActiveClass() {
+      buttons.forEach(btn => btn.classList.remove('active'));
+    }
+
+    buttons.forEach(button => {
+      button.addEventListener('click', function () {
+        const tabId = this.getAttribute('data-tab');
+        hideAllTabs();
+        removeActiveClass();
+        document.getElementById(`tab-${tabId}`).style.display = 'block';
+        this.classList.add('active');
+      });
+    });
+
+    // Show first tab by default
+    if (buttons.length > 0) {
+      buttons[0].click();
+    }
+  });
+</script>
+
+
+{% endblock content %}

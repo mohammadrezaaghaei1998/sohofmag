@@ -1,0 +1,404 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% if meta %}
+    <title>{{ meta.title }}</title>
+    <meta name="description" content="{{ meta.description }}">
+    <meta name="keywords" content="{{ meta.keywords }}">
+    <meta name="robots" content="{{ meta.robots }}">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="{{ meta.og_title }}">
+    <meta property="og:description" content="{{ meta.og_description }}">
+    <meta property="og:image" content="{{ meta.og_image.url }}">
+    <meta property="og:url" content="{{ meta.og_url }}">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter -->
+    <meta name="twitter:title" content="{{ meta.twitter_title }}">
+    <meta name="twitter:description" content="{{ meta.twitter_description }}">
+    <meta name="twitter:image" content="{{ meta.twitter_image.url }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="{{ meta.twitter_site }}">
+
+    <!-- Canonical -->
+    <link rel="canonical" href="{{ meta.canonical_url }}">
+{% else %}
+    <p>Meta data not found for this page.</p>
+{% endif %}
+
+{% block content %}
+
+    
+<section style="background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.281), rgba(0,0,0,0.3), rgba(0,0,0,0)), url(/static/assets/images/confident2.jpg); background-repeat: no-repeat; background-position: center; background-size: cover; height: 50vh;">
+    <div class="container d-flex flex-column justify-content-center align-items-center text-center" style="height: 100%;">
+            <h1 class="text-white"><strong>Catalogues</strong></h1>
+            <nav aria-label="breadcrumb" class="d-flex justify-content-center mt-3">
+                <ol class="breadcrumb bg-transparent p-0 m-0">
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'index' %}" class="text-white-50">Home</a>
+                    </li>
+                    <li class="breadcrumb-item active text-white" aria-current="page">Catalogues</li>
+                </ol>
+            </nav>
+    </div>
+  </section>
+      
+    
+        <section>
+            <div class="row">
+                <article class="col-md-12 col-lg-4 filter-group mt-4">
+                    <header class="card-header">
+                        <h6 class="title">Sort By</h6>
+                    </header>
+                    
+                    <div class="col-lg-12 filter-content" id="collapse_6">
+                        <div class="card-body">
+                            <form method="GET" id="sortForm">
+                            <div class="row">
+                            <div class="col-md-4 col-lg-12">
+                                    <label class="custom-control custom-radio">
+                                        <input type="radio" name="sort" value="newest" class="custom-control-input" 
+                                        {% if sort_option == "newest" %}checked{% endif %} onchange="this.form.submit()">
+                                        <div class="custom-control-label">Newest Catalogs</div>
+                                    </label>
+                            </div>
+                    
+                            <div class="col-md-4 col-lg-12">
+                                <label class="custom-control custom-radio">
+                                    <input type="radio" name="sort" value="most_downloaded" class="custom-control-input" 
+                                    {% if sort_option == "most_downloaded" %}checked{% endif %} onchange="this.form.submit()">
+                                    <div class="custom-control-label">Most Downloaded</div>
+                                </label>
+                            </div>
+                    
+                                <div class="col-md-4 col-lg-12">
+                                    <label class="custom-control custom-radio">
+                                        <input type="radio" name="sort" value="most_viewed" class="custom-control-input" 
+                                        {% if sort_option == "most_viewed" %}checked{% endif %} onchange="this.form.submit()">
+                                        <div class="custom-control-label">Most Popular</div>
+                                    </label>
+                                </div>
+                            </div>
+                            </form>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="col-md-12 col-lg-12 mt-5">
+                         <h1 class="mb-3" style="font-size: 28px;"><strong>Latest Catalogues</strong></h1>
+                        <div class="col-md-12 col-lg-12 mt-5">
+                            <div class="row">
+                                {% for catalogue in latest_catalogues %}
+                               <a href="{% url 'catalogue_detail' catalogue.id %}">
+                                    <div class="col-12 col-md-6 col-lg-12 mb-3">
+                                        <div class="row">
+                                            <div class="col-4 col-md-4 col-lg-4">
+                                                {% if catalogue.cover_image %}
+                                                    <img src="{{ catalogue.cover_image.url }}" alt="{{ catalogue.title }}" class="img-fluid" style="max-height: 100px; width: 300px; object-fit: cover;">
+                                                {% endif %}
+                                            </div>
+                                            <div class="col-8 col-md-6">
+                                                <h5><strong>{{ catalogue.title|truncatewords:10 }}</strong></h5>
+                                                <p class="mb-0" style="font-size: 15px;">Date: {{ catalogue.publish_date|date:"d.m.Y" }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                               </a>
+                                {% endfor %}
+                            </div>
+                            <hr>
+                        </div>
+                        
+                    </div>
+                    
+                </article>
+            
+                <main class="col-md-12 col-lg-8">
+                    <header class="border-bottom mb-4 pb-3">
+                        <div class="form-inline">
+                            <span class="mr-md-auto mt-2 ml-2">{{ total_catalogues }} Items found</span>
+    
+                        </div>	
+                    </header>
+                    
+                    <div class="row product-row">
+                        {% for catalogue in catalogues %}
+                        <div class="column-product col-md-12 col-lg-12 d-flex mb-4" >
+                            <figure class="card shadow-sm" style="border-radius: 15px; overflow: hidden; position: relative;">
+                                {% if catalogue.cover_image %}
+                                    <img src="{{ catalogue.cover_image.url }}" alt="Catalogue Cover Image" class="w-100 d-block catalogues-cover-image" style="border-radius: 15px; object-fit: cover; max-height:580px; min-height: auto; width: 100%; min-width: 370px;">
+                                    <!-- <img src="{{ catalogue.cover_image.url }}"class="w-100 d-block catalogues-cover-image"style="height: 300px; width: 100%; object-fit: cover; border-radius: 15px;"> -->
+
+                                    {% else %}
+                                <div class="d-flex align-items-center justify-content-center" style="height: 300px; background-color: #f8f9fa;">
+                                    <p class="text-muted">No Catalogue to display</p>
+                                </div>
+                                {% endif %}
+                                <div class="overlay-info-catalogues">
+                                    <p class="mb-1"><strong>No:</strong> {{ catalogue.id }}</p>
+                                    <p class="mb-0"><strong>Date:</strong> {{ catalogue.publish_date|date:"d M Y" }}</p>
+                                </div>
+                    
+                                <button 
+                                class="btn btn-sm position-absolute share-catalogues-button" onclick="shareCatalogue('{{ request.build_absolute_uri|slice:':-1' }} {% url 'catalogue_detail' catalogue.id %}')" title="Share this catalogue">
+                                    <i class="fas fa-share-alt"></i>
+                                </button>
+                                <a href="{% url 'catalogue_detail' catalogue.id %}" class="btn button2">
+                                    See Catalogue
+                                </a>
+                                
+
+                            </figure>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <hr>
+                </main>
+            </div>
+        </section>
+       
+        <footer class="bg-dark text-white pt-5">
+            <div class="container" style="max-width: 1350px;">
+                <div class="row">
+                    <div class="col-md-3">
+                        <a class="footerbrand" href="{% url 'index' %}"> 
+                            <img src="{% static 'assets/images/logo.png' %}" width="90" alt="Logo">
+                        </a>
+                        <p class="mt-2">We promote businesses through our catalog and strategic advertising, connecting them with global markets to enhance visibility and growth.</p>
+                    </div>
+        
+                    <div class="col-md-3 mt-2">
+                        <h2 class="mb-4 footer-top-title" style="font-size: 16px;">Quick Links</h2>
+                        <ul class="list-unstyled">
+                            <li><a href="{% url 'index' %}" class="text-white text-decoration-none"><i class="fa fa-home"></i> Home</a></li>
+                            <li><a href="{% url 'aboutus' %}" class="text-white text-decoration-none"><i class="fa fa-info-circle"></i> About Us</a></li>
+                            <li><a href="{% url 'catalogue_list' %}" class="text-white text-decoration-none"><i class="fa fa-book"></i> Catalogues</a></li>
+                            <li><a href="{% url 'company_signup' %}" class="text-white text-decoration-none"><i class="fa fa-users"></i> Become a supplier</a></li>
+                        </ul>
+                    </div>
+        
+                    <div class="col-md-3 mt-2">
+                        <h2 class="mb-4 footer-top-title" style="font-size: 16px;">Our Services</h2>
+                        <ul class="list-unstyled">
+                            <li><i class="fa fa-bullhorn"></i> Smart and Targeted Advertising</li>
+                            <li><i class="fa fa-globe"></i> Connection to Global Markets</li>
+                            <li><i class="fa fa-briefcase"></i> Specialized Commercial Support</li>
+                            <li><i class="fa fa-truck"></i> International Transportation</li>
+                            <li><i class="fa fa-credit-card"></i> Secure International Financial Transactions</li>
+                        </ul>
+                    </div>
+        
+                    <div class="col-md-3 mt-2 text-center">
+                        <h2 class="mb-4 footer-top-title" style="font-size: 16px;">Follow Us</h2>
+                        <div class="mb-3">
+                            {% for link in socialmedia %}
+                                {% if 'facebook' in link.social_media_url %}
+                                    <a href="{{ link.social_media_url }}" class="text-white mx-2" ><i class="fa fa-facebook fa-2x sm-links"></i></a>
+                                {% elif 'instagram' in link.social_media_url %}
+                                    <a href="{{ link.social_media_url }}" class="text-white mx-2"><i class="fa fa-instagram fa-2x sm-links"></i></a>
+                                {% elif 'linkedin' in link.social_media_url %}
+                                    <a href="{{ link.social_media_url }}" class="text-white mx-2"><i class="fa fa-linkedin fa-2x sm-links"></i></a>
+                                {% elif 'youtube' in link.social_media_url %}
+                                    <a href="{{ link.social_media_url }}" class="text-white mx-2"><i class="fa fa-youtube fa-2x sm-links"></i></a>
+                                {% endif %}
+                            {% empty %}
+                                <p>No social media links available</p>
+                            {% endfor %}
+                        </div>
+                        <!-- <h5 class="mt-4 subscrribe-title">Subscribe to Our Newsletter</h5>
+                        <form class="d-flex mt-2">
+                            <div class="input-group" style="border:none; border-bottom: 2px solid white;">
+                                <input type="email" class="form-control" placeholder="Enter your email" style="background: transparent; border: none;">
+                                <button type="submit" class="btn subscribe-button">Subscribe</button>
+                            </div>
+                        </form> -->
+                    </div>
+                </div>
+                <hr class="bg-white">
+                <div class="row text-center pb-4">
+                    <div class="col">
+                        <p class="mb-0">&copy; 2025 Sohof. All Rights Reserved.</p>
+                        <!-- <p class="mb-0"><a href="#" class="text-white text-decoration-none">Privacy Policy</a> | <a href="#" class="text-white text-decoration-none">Terms of Service</a></p> -->
+                    </div>
+                </div>
+            </div>
+        </footer>
+        
+            
+            
+         
+            <div id="loading-spinner" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999;">
+              <img src="https://i.gifer.com/ZZ5H.gif" alt="Loading..." width="80">
+            </div>
+            
+     
+    <style>
+          .list-unstyled li .text-decoration-none:hover{
+      color: rgb(255, 0, 0) !important;
+  }
+    .sm-links {
+    transition: color 0.3s ease; 
+  }
+
+  .sm-links:hover {
+    color: red;
+  }
+  .subscribe-button{
+
+      background: transparent;
+      color: rgb(255, 255, 255);
+  }
+  .subscribe-button:hover{
+
+      background: transparent;
+      color: black;
+  }
+  .subscrribe-title ,  .footer-top-title{
+      font-weight: bold;
+      color: white;
+  }
+
+    </style>
+
+
+
+
+<style>
+    .product-row {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); 
+        gap: 20px;
+        width: 100%; 
+        max-width: 100%; 
+    }
+
+    @media (min-width: 992px) and (max-width: 1481px) {
+        .product-row {
+            grid-template-columns: repeat(2, 1fr); 
+        }
+    }
+
+    @media (max-width: 991px) {
+        .product-row {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 767px) {
+        .product-row {
+            grid-template-columns: 1fr; 
+        }
+    }
+
+    .product-row .column-product {
+        width: 100%;
+        box-sizing: border-box; 
+    }
+
+    .product-row .card-product-grid {
+        display: flex;
+        flex-direction: column;
+        width: 100%; 
+        height: auto;
+    }
+</style>
+
+
+
+
+
+
+
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const sortRadios = document.querySelectorAll('input[name="sort"]');
+                const loadingSpinner = document.getElementById("loading-spinner");
+                const form = document.getElementById("sortForm");
+            
+                sortRadios.forEach(radio => {
+                    radio.addEventListener("change", function (event) {
+                        event.preventDefault();  // Prevent immediate form submission
+                        
+                        // Show the loading spinner immediately
+                        loadingSpinner.style.display = "block";
+            
+                        // Wait for 15 seconds (15000ms) before submitting the form
+                        setTimeout(() => {
+                            form.submit();  // Submit the form after the delay
+                        }, 15000);  // Set delay to 15 seconds
+                    });
+                });
+            
+                // Hide the spinner once the page is fully loaded
+                window.addEventListener("load", function () {
+                    loadingSpinner.style.display = "none";
+                });
+            });
+        </script>
+
+
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                let categoryLinks = document.querySelectorAll(".category-header");
+
+                categoryLinks.forEach(link => {
+                    link.addEventListener("mouseenter", function () {
+                        let targetId = this.getAttribute("data-target");
+
+                        document.querySelectorAll(".content-column-header").forEach(el => {
+                            el.style.display = "none";
+                        });
+
+                        let targetElement = document.getElementById(targetId);
+                        if (targetElement) {
+                            targetElement.style.display = "block";
+                        }
+                    });
+                });
+
+                // Handle clicking on subcategory links
+                let subcategoryLinks = document.querySelectorAll(".subcategory");
+
+                subcategoryLinks.forEach(link => {
+                    link.addEventListener("click", function (e) {
+                        // Prevent the default link behavior
+                        e.preventDefault();
+
+                        // You can handle the click to load the content of the subcategory here
+                        let url = this.getAttribute("href");
+                        window.location.href = url;  // Navigate to the subcategory page
+                    });
+                });
+            });
+        </script>
+
+        <script>
+            function shareCatalogue(url) {
+                if (navigator.share) {
+                    navigator.share({
+                        title: 'Check out this catalogue!',
+                        url: url
+                    }).catch(err => console.error('Sharing failed', err));
+                } else {
+                    navigator.clipboard.writeText(url)
+                        .then(() => alert('Link copied to clipboard!'))
+                        .catch(err => alert('Could not copy link: ' + err));
+                }
+            }
+        </script>
+
+
+
+{% endblock content %}
+
+
+
+
+
+
+
+
+
+

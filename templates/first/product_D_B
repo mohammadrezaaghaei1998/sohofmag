@@ -1,0 +1,881 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+
+{% if meta %}
+    <title>{{ meta.title }}</title>
+    <meta name="description" content="{{ meta.description }}">
+    <meta name="keywords" content="{{ meta.keywords }}">
+    <meta name="robots" content="{{ meta.robots }}">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="{{ meta.og_title }}">
+    <meta property="og:description" content="{{ meta.og_description }}">
+    <meta property="og:image" content="{{ meta.og_image.url }}">
+    <meta property="og:url" content="{{ meta.og_url }}">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter -->
+    <meta name="twitter:title" content="{{ meta.twitter_title }}">
+    <meta name="twitter:description" content="{{ meta.twitter_description }}">
+    <meta name="twitter:image" content="{{ meta.twitter_image.url }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="{{ meta.twitter_site }}">
+
+    <!-- Canonical -->
+    <link rel="canonical" href="{{ meta.canonical_url }}">
+{% else %}
+    <p>Meta data not found for this page.</p>
+{% endif %}
+
+{% block content %}
+
+
+<section class="vh-100">
+   <div style="margin-top: 80px;">
+        <div class="row">
+            <div class="col-md-12 col-lg-8">
+                <!-- <div class="card-product-detail pt-5 pb-5"> -->
+                    <div class="pt-5 pb-5">
+                    <div class="container-fluid">
+                        <div class="wrapper row">
+                            <div class="preview col-md-12 col-lg-6 custom-full-width">
+                                <div class="preview-box">
+                                    {% for image in product.images.all %}
+                                       <div class="tab-pane {% if forloop.first %}active{% endif %}" id="pic-{{ forloop.counter }}">
+                                            <div class="zoom-container" onmouseenter="enableZoomPan(this)">
+                                              <img src="{{ image.image.url }}"  alt="{{ product.name }}" style="object-fit: cover; width: 100%; max-height: 250px; cursor: zoom-in;"onmouseenter="switchTab(this)"data-target="#pic-{{ forloop.counter }}">
+                                            </div>
+                                        </div>
+
+                                    {% empty %}
+                                        <p>No images available.</p>
+                                    {% endfor %}
+                                </div>
+                                <ul class="preview-thumbnail nav nav-tabs">
+                                    {% for image in product.images.all %}
+                                        <li {% if forloop.first %}class="active"{% endif %}>
+                                            <a data-target="#pic-{{ forloop.counter }}" data-toggle="tab">
+                                                <img src="{{ image.image.url }}" height="100" width="100" alt="{{ product.name }}" style="object-fit: cover; width: 100%;">
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <div class="details col-md-12 col-lg-6 custom-full-width">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <h2 class="product-title" style="font-size: 24px;">{{ product.name }}</h2>
+                                        <hr>
+                                    </div>
+                                
+                                    <div class="col-lg-12">
+                                        <p class="product-description">{{ product.description }}</p>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="row align-items-center">
+                                            <h3 class="company-names mr-2" style="font-size: 20px; font-weight: bold;">Company Name:</h3>
+                                             <h3 class="company-names text-muted" data-toggle="tooltip" style="font-size: 18px;">{{ product.SellerProfile.company_name }}</h3>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="row align-items-center">
+                                            <h3 class="company-names mr-2" style="font-size: 20px; font-weight: bold;">Origin:</h3>
+                                             <h3 class="company-names text-muted" data-toggle="tooltip" style="font-size: 18px;">{{ product.origin }}</h3>
+                                        </div>
+                                       
+                                    </div>
+                                    <div class="col-lg-12">
+                                       <div class="row">
+                                            <h3 class="colors" style="font-size: 20px;">Status:
+                                                {% if product.availability == 'out_of_stock' %}
+                                                    <span class="color red not-available" style="font-size: 10px;" data-toggle="tooltip" title="Not In store"></span><span class="avalibility text-muted">Not Available</span>
+                                                {% else %}
+                                                    <span class="color green avalible" style="font-size: 10px;" data-toggle="tooltip" title="In store"></span><span class="avalibility text-muted">Available</span>
+                                                {% endif %}
+                                            </h3>
+                                       </div>
+                                        
+                                    </div>
+                                
+                                    
+                                </div>
+                                <hr>
+                                <div class="col-lg-12 text-right">
+                                    <a href="javascript:void(0);" title="Add to wishlist" id="wishlist_button" data-product-id="{{ product.id }}">
+                                        <i class="fa fa-heart" style="color: red; font-size: 20px; padding-right: 8px;"></i>
+                                    </a>
+                                </div>
+                                
+                            
+                            </div>
+                        </div>
+
+
+
+
+
+
+                    </div>             
+                </div>
+                
+                <!-- 
+                <div class="col-md-12 mt-5">
+                    <h3 class="product-title">Key attributes</h3>
+                    <hr>
+
+
+                    <a href="#" data-toggle="collapse" data-target="#collapse_1" aria-expanded="true" class="">
+                        <h6 class="title Industry-specific-attributes">
+                            Industry-specific attributes <i class="icon-control fa fa-chevron-down"></i>
+                        </h6>
+                    </a>
+                    <div class="collapse" id="collapse_1" style="  transition: height 0.5s ease-out, opacity 0.5s ease-out;">
+                        <table class="blueTable mt-3">
+                            <tbody>
+                                <tr>
+                                    <td>Industrial Use</td>
+                                    <td>cell2_1</td>
+                                </tr>
+                                <tr>
+                                    <td>Paper Type</td>
+                                    <td>cell2_2</td>
+                                </tr>
+                                <tr>
+                                    <td>Feature</td>
+                                    <td>cell2_3</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                    <a href="#" data-toggle="collapse" data-target="#collapse_2" aria-expanded="true" class="">
+                        <h6 class="title mt-5 Industry-specific-attributes">
+                            Other attributes<i class="icon-control fa fa-chevron-down"></i>
+                        </h6>
+                    </a>
+                    <div class="collapse" id="collapse_2" style="  transition: height 0.5s ease-out, opacity 0.5s ease-out;">
+                        <table class="blueTable mt-3">
+                            <tbody>
+                                <tr>
+                                    <td>Industrial Use</td>
+                                    <td>cell2_1</td>
+                                </tr>
+                                <tr>
+                                    <td>Paper Type</td>
+                                    <td>cell2_2</td>
+                                </tr>
+                                <tr>
+                                    <td>Feature</td>
+                                    <td>cell2_3</td>
+                                </tr>
+                                <tr>
+                                    <td>Industrial Use</td>
+                                    <td>cell2_1</td>
+                                </tr>
+                                <tr>
+                                    <td>Paper Type</td>
+                                    <td>cell2_2</td>
+                                </tr>
+                                <tr>
+                                    <td>Feature</td>
+                                    <td>cell2_3</td>
+                                </tr>
+                                <tr>
+                                    <td>Industrial Use</td>
+                                    <td>cell2_1</td>
+                                </tr>
+                                <tr>
+                                    <td>Paper Type</td>
+                                    <td>cell2_2</td>
+                                </tr>
+                                <tr>
+                                    <td>Feature</td>
+                                    <td>cell2_3</td>
+                                </tr>
+                                <tr>
+                                    <td>Industrial Use</td>
+                                    <td>cell2_1</td>
+                                </tr>
+                                <tr>
+                                    <td>Paper Type</td>
+                                    <td>cell2_2</td>
+                                </tr>
+                                <tr>
+                                    <td>Feature</td>
+                                    <td>cell2_3</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+
+                    
+                    <a href="#" data-toggle="collapse" data-target="#collapse_3" aria-expanded="true" class="">
+                        <h6 class="title mt-5 Industry-specific-attributes">
+                            Packaging and delivery <i class="icon-control fa fa-chevron-down"></i>
+                        </h6>
+                    </a>
+                    <div class="collapse" id="collapse_3" style="  transition: height 0.5s ease-out, opacity 0.5s ease-out;">
+                        <table class="blueTable mt-3">
+                            <tbody>
+                                <tr>
+                                    <td>Industrial Use</td>
+                                    <td>cell2_1</td>
+                                </tr>
+                                <tr>
+                                    <td>Paper Type</td>
+                                    <td>cell2_2</td>
+                                </tr>
+                                <tr>
+                                    <td>Feature</td>
+                                    <td>cell2_3</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                    <div class="mt-5"></div>
+                    <h3 class="product-title">Lead Time</h3>
+                    <hr>
+
+
+                    <div class="mt-5"></div>
+                    <h3 class="product-title">Ratings & Reviews</h3>
+                    <hr>
+                    <div class="rating-review">
+                        <div class="row align-items-center">
+                            <div class="col-auto text-center" style="font-size: 50px; font-weight: bold;">
+                                3.5
+                            </div>
+                            
+                            <div class="col">
+                                <div class="d-flex align-items-center">
+                                    <div class="stars">
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                    </div>
+                                    <div class="ml-3 review-level">
+                                        Not Too Bad
+                                    </div>
+                                </div>
+                                <div class="review-base">
+                                    Based on 41 reviews
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="container-cont py-5">
+                        <div class="row d-flex justify-content-start">
+                            <div class="col-md-12 col-lg-12 col-xl-12">
+                                <div class="card review-card p-2">
+                                    <div class="card-body review-body">
+                                        <div class="d-flex flex-start align-items-center">
+                                            <img class="rounded-circle shadow-1-strong me-3"
+                                            src="{% static 'assets/images/confident2.jpg' %}" alt="avatar" width="60"
+                                            height="60" />
+                                            <div class="ml-3 review-user">
+                                                <h6 class="fw-bold text-danger mb-1">Shaghayegh Tavakoli</h6>
+                                                <p class="text-muted small mb-0">
+                                                    Shared publicly - Jan 11, 2020
+                                                </p>
+                                            </div>
+                                        </div>
+                            
+                                        <p class="mt-3 mb-4 pb-2">
+                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                                            quis nostrud exercitation ullamco laboris nisi ut aliquip consequat.
+                                        </p>
+                            
+                                        <div class="small d-flex justify-content-start">
+                                            <a href="#!" class="d-flex align-items-center me-3 mr-2 review-icons">
+                                                <i class="fa fa-thumbs-o-up me-2 mr-2"></i>
+                                                <p class="mb-0">Like</p>
+                                            </a>
+                                            <a href="#!" class="d-flex align-items-center me-3 review-icons">
+                                                <i class="fa fa-comment-o me-2 mr-2"></i>
+                                                <p class="mb-0">Comment</p>
+                                            </a>
+                                        </div>
+                                        <div class="card-body mt-4 ml-5 pl-3 border-start border-3" style="border-color: #17a2b8;">
+                                            <div class="d-flex flex-start align-items-center">
+                                            
+                                                <div class="review-user supplier-reply">
+                                                    <h6 class="fw-bold  mb-1">Supplier's reply:</h6>
+                                                </div>
+                                            </div>
+                                    
+                                            <p class="mt-2 mb-2 ml-4">
+                                                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quibusdam minus veritatis incidunt laborum blanditiis, eos itaque cupiditate. Enim animi consectetur vitae ut iste placeat nobis at molestias facere voluptas voluptate soluta impedit ratione, reiciendis inventore corrupti eum officia perferendis. Aut veritatis tenetur, maxime blanditiis ex a natus deleniti! Numquam, beatae.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="card-body review-body">
+                                        <div class="d-flex flex-start align-items-center">
+                                            <img class="rounded-circle shadow-1-strong me-3"
+                                            src="{% static 'assets/images/confident2.jpg' %}" alt="avatar" width="60"
+                                            height="60" />
+                                            <div class="ml-3 review-user">
+                                                <h6 class="fw-bold text-danger mb-1">Shaghayegh Tavakoli</h6>
+                                                <p class="text-muted small mb-0">
+                                                    Shared publicly - Jan 11, 2020
+                                                </p>
+                                            </div>
+                                        </div>
+                            
+                                        <p class="mt-3 mb-4 pb-2">
+                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                                            quis nostrud exercitation ullamco laboris nisi ut aliquip consequat.
+                                        </p>
+                            
+                                        <div class="small d-flex justify-content-start">
+                                            <a href="#!" class="d-flex align-items-center me-3 mr-2 review-icons">
+                                                <i class="fa fa-thumbs-o-up me-2 mr-2"></i>
+                                                <p class="mb-0">Like</p>
+                                            </a>
+                                            <a href="#!" class="d-flex align-items-center me-3 review-icons">
+                                                <i class="fa fa-comment-o me-2 mr-2"></i>
+                                                <p class="mb-0">Comment</p>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="card-body review-body">
+                                        <div class="d-flex flex-start align-items-center">
+                                            <img class="rounded-circle shadow-1-strong me-3"
+                                            src="{% static 'assets/images/confident2.jpg' %}" alt="avatar" width="60"
+                                            height="60" />
+                                            <div class="ml-3 review-user">
+                                                <h6 class="fw-bold text-danger mb-1">Shaghayegh Tavakoli</h6>
+                                                <p class="text-muted small mb-0">
+                                                    Shared publicly - Jan 11, 2020
+                                                </p>
+                                            </div>
+                                        </div>
+                            
+                                        <p class="mt-3 mb-4 pb-2">
+                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                                            quis nostrud exercitation ullamco laboris nisi ut aliquip consequat.
+                                        </p>
+                            
+                                        <div class="small d-flex justify-content-start">
+                                            <a href="#!" class="d-flex align-items-center me-3 mr-2 review-icons">
+                                                <i class="fa fa-thumbs-o-up me-2 mr-2"></i>
+                                                <p class="mb-0">Like</p>
+                                            </a>
+                                            <a href="#!" class="d-flex align-items-center me-3 review-icons">
+                                                <i class="fa fa-comment-o me-2 mr-2"></i>
+                                                <p class="mb-0">Comment</p>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer py-3 border-0" style="background-color: #f8f9fa;">
+                                        <div class="d-flex flex-start w-100">
+                                            <img class="rounded-circle shadow-1-strong me-3"
+                                            src="{% static 'assets/images/confident2.jpg' %}" alt="avatar" width="40"
+                                            height="40" />
+                                            <div data-mdb-input-init class="form-outline w-100 ml-2">
+                                                <textarea class="form-control" id="textAreaExample" rows="4"
+                                                    style="background: #fff;"></textarea>
+                                                <label class="form-label" for="textAreaExample">Message</label>
+                                            </div>
+                                        </div>
+                                        <div class="float-end mt-2 pt-1">
+                                            <a href="#" class="btn btn-md btn-custom animate__animated animate__bounceIn animate__delay-.5s">Post Comment</a>
+                                            <a href="#" class="btn btn-md btn-custom animate__animated animate__bounceIn animate__delay-.5s">cancel</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>         -->
+            </div>
+
+
+            <div class="second-card col-md-12 col-lg-4 mb-5" style="background-color: transparent;">
+                <div class="card second-card-des">
+                    <div class="card-header">
+                        <h4>Additional Info</h4>
+                    </div>
+                    <div class="card-body">
+                       
+                       <p style="margin-left: -10px;">
+                            {% if seller.is_verified %}
+                                <span class="mr-2" style="color: green; font-size: 15px; margin-left: 10px;">
+                                    <i class="fa fa-check-circle"></i> Verified
+                                </span>
+                            {% endif %}
+                            
+                            {% if seller.is_gold %}
+                                <span style="color: gold; font-size: 15px;">
+                                    <i class="fa fa-certificate"></i> Gold Member
+                                </span>
+                            {% endif %}
+                       </p>
+            
+                        <p><i class="fa fa-building"></i> <strong>Company Name:</strong> {{ product.SellerProfile.company_name }}</p>
+                        <p><i class="fa fa-industry"></i> <strong>Industry:</strong> {{ product.SellerProfile.fields_of_work }}</p>
+                        <p><i class="fa fa-map-marker"></i> <strong>Location:</strong> {{ product.SellerProfile.company_location }}</p>
+                        <p><i class="fa fa-envelope"></i> <strong>Contact Email:</strong> <a href="mailto:{{ product.SellerProfile.contact_email }}">{{ product.SellerProfile.contact_email }}</a></p>
+                        <p><i class="fa fa-globe"></i> <strong>Website:</strong> <a href="{{ product.SellerProfile.website_url }}" target="_blank">{{ product.SellerProfile.website_url }}</a></p>
+                        
+                        <hr>
+                        <p><i class="fa fa-share-alt"></i> <strong>Follow Us</strong></p>
+                        
+                        <div class="row mb-3">
+                            {% if product.SellerProfile.facebook %}
+                                <a href="{{ product.SellerProfile.facebook }}" target="_blank" class="d-block">
+                                    <i class="fa fa-facebook-square m-2"></i> 
+                                </a>
+                            {% endif %}
+                    
+                            {% if product.SellerProfile.instagram %}
+                                <a href="{{ product.SellerProfile.instagram }}" target="_blank" class="d-block">
+                                    <i class="fa fa-instagram m-2"></i> 
+                                </a>
+                            {% endif %}
+                    
+                            {% if product.SellerProfile.linkedin %}
+                                <a href="{{ product.SellerProfile.linkedin }}" target="_blank" class="d-block">
+                                    <i class="fa fa-linkedin m-2"></i> 
+                                </a>
+                            {% endif %}
+                    
+                            {% if product.SellerProfile.youtube %}
+                                <a href="{{ product.SellerProfile.youtube }}" target="_blank" class="d-block">
+                                    <i class="fa fa-youtube m-2"></i> 
+                                </a>
+                            {% endif %}
+                    
+                            {% if product.SellerProfile.twitter %}
+                                <a href="{{ product.SellerProfile.twitter }}" target="_blank" class="d-block">
+                                    <i class="fa fa-twitter m-2"></i> 
+                                </a>
+                            {% endif %}
+                        </div>
+                        <hr>
+                        <!-- <a href="{% url 'seller_detail' product.SellerProfile.id %}" class="btn btn-md btn-custom animate__animated animate__bounceIn animate__delay-.5s w-100">
+                            Visit Profile
+                        </a> -->
+                        <a href="{% url 'seller_detail' product.SellerProfile.company_name|slugify %}" class="btn btn-md btn-custom animate__animated animate__bounceIn animate__delay-.5s w-100">
+                            Visit Profile
+                        </a>
+
+                    </div>
+                    <!-- <hr>
+            
+                    <div class="card-body">
+                        <p><i class="fa fa-cogs"></i> <strong>Services Offered:</strong></p>
+                        <ul>
+                            <li>Web Development</li>
+                            <li>Mobile App Development</li>
+                            <li>Cybersecurity Solutions</li>
+                        </ul>
+                    </div> -->
+            
+                   
+            
+                        <!-- <div class="card-body">
+                            <p><i class="fa fa-share-alt"></i> <strong>Follow Us</strong></p>
+                            <div class="row">
+                                {% if product.SellerProfile.facebook %}
+                                    <a href="{{ product.SellerProfile.facebook }}" target="_blank" class="d-block">
+                                        <i class="fa fa-facebook-square m-2"></i> 
+                                    </a>
+                                {% endif %}
+                        
+                                {% if product.SellerProfile.instagram %}
+                                    <a href="{{ product.SellerProfile.instagram }}" target="_blank" class="d-block">
+                                        <i class="fa fa-instagram m-2"></i> 
+                                    </a>
+                                {% endif %}
+                        
+                                {% if product.SellerProfile.linkedin %}
+                                    <a href="{{ product.SellerProfile.linkedin }}" target="_blank" class="d-block">
+                                        <i class="fa fa-linkedin m-2"></i> 
+                                    </a>
+                                {% endif %}
+                        
+                                {% if product.SellerProfile.youtube %}
+                                    <a href="{{ product.SellerProfile.youtube }}" target="_blank" class="d-block">
+                                        <i class="fa fa-youtube m-2"></i> 
+                                    </a>
+                                {% endif %}
+                        
+                                {% if product.SellerProfile.twitter %}
+                                    <a href="{{ product.SellerProfile.twitter }}" target="_blank" class="d-block">
+                                        <i class="fa fa-twitter m-2"></i> 
+                                    </a>
+                                {% endif %}
+                            </div>
+                        <hr>
+
+                        <div class="card-body">
+                            <a href="{% url 'seller_detail' product.SellerProfile.id %}" class="btn btn-md btn-custom animate__animated animate__bounceIn animate__delay-.5s w-100">
+                                Visit Profile
+                            </a>
+                        </div> -->
+
+                    </div>
+                </div>
+            </div>
+            
+            
+            </div>
+        </div>
+   </div>
+
+
+
+
+
+
+{% if similar_products %}
+   <section class="carousel-container-category-index mt-5 mb-5">
+       <div class="container mt-5 mb-5" style="max-width: 1550px;">
+           <h1 class="text-center mb-4 similar-header-title">Similar Products</h1>
+           <button class="controls-category-index prev-category-index" id="prevBtn-category-index" style="z-index: 1000;">&#10094;</button>
+           <div class="carousel-category-index d-flex" id="carousel-category-index">
+               {% for item in similar_products %}
+                <div class="category-item-category-index-similar-products p-2">
+                    <div class="card text-center h-100" style="width: 340px;">
+                        {% if item.images.first %}
+                        <div style="width: 100%; height: 220px; overflow: hidden;">
+                            <img src="{{ item.images.first.image.url }}" 
+                                class="card-img-top" 
+                                alt="{{ item.name }}"
+                                style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                        {% endif %}
+                        <div class="card-body text-left d-flex flex-column justify-content-between" style="height: 320px;">
+                            <h1 class="card-title" style="font-size: 1.6rem;"><strong>{{ item.name|truncatechars:20 }}</strong></h1>
+                            <p class="card-text">{{ item.description|truncatewords:5 }}</p>
+                            <h3 class="card-text-similar-products"><strong>Status:</strong>
+                                {% if item.availability == 'in_stock' %}
+                                    <span class="badge bg-success">Available</span>
+                                {% else %}
+                                    <span class="badge bg-danger">Not Available</span>
+                                {% endif %}
+                            </h3>
+                            <h3 class="card-text-similar-products"><strong>Origin:</strong>{{ item.origin }}</h3>
+                            <hr>
+                            <a href="{% url 'product_detail' item.id item.name|slugify %}" class="btn btn-md btn-custom animate__animated animate__bounceIn animate__delay-.5s mb-1 mt-2 w-100">View</a>
+                        </div>
+                        
+                    </div>
+                </div>
+            
+               {% endfor %}
+           </div>
+           <button class="controls-category-index next-category-index" id="nextBtn-category-index" style="z-index: 1000;">&#10095;</button>
+       </div>
+   </section>
+{% endif %}
+   
+
+
+   
+<style>
+    @media (min-width: 992px) and (max-width: 1570px) {
+        .custom-full-width {
+        flex: 0 0 100%;
+        max-width: 100%;
+        }
+    }
+    .card-text-similar-products{
+        font-size: 16px;
+    }
+    .similar-header-title{
+        font-weight: bold;
+        font-size: 26px;
+    }
+    .card-title{
+        font-size: 22px;
+        color: black;
+    }
+    .category-item-category-index-similar-products {
+        flex: 0 0 auto;
+       width: 320px !important;
+        height: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        font-size: 16px;
+        user-select: none;
+       
+    }
+</style>
+
+
+
+   <footer class="bg-dark text-white pt-5">
+    <div class="container" style="max-width: 1350px;">
+        <div class="row">
+            <!-- About Section -->
+            <div class="col-md-3">
+                <a class="footerbrand" href="{% url 'index' %}"> 
+                    <img src="{% static 'assets/images/logo.png' %}" width="90" alt="Logo">
+                </a>
+                <p class="mt-2">We promote businesses through our catalog and strategic advertising, connecting them with global markets to enhance visibility and growth.</p>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="col-md-3 mt-2">
+                <h2 class="mb-4 footer-top-title" style="font-size: 16px;">Quick Links</h2>
+                <ul class="list-unstyled">
+                    <li><a href="{% url 'index' %}" class="text-white text-decoration-none"><i class="fa fa-home"></i> Home</a></li>
+                    <li><a href="{% url 'aboutus' %}" class="text-white text-decoration-none"><i class="fa fa-info-circle"></i> About Us</a></li>
+                    <li><a href="{% url 'catalogue_list' %}" class="text-white text-decoration-none"><i class="fa fa-book"></i> Catalogues</a></li>
+                    <li><a href="{% url 'company_signup' %}" class="text-white text-decoration-none"><i class="fa fa-users"></i> Become a supplier</a></li>
+                </ul>
+            </div>
+
+            <!-- Services -->
+            <div class="col-md-3 mt-2">
+                <h2 class="mb-4 footer-top-title" style="font-size: 16px;">Our Services</h2>
+                <ul class="list-unstyled">
+                    <li><i class="fa fa-bullhorn"></i> Smart and Targeted Advertising</li>
+                    <li><i class="fa fa-globe"></i> Connection to Global Markets</li>
+                    <li><i class="fa fa-briefcase"></i> Specialized Commercial Support</li>
+                    <li><i class="fa fa-truck"></i> International Transportation</li>
+                    <li><i class="fa fa-credit-card"></i> Secure International Financial Transactions</li>
+                </ul>
+            </div>
+
+            <!-- Social Media and Subscribe -->
+            <div class="col-md-3 mt-2 text-center">
+                <h2 class="mb-4 footer-top-title" style="font-size: 16px;">Follow Us</h2>
+                <div class="mb-3">
+                    {% for link in socialmedia %}
+                        {% if 'facebook' in link.social_media_url %}
+                            <a href="{{ link.social_media_url }}" class="text-white mx-2" ><i class="fa fa-facebook fa-2x sm-links"></i></a>
+                        {% elif 'instagram' in link.social_media_url %}
+                            <a href="{{ link.social_media_url }}" class="text-white mx-2"><i class="fa fa-instagram fa-2x sm-links"></i></a>
+                        {% elif 'linkedin' in link.social_media_url %}
+                            <a href="{{ link.social_media_url }}" class="text-white mx-2"><i class="fa fa-linkedin fa-2x sm-links"></i></a>
+                        {% elif 'youtube' in link.social_media_url %}
+                            <a href="{{ link.social_media_url }}" class="text-white mx-2"><i class="fa fa-youtube fa-2x sm-links"></i></a>
+                        {% endif %}
+                    {% empty %}
+                        <p>No social media links available</p>
+                    {% endfor %}
+                </div>
+                <!-- <h5 class="mt-4 subscrribe-title">Subscribe to Our Newsletter</h5>
+                <form class="d-flex mt-2">
+                    <div class="input-group" style="border:none; border-bottom: 2px solid white;">
+                        <input type="email" class="form-control" placeholder="Enter your email" style="background: transparent; border: none;">
+                        <button type="submit" class="btn subscribe-button">Subscribe</button>
+                    </div>
+                </form> -->
+            </div>
+        </div>
+        <hr class="bg-white">
+        <div class="row text-center pb-4">
+            <div class="col">
+                <p class="mb-0">&copy; 2025 Sohof. All Rights Reserved.</p>
+                <!-- <p class="mb-0"><a href="#" class="text-white text-decoration-none">Privacy Policy</a> | <a href="#" class="text-white text-decoration-none">Terms of Service</a></p> -->
+            </div>
+        </div>
+    </div>
+</footer>
+ 
+</section>
+
+
+
+
+
+<style>
+    .zoom-container {
+        overflow: hidden;
+        position: relative;
+        height: 250px;
+         cursor: zoom-in;
+    }
+    .zoom-container.zoomed {
+        cursor: zoom-out;
+    }
+
+    .zoom-container img {
+        transition: transform 0.2s ease;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transform-origin: center center;
+        pointer-events: none; 
+    }
+     .list-unstyled li .text-decoration-none:hover{
+        color: rgb(255, 0, 0) !important;
+    }
+    .sm-links {
+        transition: color 0.3s ease;
+    }
+
+    .sm-links:hover {
+        color: red;
+    }
+    .subscribe-button{
+
+        background: transparent;
+        color: rgb(255, 255, 255);
+    }
+    .subscribe-button:hover{
+
+        background: transparent;
+        color: black;
+    }
+    .subscrribe-title ,  .footer-top-title{
+        font-weight: bold;
+        color: white;
+    }
+
+    .category-name-index{
+        font-size: 12px;
+    }
+</style>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#wishlist_button').on('click', function() {
+            var product_id = $(this).data('product-id');
+
+            $.ajax({
+                type: 'POST',
+                url: '{% url "add_to_wishlist" %}',  
+                data: {
+                    'product_id': product_id,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+                },
+                success: function(response) {
+                    Swal.fire({
+                        icon: response.success ? 'success' : 'info',
+                        title: response.success ? 'Added!' : 'Notice',
+                        text: response.message,
+                        confirmButtonColor: '#ff1d1d'
+                    });
+                },
+                error: function() {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'An error occurred while adding the product to the wishlist.',
+                        confirmButtonColor: '#ff1d1d'
+                    });
+                }
+            });
+        });
+    });
+
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const carousel = document.getElementById("carousel-category-index");
+        const prevBtn = document.getElementById("prevBtn-category-index");
+        const nextBtn = document.getElementById("nextBtn-category-index");
+        
+        let isDragging = false;
+        let startX, scrollLeft;
+    
+        carousel.addEventListener("mousedown", (e) => {
+            isDragging = true;
+            carousel.classList.add("grabbing-category-index");
+            startX = e.pageX - carousel.offsetLeft;
+            scrollLeft = carousel.scrollLeft;
+        });
+    
+        document.addEventListener("mouseup", () => {
+            isDragging = false;
+            carousel.classList.remove("grabbing-category-index");
+        });
+    
+        document.addEventListener("mousemove", (e) => {
+            if (!isDragging) return;
+            e.preventDefault();
+            const x = e.pageX - carousel.offsetLeft;
+            const walk = (x - startX) * 2;
+            carousel.scrollLeft = scrollLeft - walk;
+        });
+    
+        carousel.addEventListener("touchstart", (e) => {
+            isDragging = true;
+            startX = e.touches[0].pageX - carousel.offsetLeft;
+            scrollLeft = carousel.scrollLeft;
+        });
+    
+        document.addEventListener("touchend", () => {
+            isDragging = false;
+        });
+    
+        carousel.addEventListener("touchmove", (e) => {
+            if (!isDragging) return;
+            const x = e.touches[0].pageX - carousel.offsetLeft;
+            const walk = (x - startX) * 2;
+            carousel.scrollLeft = scrollLeft - walk;
+        });
+    
+        prevBtn.addEventListener("click", () => {
+            carousel.scrollBy({ left: -200, behavior: "smooth" });
+        });
+    
+        nextBtn.addEventListener("click", () => {
+            carousel.scrollBy({ left: 200, behavior: "smooth" });
+        });
+    });
+</script>
+
+
+
+{% if messages %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        {% for message in messages %}
+            Swal.fire({
+                icon: '{% if message.tags == "success" %}success{% elif message.tags == "error" %}error{% else %}info{% endif %}',
+                title: '{{ message.tags|title }}',
+                text: '{{ message }}',
+                confirmButtonColor: '#ff1d1d'
+            });
+        {% endfor %}
+    });
+</script>
+{% endif %}
+
+
+<script>
+    function enableZoomPan(imgContainer) {
+        const img = imgContainer.querySelector('img');
+
+        imgContainer.addEventListener('mousemove', (e) => {
+            const rect = imgContainer.getBoundingClientRect();
+            const x = ((e.clientX - rect.left) / rect.width) * 100;
+            const y = ((e.clientY - rect.top) / rect.height) * 100;
+            
+            img.style.transform = `scale(1.5)`;
+            img.style.transformOrigin = `${x}% ${y}%`;
+        });
+
+        imgContainer.addEventListener('mouseleave', () => {
+            img.style.transform = 'scale(1)';
+            img.style.transformOrigin = 'center center';
+        });
+    }
+</script>
+
+
+
+{% endblock content %}
