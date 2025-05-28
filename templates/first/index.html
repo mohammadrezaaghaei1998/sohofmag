@@ -32,7 +32,7 @@
 
 
 
-  <section  style="height: 100%;">
+   <section  style="height: 100%;">
         <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
             <div class="carousel-indicators">
                 <button type="button" data-target="#carouselExampleCaptions" data-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -43,18 +43,18 @@
                 {% for slide in carouselslides %}
                 <div class="carousel-item homepage-carousel gradient {% if forloop.first %}active{% endif %}" style="background-image: url('{{ slide.background_image.url }}');">
                     <div class="container" style="position: relative; top: 30%;">
-                        <div class="row justify-content-center align-items-center">
-                            <div class="col-12 col-lg-12 carousel-caption text-center" style="position: relative; top: 50%; left: 0;">
+                        <div class="row justify-content-start align-items-center ">
+                            <div class="col-12 col-lg-12 carousel-caption text-left" style="position: relative; top: 50%; left: 0;">
                                 <h1 class="text-white" style="font-weight: bold;">{{ slide.title }}</h1>
                                 <h5 class="text-white">{{ slide.subtitle }}</h5>
                             </div>
                             {% if slide.show_video_button %}
-                            <div class="col-12 col-lg-12 d-flex justify-content-center">
+                                <div class="col-12 col-md-8 col-lg-5 d-flex justify-content-center">
                                 {% if slide.show_video_button and slide.video %}
-                                 <a href="#" class="play-btn" data-toggle="modal" data-target="#videoModal" data-video="{{ slide.video.url }}" style="z-index: 100;"></a>
-                            {% endif %}
-                            
-                            </div>
+                                    <a href="#" class="play-btn" data-toggle="modal" data-target="#videoModal" data-video="{{ slide.video.url }}" style="z-index: 100;"></a>
+                                {% endif %}
+                                
+                                </div>
                             {% endif %}
                         </div>
                     </div>
