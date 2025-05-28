@@ -51,7 +51,7 @@
                             {% if slide.show_video_button %}
                             <div class="col-12 col-lg-12 d-flex justify-content-center">
                                 {% if slide.show_video_button and slide.video %}
-                                <a href="#" class="play-btn" data-toggle="modal" data-target="#videoModal" data-video="{{ slide.video.url }}"></a>
+                                 <a href="#" class="play-btn" data-toggle="modal" data-target="#videoModal" data-video="{{ slide.video.url }}" style="z-index: 100;"></a>
                             {% endif %}
                             
                             </div>
