@@ -38,6 +38,8 @@
         <div class="mt-5">
             <a href="{% url 'index' %}" title="Home"><i class="fa fa-home"></i><span class="text">Home</span></a>
         <a href="#add-info" title="Add Informations"> <i class="fa fa-info-circle"></i><span class="text">Add Informations</span></a>
+        <a href="#documents" title="Manage Documents"><i class="fa fa-file-text"></i><span class="text">Manage Documents</span></a>
+        <a href="#certificates" title="Manage Certificates"><i class="fa fa-certificate"></i><span class="text">Manage Certificates</span></a>
         <a href="#manage-videos" title="Manage Videos"><i class="fa fa-film"></i><span class="text">Manage Videos</span></a>
         <a href="#manage-products" title="Manage Product"><i class="fa fa-plus"></i><span class="text">Manage Product</span></a>
         <a href="#page-views" title="Page Views"><i class="fa fa-eye"></i><span class="text">Page Views</span></a>
@@ -514,7 +516,6 @@
                                
 
 
-                               
                                 <!-- Authorized Representative's Job Title: -->
                                 <div class="col-lg-6 form-group animate__animated animate__fadeIn">
                                     <label for="export-manager-name">Authorized Representative's Job Title:</label>
@@ -630,11 +631,11 @@
                         </form>
                             <br>
                            
-                        <form method="post" action="{% url 'manage_documents' %}" enctype="multipart/form-data">
+                        <form  method="post" action="{% url 'manage_documents' %}" enctype="multipart/form-data">
                             {% csrf_token %}
                             <div class="row p-2 mt-5 " style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.507); border-radius: 20px;">
                                 <div class="col-lg-12 d-flex justify-content-start animate__animated animate__fadeIn">
-                                    <h3 class="text-center mb-2 mt-5">Upload Documents</h3>
+                                    <h3 id="documents" class="text-center mb-2 mt-5">Upload Documents</h3>
                                 </div>
                             
                                 <div class="col-lg-6 form-group animate__animated animate__fadeIn">
@@ -741,7 +742,7 @@
 
 
 
-                        <div class="row p-5 mt-5" style="  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.507); border-radius: 20px;">
+                        <div id="certificates" class="row p-5 mt-5" style="  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.507); border-radius: 20px;">
                             <div class="col-lg-12 d-flex justify-content-start animate__animated animate__fadeIn">
                                 <h3 class="text-center mb-2 mt-5">Certificates</h3>
                             </div>
