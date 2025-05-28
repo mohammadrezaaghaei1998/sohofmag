@@ -514,9 +514,10 @@
                                
 
 
-                                <!-- Export Manager Name -->
+                               
+                                <!-- Authorized Representative's Job Title: -->
                                 <div class="col-lg-6 form-group animate__animated animate__fadeIn">
-                                    <label for="export-manager-name">Export Manager Name:</label>
+                                    <label for="export-manager-name">Authorized Representative's Job Title:</label>
                                     <input type="text" id="export-manager-name" name="export_manager_name" class="form-control" value="{{ sellerprofile.export_manager_name|default:'' }}" disabled>
                                     
                                     {% if form.export_manager_name.errors %}
@@ -528,9 +529,9 @@
                                     {% endif %}
                                 </div>
 
-                                <!-- Responsible Person Name -->
+                                <!-- Authorized Representative's Name: -->
                                 <div class="col-lg-6 form-group animate__animated animate__fadeIn">
-                                    <label for="responsible-person-name">Responsible Person Name:</label>
+                                    <label for="responsible-person-name">Authorized Representative's Name:</label>
                                     <input type="text" id="responsible-person-name" name="responsible_person_name" class="form-control" value="{{ sellerprofile.responsible_person_name|default:'' }}" disabled>
 
                                     {% if form.responsible_person_name.errors %}
