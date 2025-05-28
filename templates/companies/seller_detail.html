@@ -140,15 +140,16 @@
                                         {% endif %}
                                     {% endfor %}
                                 </div>
-                    
-                                <a class="carousel-control-prev" href="#certificationsCarousel" role="button" data-slide="prev" style="background-color: rgb(0, 0, 0); height: 40px; width: 40px; border-radius: 50%; top: 47%;">
-                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    <span class="sr-only">Previous</span>
-                                </a>
-                                <a class="carousel-control-next" href="#certificationsCarousel" role="button" data-slide="next" style="background-color: rgb(0, 0, 0); height: 40px; width: 40px; border-radius: 50%; top: 47%;">
-                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    <span class="sr-only">Next</span>
-                                </a>
+                                {% if certificates|length > 2 %}
+                                    <a class="carousel-control-prev" href="#certificationsCarousel" role="button" data-slide="prev" style="background-color: rgb(0, 0, 0); height: 40px; width: 40px; border-radius: 50%; top: 47%;">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
+                                    <a class="carousel-control-next" href="#certificationsCarousel" role="button" data-slide="next" style="background-color: rgb(0, 0, 0); height: 40px; width: 40px; border-radius: 50%; top: 47%;">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="sr-only">Next</span>
+                                    </a>
+                                {% endif %}
                             </div>
                         {% else %}
                             <p class="ml-3">This company doesn't have any certificates at the moment.</p>
@@ -271,14 +272,16 @@
                                                 {% endif %}
                                             {% endfor %}
                                         </div>
-                                        <a class="carousel-control-prev" href="#modalCarousel" role="button" data-slide="prev" style="background-color: rgb(0, 0, 0); height: 40px; width: 40px; border-radius: 50%; top: 47%;">
-                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                            <span class="sr-only">Previous</span>
-                                        </a>
-                                        <a class="carousel-control-next" href="#modalCarousel" role="button" data-slide="next" style="background-color: rgb(0, 0, 0); height: 40px; width: 40px; border-radius: 50%; top: 47%;">
-                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                            <span class="sr-only">Next</span>
-                                        </a>
+                                        {% if certificates|length > 2 %}
+                                            <a class="carousel-control-prev" href="#modalCarousel" role="button" data-slide="prev" style="background-color: rgb(0, 0, 0); height: 40px; width: 40px; border-radius: 50%; top: 47%;">
+                                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                <span class="sr-only">Previous</span>
+                                            </a>
+                                            <a class="carousel-control-next" href="#modalCarousel" role="button" data-slide="next" style="background-color: rgb(0, 0, 0); height: 40px; width: 40px; border-radius: 50%; top: 47%;">
+                                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                <span class="sr-only">Next</span>
+                                            </a>
+                                        {% endif %}
                                     </div>
                                 </div>
                                 
@@ -339,7 +342,17 @@
                                                     <div class="price-wrap mt-2">
                                                         <h3 style="font-size: 18px;"><strong>Origin:</strong> {{ product.origin }}</h3>
                                                     </div>
-                                                    <h3 style="font-size: 18px;"><strong>Availability:</strong> {{ product.get_availability_display }}</h3>
+                                                    <div class="row align-items-center">
+                                                        <h3 class="card-text mb-0" style="font-size: 18px; font-weight: bold;">Availability:</h3>
+                                                        <p class="mb-0 ml-2">
+                                                            {% if product.availability == 'in_stock' %}
+                                                                <span class="badge bg-success">Available</span>
+                                                            {% else %}
+                                                                <span class="badge bg-danger">Not Available</span>
+                                                            {% endif %}
+                                                        </p>
+                                                    </div>
+                                                    <!-- <h3 style="font-size: 18px;"><strong>Availability:</strong> {{ product.get_availability_display }}</h3> -->
                                                 </div>
                                                 
                                             </figcaption>
